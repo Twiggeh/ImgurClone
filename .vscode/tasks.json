@@ -1,0 +1,41 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "start Webpack",
+			"command": "echo 'startTrackingTask' && echo 'endTrackingTask' && yarn debug",
+			"options": { "cwd": "${workspaceFolder}/client" },
+			"type": "shell",
+			"isBackground": true,
+			"problemMatcher": {
+				"owner": "typescript",
+				"fileLocation": "relative",
+				"pattern": {
+					"regexp": "asdfg",
+					"file": 1,
+					"location": 2,
+					"message": 3
+				},
+				"background": {
+					"activeOnStart": false,
+					"beginsPattern": "startTrackingTask",
+					"endsPattern": "endTrackingTask"
+				}
+			},
+			"group": "build"
+		},
+		{
+			"label": "Linux kill webpack",
+			"type": "shell",
+			"command": "ps a | grep \"/usr/bin/yarn debug\" | grep -o -m 1  [0-9]* | head -1 | xargs kill",
+			"presentation": {
+				"echo": false,
+				"reveal": "never",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": false,
+				"clear": true
+			}
+		}
+	]
+}

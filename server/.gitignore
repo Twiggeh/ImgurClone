@@ -1,0 +1,6 @@
+.env
+key*
+node_modules
+*.pem
+*.log
+dist

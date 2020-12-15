@@ -1,0 +1,19 @@
+{
+	"compileOnSave": false,
+	"include": ["src/**/*.ts"],
+	"compilerOptions": {
+		"allowJs": true,
+		"target": "esnext",
+		"lib": ["ESNext"],
+		"moduleResolution": "Node",
+		"baseUrl": ".",
+		"module": "ESNext",
+		"noImplicitAny": true,
+		"sourceMap": true,
+		"allowSyntheticDefaultImports": true,
+		"outDir": "dist",
+		"paths": {
+			"*": ["node_modules/*", "src/types/*"]
+		}
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"typeRoots": ["./src/customTypes"],
+		"jsx": "react"
+	},
+	"compileOnSave": false,
+	"include": ["src"]
+}
