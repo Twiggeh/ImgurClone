@@ -1,25 +1,39 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-const StyledButton = styled.a`
-	${({ color }) => `background-color: ${color}`}
+type StyledProps = Pick<ButtonProps, 'bgColor' | 'fColor' | 'disabled'>;
+
+const StyledButton = styled.a<StyledProps>`
+	${({ bgColor, fColor, disabled, theme }) =>
+		`background-color: ${bgColor ? bgColor : theme.color.primary};
+		color: ${fColor};
+	${disabled ? 'pointer-events:none;' : 'pointer-events:all;'}`}
 `;
 
 export interface ButtonProps {
 	content: string;
-	color: string;
-	type: HTMLButtonElement['type'];
+	bgColor?: string;
+	fColor?: string;
 	href: string;
 	onClick?: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+	disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ content = '', color, onClick, type, href }) => {
+const Button: React.FC<ButtonProps> = ({
+	content = '',
+	bgColor,
+	fColor = 'white',
+	onClick,
+	href,
+	disabled = false,
+}) => {
 	return (
 		<StyledButton
-			color={color}
+			fColor={fColor}
+			bgColor={bgColor}
 			href={href}
-			onClick={onClick ? onClick : null}
-			type={type}>
+			onClick={onClick}
+			disabled={disabled}>
 			{content}
 		</StyledButton>
 	);

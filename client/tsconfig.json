@@ -4,9 +4,16 @@
 		"allowSyntheticDefaultImports": true,
 		"moduleResolution": "node",
 		"sourceMap": true,
-		"typeRoots": ["./src/customTypes"],
-		"jsx": "react"
+		"typeRoots": ["src/@types"],
+		"jsx": "react",
+		"strict": true,
+		"strictNullChecks": true,
+		"baseUrl": "./",
+		"noEmit": true,
+		"paths": {
+			"*": ["src/@types/*"]
+		}
 	},
 	"compileOnSave": false,
-	"include": ["src"]
+	"include": ["src/**/*"]
 }

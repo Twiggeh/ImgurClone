@@ -21,7 +21,7 @@
 		]
 	},
 	"eslintConfig": {
-		"parser": "babel-eslint",
+		"parser": "@typescript-eslint/parser",
 		"env": {
 			"browser": true,
 			"es6": true,
@@ -30,7 +30,8 @@
 		"extends": [
 			"eslint:recommended",
 			"plugin:react/recommended",
-			"plugin:security/recommended"
+			"plugin:security/recommended",
+			"plugin:@typescript-eslint/recommended"
 		],
 		"globals": {
 			"Atomics": "readonly",
@@ -70,16 +71,12 @@
 				"always"
 			],
 			"flatTernaryExpressions": 0,
-			"no-unused-vars": [
-				1,
-				{
-					"vars": "all",
-					"args": "after-used",
-					"ignoreRestSiblings": false
-				}
-			],
 			"react-hooks/rules-of-hooks": "error",
-			"react-hooks/exhaustive-deps": "warn"
+			"react-hooks/exhaustive-deps": "warn",
+			"react/prop-types": 0,
+			"no-unused-vars": "off",
+			"no-var": "off",
+			"@typescript-eslint/explicit-module-boundary-types": "off"
 		},
 		"settings": {
 			"react": {
@@ -96,9 +93,10 @@
 		"@babel/plugin-transform-runtime": "^7.12.0",
 		"@babel/preset-env": "^7.9.5",
 		"@babel/preset-react": "^7.9.4",
-		"@emotion/babel-preset-css-prop": "^10.0.27",
-		"@emotion/core": "^10.0.28",
-		"@emotion/styled": "^10.0.27",
+		"@emotion/babel-preset-css-prop": "^11.0.0",
+		"@emotion/core": "^11.0.0",
+		"@emotion/react": "^11.1.2",
+		"@emotion/styled": "^11.0.0",
 		"@hot-loader/react-dom": "^16.13.0",
 		"@types/react": "^17.0.0",
 		"@types/react-dom": "^17.0.0",
@@ -136,5 +134,9 @@
 		"webpack-bundle-analyzer": "^3.9.0",
 		"webpack-cli": "^3.3.11",
 		"webpack-dev-server": "^3.10.3"
+	},
+	"dependencies": {
+		"@typescript-eslint/eslint-plugin": "^4.10.0",
+		"@typescript-eslint/parser": "^4.10.0"
 	}
 }

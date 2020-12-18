@@ -1,16 +1,18 @@
 import React from 'react';
-import { OptionalProps, PrimaryColor } from '../../../globals';
+import { OptionalProps } from '../../../globals';
 import Button, { ButtonProps } from '../Button/Button';
 
-export type ISignUp = OptionalProps<ButtonProps, 'color' | 'content' | 'href' | 'type'>;
+export type ISignUp = OptionalProps<
+	ButtonProps,
+	'fColor' | 'content' | 'href' | 'bgColor' | 'type'
+>;
 
 const SignUpButton: React.FC<ISignUp> = props =>
 	Button({
-		...props,
-		color: PrimaryColor,
 		content: 'Sign Up!',
 		href: 'TODO',
 		type: 'button',
+		...props,
 	});
 
 export default SignUpButton;

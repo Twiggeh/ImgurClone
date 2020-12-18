@@ -12,15 +12,6 @@
 			"postDebugTask": "Linux kill webpack"
 		},
 		{
-			"name": "Start TSC",
-			"cwd": "${workspaceFolder}/server",
-			"request": "launch",
-			"runtimeExecutable": "yarn",
-			"skipFiles": ["<node_internals>/**"],
-			"type": "pwa-node",
-			"runtimeArgs": ["debug"]
-		},
-		{
 			"name": "Development Backend",
 			"cwd": "${workspaceFolder}/server",
 			"restart": true,
@@ -28,12 +19,31 @@
 			"type": "pwa-node",
 			"runtimeExecutable": "nodemon",
 			"runtimeArgs": ["--inspect-brk", "./dist/src/app.js"]
+		},
+		{
+			"command": "yarn debug",
+			"cwd": "${workspaceFolder}/client",
+			"name": "TSC Watcher Client",
+			"request": "launch",
+			"type": "node-terminal"
+		},
+		{
+			"command": "yarn debug",
+			"cwd": "${workspaceFolder}/server",
+			"name": "TSC Compiler Server",
+			"request": "launch",
+			"type": "node-terminal"
 		}
 	],
 	"compounds": [
 		{
 			"name": "start debug session",
-			"configurations": ["Launch Chrome", "Start TSC", "Development Backend"],
+			"configurations": [
+				"Launch Chrome",
+				"TSC Watcher Client",
+				"TSC Compiler Server",
+				"Development Backend"
+			],
 			"preLaunchTask": "start Webpack",
 			"stopAll": true
 		}
