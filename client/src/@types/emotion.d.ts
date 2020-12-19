@@ -5,9 +5,23 @@ declare module '@emotion/react' {
 		color: {
 			accent: string;
 			primary: string;
+			mediumBackground: string;
 			background: string;
 			border: string;
-			darkBackground: string;
+			lightBackground: string;
+			fontColor: string;
+			lowContrastFont: string;
 		};
+		mq: {
+			tablet: string;
+			phone: string;
+		};
+		fontSize: {
+			mini: string;
+			small: string;
+			medium: string;
+			big: string;
+		};
+		customOutline: (top: number, right: number, bottom: number, left: number) => string;
 	}
 }

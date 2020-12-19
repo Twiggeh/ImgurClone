@@ -1,16 +1,25 @@
 import { hot } from 'react-hot-loader/root';
 import React, { useState } from 'react';
-import { css, Global, ThemeProvider } from '@emotion/react';
+import { css, Global, Theme, ThemeProvider } from '@emotion/react';
 import createCtx from './components/Providers/createStateCtx';
 import { Modal } from 'main';
 
-const theme = {
+const theme: Theme = {
+	fontSize: {
+		mini: 'clamp(12px, .8vw, 20px)',
+		small: 'clamp(18px, 1.2vw, 35px)',
+		medium: 'clamp(18px, 1.2vw, 35px)',
+		big: 'clamp(40px, 4vw, 200px)',
+	},
 	color: {
 		accent: 'hotpink',
-		primary: 'aqua',
-		background: 'gray',
+		primary: '#0066ff',
 		border: 'lightGray',
-		darkBackground: 'darkGray',
+		fontColor: '#fff',
+		lowContrastFont: '#818181',
+		lightBackground: '#38383b',
+		mediumBackground: '#252528',
+		background: '#1c1d20',
 	},
 	mq: {
 		tablet: '@media (max-width: 1400px)',

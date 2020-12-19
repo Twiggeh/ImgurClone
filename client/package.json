@@ -52,7 +52,7 @@
 		],
 		"rules": {
 			"indent": [
-				"error",
+				"off",
 				"tab",
 				{
 					"SwitchCase": 1
@@ -137,7 +137,9 @@
 		"webpack-dev-server": "^3.10.3"
 	},
 	"dependencies": {
+		"@apollo/client": "^3.3.6",
 		"@typescript-eslint/eslint-plugin": "^4.10.0",
-		"@typescript-eslint/parser": "^4.10.0"
+		"@typescript-eslint/parser": "^4.10.0",
+		"graphql": "^15.4.0"
 	}
 }
