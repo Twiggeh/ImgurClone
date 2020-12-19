@@ -8,8 +8,8 @@
 		"jsx": "react",
 		"strict": true,
 		"strictNullChecks": true,
-		"baseUrl": "./",
-		"noEmit": true,
+		"baseUrl": "./src",
+		// "noEmit": true,
 		"paths": {
 			"*": ["src/@types/*"]
 		}
