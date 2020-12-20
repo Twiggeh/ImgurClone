@@ -21,14 +21,14 @@
 			"runtimeArgs": ["--inspect-brk", "./dist/src/app.js"]
 		},
 		{
-			"command": "yarn debug",
+			"command": "tsc --noEmit -w",
 			"cwd": "${workspaceFolder}/client",
 			"name": "TSC Watcher Client",
 			"request": "launch",
 			"type": "node-terminal"
 		},
 		{
-			"command": "yarn debug",
+			"command": "tsc --noEmit -w ",
 			"cwd": "${workspaceFolder}/server",
 			"name": "TSC Compiler Server",
 			"request": "launch",

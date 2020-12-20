@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"target": "es6",
 		"allowSyntheticDefaultImports": true,
+		"allowJs": true,
 		"moduleResolution": "node",
 		"sourceMap": true,
 		"typeRoots": ["src/@types"],
@@ -9,7 +10,6 @@
 		"strict": true,
 		"strictNullChecks": true,
 		"baseUrl": ".",
-		// "noEmit": true,
 		"paths": {
 			"*": ["src/@types/*"]
 		}

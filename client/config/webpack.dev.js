@@ -27,9 +27,26 @@ module.exports = {
 				exclude: /node_modules/,
 				loader: 'babel-loader',
 				options: {
-					presets: ['@babel/preset-react'],
+					presets: [
+						'@babel/preset-env',
+						'@babel/react',
+						'@emotion/babel-preset-css-prop',
+					],
 					// don't inject babel code into each file, create a global import for them
-					plugins: ['@babel/plugin-transform-runtime'],
+					plugins: [
+						'react-hot-loader/babel',
+						'@babel/plugin-transform-runtime',
+						// [
+						// 	'@emotion',
+						// 	{
+						// 		// sourceMap is on by default but source maps are dead code eliminated in production
+						// 		sourceMap: true,
+						// 		autoLabel: 'always',
+						// 		labelFormat: '[local]',
+						// 		cssPropOptimization: true,
+						// 	},
+						// ],
+					],
 					compact: false,
 					cacheDirectory: true,
 					cacheCompression: false,
@@ -124,8 +141,9 @@ module.exports = {
 		alias: {
 			'react-dom': '@hot-loader/react-dom',
 			icons: path.resolve(curProcess, './src/assets/icons'),
-			assets: path.resolve(curProcess, './src/assets'),
+			assetFiles: path.resolve(curProcess, './src/assets'),
 			pictures: path.resolve(curProcess, './src/static/Pictures.js'),
+			assets: path.resolve(curProcess, './src/utils/assetImports.js'),
 		},
 		modules: ['src', 'node_modules'],
 		extensions: ['.ts', '.tsx', '.js', '.jsx'],
