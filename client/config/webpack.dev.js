@@ -100,16 +100,6 @@ module.exports = {
 					},
 				},
 			},
-			//			{
-			//				test: /\.html?$/,
-			//				use: {
-			//					loader: 'file-loader',
-			//					options: {
-			//						name: '[name].[ext]',
-			//						outputPath: 'webpages',
-			//					},
-			//				},
-			//			},
 			{
 				test: /\.pdf$/,
 				use: {
@@ -142,8 +132,8 @@ module.exports = {
 			'react-dom': '@hot-loader/react-dom',
 			icons: path.resolve(curProcess, './src/assets/icons'),
 			assetFiles: path.resolve(curProcess, './src/assets'),
-			pictures: path.resolve(curProcess, './src/static/Pictures.js'),
-			assets: path.resolve(curProcess, './src/utils/assetImports.js'),
+			pictures: path.resolve(curProcess, './src/static/Pictures'),
+			assets: path.resolve(curProcess, './src/utils/assetImports'),
 		},
 		modules: ['src', 'node_modules'],
 		extensions: ['.ts', '.tsx', '.js', '.jsx'],

@@ -28,7 +28,7 @@
 			"type": "node-terminal"
 		},
 		{
-			"command": "tsc --noEmit -w ",
+			"command": "yarn debug",
 			"cwd": "${workspaceFolder}/server",
 			"name": "TSC Compiler Server",
 			"request": "launch",

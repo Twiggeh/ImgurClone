@@ -1,12 +1,12 @@
 {
 	"compileOnSave": false,
-	"include": ["src/**/*.ts"],
+	"include": ["src/**/*"],
 	"compilerOptions": {
 		"allowJs": true,
 		"target": "esnext",
 		"lib": ["ESNext"],
 		"moduleResolution": "Node",
-		"baseUrl": ".",
+		"baseUrl": "./",
 		"module": "ESNext",
 		"noImplicitAny": true,
 		"sourceMap": true,

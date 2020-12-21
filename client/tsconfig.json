@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es6",
+		"target": "es2018",
 		"allowSyntheticDefaultImports": true,
 		"allowJs": true,
 		"moduleResolution": "node",
@@ -9,7 +9,7 @@
 		"jsx": "react",
 		"strict": true,
 		"strictNullChecks": true,
-		"baseUrl": ".",
+		"baseUrl": "./",
 		"paths": {
 			"*": ["src/@types/*"]
 		}
