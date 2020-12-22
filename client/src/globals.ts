@@ -13,3 +13,7 @@ export type PartialExceptFor<T, K extends keyof T> = Pick<T, K> &
 	Partial<Omit<T, K>> extends infer O
 	? { [P in keyof O]: O[P] }
 	: never;
+
+export type MakeRequired<T> = {
+	[P in keyof T]: NonNullable<T[P]>;
+};

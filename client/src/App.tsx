@@ -2,7 +2,9 @@ import { hot } from 'react-hot-loader/root';
 import React, { useState } from 'react';
 import { css, Global, Theme, ThemeProvider } from '@emotion/react';
 import createCtx from './components/Providers/createStateCtx';
-import { Modal } from 'main';
+import Body from './components/Body_index';
+import './assets/global.css';
+import { Modal } from './@types/main';
 
 const theme: Theme = {
 	fontSize: {
@@ -53,7 +55,9 @@ const App = () => {
 		<>
 			<Global styles={globalStyle} />
 			<ThemeProvider theme={theme}>
-				<ModelProvider value={{ modal, setModal }}></ModelProvider>
+					<ModelProvider value={{ modal, setModal }}>
+						<Body />
+					</ModelProvider>
 			</ThemeProvider>
 		</>
 	);

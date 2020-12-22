@@ -83,7 +83,7 @@ export const StyledLabel = styled.label`
 	font-weight: 500;
 `;
 
-export const StyledInput = styled.input`
+export const StyledInput = styled.input<CustomCss>`
 	margin-top: ${leftPad};
 	padding: 0.7em 0.5em 0.7em 0.5em;
 	display: block;
@@ -93,4 +93,8 @@ export const StyledInput = styled.input`
 	color: ${props => props.theme.color.fontColor};
 	min-width: 350px;
 	width: 30vw;
+	::placeholder {
+		color: #c0c0c0;
+	}
+	${({ css }) => css}
 `;
