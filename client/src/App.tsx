@@ -54,11 +54,13 @@ const App = () => {
 	return (
 		<>
 			<Global styles={globalStyle} />
+			<ApolloProvider client={client}>
 			<ThemeProvider theme={theme}>
 					<ModelProvider value={{ modal, setModal }}>
 						<Body />
 					</ModelProvider>
 			</ThemeProvider>
+			</ApolloProvider>
 		</>
 	);
 };

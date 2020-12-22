@@ -11,6 +11,10 @@ const Body = () => {
 				<Route path='/register'>
 					<Register />
 				</Route>
+				<Route path='/posts'></Route>
+				<Route path='/upload'>
+					<Upload />
+				</Route>
 			</Switch>
 		</BrowserRouter>
 	);
