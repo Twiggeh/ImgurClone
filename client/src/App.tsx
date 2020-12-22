@@ -8,12 +8,14 @@ const theme: Theme = {
 	fontSize: {
 		mini: 'clamp(12px, .8vw, 20px)',
 		small: 'clamp(18px, 1.2vw, 35px)',
-		medium: 'clamp(18px, 1.2vw, 35px)',
+		medium: 'clamp(28px, 2vw, 45px)',
 		big: 'clamp(40px, 4vw, 200px)',
 	},
 	color: {
 		accent: 'hotpink',
 		primary: '#0066ff',
+		danger: '#941b1b',
+		success: '#1b942f',
 		border: 'lightGray',
 		fontColor: '#fff',
 		lowContrastFont: '#818181',
@@ -61,11 +63,12 @@ export default hot(App);
 
 var globalStyle = css`
 	* {
+		font-family: Montserrat;
+		color: ${theme.color.fontColor};
 		::selection {
 			color: white;
 			background: ${theme.color.accent};
 		}
-		font-family: Montserrat;
 		::-webkit-scrollbar-track {
 			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3) inset;
 			${theme.mq.tablet} {
@@ -74,11 +77,11 @@ var globalStyle = css`
 		}
 		::-webkit-scrollbar {
 			width: 18px;
-			background-color: ${theme.color.background};
+			background-color: ${theme.color.lightBackground};
 		}
 		::-webkit-scrollbar-thumb {
 			border: 1px solid ${theme.color.border};
-			background-color: ${theme.color.darkBackground};
+			background-color: ${theme.color.background};
 			:hover {
 				border-color: ${theme.color.accent};
 			}
@@ -86,5 +89,6 @@ var globalStyle = css`
 	}
 	body {
 		--trueWidth: 100%;
+		--borderRadius: 0.25em;
 	}
 `;

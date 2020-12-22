@@ -11,6 +11,8 @@ declare module '@emotion/react' {
 			lightBackground: string;
 			fontColor: string;
 			lowContrastFont: string;
+			danger: string;
+			success: string;
 		};
 		mq: {
 			tablet: string;
