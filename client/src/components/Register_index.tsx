@@ -25,8 +25,8 @@ const Register = () => {
 				<SpaceItems>
 					<SmallHeader>Login with</SmallHeader>
 					<LayoutLogins>
-						<Button content='google' href='todo'></Button>
-						<Button content='github' href='todo'></Button>
+						<Button href='todo'>google</Button>
+						<Button href='todo'>github</Button>
 					</LayoutLogins>
 
 					<SmallHeader>or register with your email</SmallHeader>
@@ -85,12 +85,12 @@ const Register = () => {
 					<AlignRight css={'* + * {margin-left: 0.2em;}'}>
 						<SignInButton />
 						<Button
-							content='Submit'
 							disabled={isValid}
 							onClick={e => {
 								e.preventDefault();
-							}}
-						/>
+							}}>
+							Submit
+						</Button>
 					</AlignRight>
 				</SpaceItems>
 			</Center>
@@ -101,9 +101,9 @@ const Register = () => {
 export default Register;
 
 import React, { useState } from 'react';
-import { validateInputs } from '../../utils/formHelpers';
-import BackHomeBtn from '../components/BackHomeButton/BackHomeBtn';
-import Button from '../components/Button/Button';
+import { validateInputs } from '../utils/formHelpers';
+import BackHomeBtn from './components/BackHomeBtn';
+import Button from './components/Button';
 import {
 	AlignRight,
 	Center,
@@ -116,5 +116,5 @@ import {
 	StyledForm,
 	StyledInput,
 	StyledLabel,
-} from '../components/Form/AuthComponents';
-import SignInButton from '../components/SignInButton/SignIn';
+} from './components/AuthComponents';
+import SignInButton from './components/SignIn';
