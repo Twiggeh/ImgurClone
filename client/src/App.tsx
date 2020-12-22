@@ -5,6 +5,37 @@ import createCtx from './components/Providers/createStateCtx';
 import Body from './components/Body_index';
 import './assets/global.css';
 import { Modal } from './@types/main';
+import {
+	ApolloClient,
+	gql,
+	NormalizedCacheObject,
+	InMemoryCache,
+	ApolloProvider,
+} from '@apollo/client';
+import { createUploadLink } from 'apollo-upload-client';
+
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+	cache: new InMemoryCache(),
+	link: createUploadLink({
+		uri: 'http://localhost:5050/graphql',
+	}),
+});
+
+// client
+// 	.query({
+// 		query: gql`
+// 			query GetUser {
+// 				getUser(email: "twiggeh99@gmail.com") {
+// 					success
+// 					message
+// 					userName
+// 					email
+// 					profilePicture
+// 				}
+// 			}
+// 		`,
+// 	})
+// 	.then(res => console.log(res));
 
 const theme: Theme = {
 	fontSize: {
@@ -55,11 +86,11 @@ const App = () => {
 		<>
 			<Global styles={globalStyle} />
 			<ApolloProvider client={client}>
-			<ThemeProvider theme={theme}>
+				<ThemeProvider theme={theme}>
 					<ModelProvider value={{ modal, setModal }}>
 						<Body />
 					</ModelProvider>
-			</ThemeProvider>
+				</ThemeProvider>
 			</ApolloProvider>
 		</>
 	);

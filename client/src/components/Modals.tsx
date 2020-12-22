@@ -67,4 +67,4 @@ export default Modals;
 
 import React from 'react';
 import styled from '@emotion/styled';
-import { ModalContext } from '../../App';
+import { ModalContext } from '../App';
