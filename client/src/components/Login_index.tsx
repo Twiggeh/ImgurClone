@@ -23,8 +23,8 @@ const Login = () => {
 				<SpaceItems>
 					<SmallHeader>Login with</SmallHeader>
 					<LayoutLogins>
-						<Button content='google' href='todo'></Button>
-						<Button content='github' href='todo'></Button>
+						<Button href='todo'>google</Button>
+						<Button href='todo'>github</Button>
 					</LayoutLogins>
 
 					<SmallHeader>or login with your email</SmallHeader>
@@ -56,14 +56,14 @@ const Login = () => {
 					</StyledForm>
 
 					<AlignRight css={'* + * {margin-left: 0.2em;}'}>
-						<SignUpButton content='need an account?' bgColor='transparent' />
+						<SignUpButton bgColor='transparent'>need an account?</SignUpButton>
 						<Button
-							content='Sign In'
 							disabled={isValid}
 							onClick={e => {
 								e.preventDefault();
-							}}
-						/>
+							}}>
+							Sign In
+						</Button>
 					</AlignRight>
 				</SpaceItems>
 			</Center>
@@ -74,9 +74,9 @@ const Login = () => {
 export default Login;
 
 import React, { useState } from 'react';
-import { validateInputs } from '../../utils/formHelpers';
-import BackHomeBtn from '../components/BackHomeButton/BackHomeBtn';
-import Button from '../components/Button/Button';
+import { validateInputs } from '../utils/formHelpers';
+import BackHomeBtn from './components/BackHomeBtn';
+import Button from './components/Button';
 import {
 	AlignRight,
 	Center,
@@ -89,5 +89,5 @@ import {
 	StyledForm,
 	StyledInput,
 	StyledLabel,
-} from '../components/Form/AuthComponents';
-import SignUpButton from '../components/SignUpButton/SignUpButton';
+} from './components/AuthComponents';
+import SignUpButton from './components/SignUpButton';

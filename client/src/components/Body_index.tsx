@@ -5,6 +5,9 @@ const Body = () => {
 				<Route path='/' exact>
 					<Home />
 				</Route>
+				<Route path='/login'>
+					<Login />
+				</Route>
 			</Switch>
 		</BrowserRouter>
 	);
