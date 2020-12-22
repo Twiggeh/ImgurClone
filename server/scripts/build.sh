@@ -6,5 +6,9 @@ echo SUBDOMAIN=www >> .env
 echo DOMAINEXTENSION=com >> .env
 echo SERVER_DIR=$PWD >> .env
 # TODO : add config for production to not use maps
+
+mkdir -p public/uploads
+mkdir -p dist/public/uploads
+
 tsc
 node ./dist/app.js

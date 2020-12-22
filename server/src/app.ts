@@ -105,6 +105,9 @@ if (isProd) {
 		res.redirect(301, `https://${subDom}.${req.hostname}${req.url}`);
 	});
 }
+app.get('/public/uploads/*', (req, res) => {
+	res.sendFile(join(rootDir, req.url));
+});
 
 app.get('/public/*', (req, res) => {
 	res.sendFile(join(rootDir, 'client', 'dist', req.url));
