@@ -5,6 +5,7 @@ import { GetPostType } from './GetPostType.js';
 import { AddPostType } from './AddPostType.js';
 
 const typeDefs = gql`
+	scalar Upload
 	type Query {
 		_empty: String
 	}

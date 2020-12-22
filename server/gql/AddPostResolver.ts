@@ -1,18 +1,5 @@
-import { MergeInfo } from 'apollo-server-express';
-import { GraphQLResolveInfo } from 'graphql';
-import { MyContext } from '../src/types.js';
+import { IResolver } from '../src/types.js';
 import Post, { IPost } from '../Models/Post.js';
-
-interface IResolver<Args, Return> {
-	(
-		parent: any,
-		args: Args,
-		context: MyContext,
-		info: GraphQLResolveInfo & {
-			mergeInfo: MergeInfo;
-		}
-	): Return | Promise<Return>;
-}
 
 interface AddPostResolverInput extends IPost {}
 

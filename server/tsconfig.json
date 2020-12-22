@@ -1,6 +1,4 @@
 {
-	"compileOnSave": false,
-	"include": ["src/**/*"],
 	"compilerOptions": {
 		"allowJs": true,
 		"target": "esnext",
@@ -12,8 +10,11 @@
 		"sourceMap": true,
 		"allowSyntheticDefaultImports": true,
 		"outDir": "dist",
+		"typeRoots": ["src/@types"],
 		"paths": {
-			"*": ["node_modules/*", "src/types/*"]
+			"*": ["node_modules/*", "src/@types/*"]
 		}
-	}
+	},
+	"compileOnSave": false,
+	"include": ["src/**/*"]
 }

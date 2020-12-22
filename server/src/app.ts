@@ -12,14 +12,11 @@ import mongoose from 'mongoose';
 import { mongooseKey } from '../keys/keys.js';
 import { ApolloServer } from 'apollo-server-express';
 
-import { AddUserResolver } from '../gql/AddUserResolver.js';
-import { GetUserResolver } from '../gql/GetUserResolver.js';
-import { GetPostResolver } from '../gql/GetPostResolver.js';
-import { AddPostResolver } from '../gql/AddPostResolver.js';
 import typeDefs from '../gql/types.js';
+import resolvers from '../gql/resolvers.js';
+import { graphqlUploadExpress } from 'graphql-upload';
 
 config();
-console.log('hel');
 
 const SECURE_PORT = 8081;
 const UPGRADE_PORT = 8080;
@@ -40,15 +37,15 @@ const rootDir = resolve(process.env.SERVER_DIR, '../');
 const app = express();
 
 const gqlServer = new ApolloServer({
+	uploads: false,
 	typeDefs,
-	resolvers: {
-		Query: { getUser: GetUserResolver, getPost: GetPostResolver },
-		Mutation: { addUser: AddUserResolver, addPost: AddPostResolver },
-	},
+	resolvers,
 	context: ({ req, res }) => {
 		return {};
 	},
 });
+
+app.use('/graphql', graphqlUploadExpress());
 
 gqlServer.applyMiddleware({ app });
 
