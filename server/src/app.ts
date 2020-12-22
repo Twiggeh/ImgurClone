@@ -26,13 +26,12 @@ const isProd = process.env.NODE_ENV === 'production';
 const secureServerPort = isProd ? SECURE_PORT : DEV_PORT;
 const upgradeServerPort = UPGRADE_PORT;
 
-// CAREFUL, BREAKS ON SPACES
-const __dirname = dirname(new URL(import.meta.url).pathname);
+const __dirname = decodeURI(dirname(new URL(import.meta.url).pathname));
 const domain = process.env.DOMAIN ? process.env.DOMAIN : 'localhost';
 const subDom = process.env.SUBDOMAIN ? process.env.SUBDOMAIN : '';
 const domExt = process.env.DOMAIN_EXTENSION ? process.env.DOMAIN_EXTENSION : '';
 const hostname = [subDom, domain, domExt].filter(c => !!c).join('.');
-const rootDir = resolve(process.env.SERVER_DIR, '../');
+export const rootDir = resolve(__dirname, '../');
 
 const app = express();
 
