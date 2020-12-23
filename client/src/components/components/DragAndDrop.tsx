@@ -8,13 +8,23 @@ export type PassedFile = {
 	uploaded?: boolean;
 };
 
-const DragAndDrop: React.FC<{
+interface IDragAndDrop {
 	max: number;
 	passedFiles: PassedFile[] | undefined;
 	setPassedFiles: React.Dispatch<React.SetStateAction<PassedFile[] | undefined>>;
 	setErrorMessage?: React.Dispatch<React.SetStateAction<string>>;
 	formats?: string[];
-}> = ({ children, max, passedFiles, setPassedFiles, setErrorMessage, formats }) => {
+	disabled: boolean;
+}
+
+const DragAndDrop: React.FC<IDragAndDrop> = ({
+	children,
+	max,
+	passedFiles,
+	setPassedFiles,
+	setErrorMessage,
+	disabled,
+}) => {
 	const dragRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -72,7 +82,13 @@ const DragAndDrop: React.FC<{
 	}, [max, passedFiles, setPassedFiles, setErrorMessage]);
 
 	return (
-		<div style={{ width: '100%', height: '100%' }} ref={dragRef}>
+		<div
+			style={{
+				width: '100%',
+				height: '100%',
+				...(disabled ? { pointerEvents: 'none', cursor: 'no-drop' } : {}),
+			}}
+			ref={dragRef}>
 			{children}
 		</div>
 	);

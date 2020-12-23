@@ -14,15 +14,15 @@ const FileUploader: React.FC<IFileUploader> = ({
 	maximum,
 	uploadFile,
 	setCreatePost,
+	totalFilesUploaded,
 }) => {
 	const theme = useTheme();
 
 	const DropZoneMessage = (() => {
-		if (passedFiles?.length) {
-			if (passedFiles.length >= 3)
-				return 'To upload another image you will need to remove one';
-			if (passedFiles.length <= 3) return 'Upload another image';
-		}
+		if (totalFilesUploaded >= 3)
+			return 'To upload another image you will need to remove one';
+		if (totalFilesUploaded <= 3 && totalFilesUploaded !== 0)
+			return 'Upload another image';
 		return 'Upload an image';
 	})();
 
@@ -38,22 +38,34 @@ const FileUploader: React.FC<IFileUploader> = ({
 		e.preventDefault();
 		setCreatePost(true);
 	};
+
+	const createUploadButtonCss = `margin: 0 auto; font-size: ${theme.fontSize.medium}; display: block;`;
+
 	return (
 		<>
-			<FileDisplay files={passedFiles} setFiles={setPassedFiles} />
-			{passedFiles?.length ? (
-				<Button
-					customCss={`margin: 0 auto; font-size: ${theme.fontSize.medium}; width: 20vw; display: block;`}
-					disabled={uploadedFiles && passedFiles?.length >= maximum}
-					onClick={handleUploadFiles}>
-					Upload !
-				</Button>
-			) : null}
-			{uploadedFiles?.length && allSucceeded(uploadedFiles) ? (
-				<Button onClick={handleCreatePost}>Create Post !</Button>
-			) : null}
+			<FileDisplay
+				files={passedFiles}
+				setFiles={setPassedFiles}
+				uploadedFiles={uploadedFiles}
+			/>
+			<ButtonContainer>
+				{passedFiles?.length ? (
+					<Button
+						css={createUploadButtonCss}
+						disabled={uploadedFiles && passedFiles?.length >= maximum}
+						onClick={handleUploadFiles}>
+						Upload !
+					</Button>
+				) : null}
+				{uploadedFiles?.length && allSucceeded(uploadedFiles) ? (
+					<Button css={createUploadButtonCss} onClick={handleCreatePost}>
+						Create Post !
+					</Button>
+				) : null}
+			</ButtonContainer>
 			<PositionDragArea>
 				<DragAndDrop
+					disabled={totalFilesUploaded >= maximum}
 					passedFiles={passedFiles}
 					setPassedFiles={setPassedFiles}
 					setErrorMessage={string => {
@@ -73,10 +85,14 @@ const FileUploader: React.FC<IFileUploader> = ({
 	);
 };
 
+var ButtonContainer = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+`;
+
 var PositionDragArea = styled.div`
-	width: 80%;
 	padding: 4em 0 4em 0;
-	margin: auto;
 `;
 
 var StyledDragArea = styled.div<{ css?: string }>`
@@ -105,6 +121,7 @@ interface IFileUploader {
 	setPassedFiles: React.Dispatch<React.SetStateAction<PassedFile[] | undefined>>;
 	uploadedFiles: UploadFilesResult[] | undefined;
 	maximum: number;
+	totalFilesUploaded: number;
 	setCreatePost:  React.Dispatch<React.SetStateAction<boolean>>
 	uploadFile: (
 		options?:

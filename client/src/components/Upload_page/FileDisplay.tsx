@@ -1,13 +1,16 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useTheme } from '@emotion/react';
+import { Theme, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import React from 'react';
 import { CrossSVG, UploadSVG } from '../../utils/assetImport';
 import { PassedFile } from '../components/DragAndDrop';
+import { UploadFilesResult } from './Upload_index';
 
 interface IFileDisplay {
 	files: PassedFile[] | undefined;
 	setFiles: React.Dispatch<React.SetStateAction<PassedFile[] | undefined>>;
+	uploadedFiles: UploadFilesResult[] | undefined;
 }
 
 const onClose: (
@@ -44,27 +47,24 @@ const ToBeUploadedCard: React.FC<CardInterfaces> = ({
 	);
 };
 
-const HasBeenUploadedCard: React.FC<{ file: PassedFile }> = ({
-	file: { dataFile, uuid, url },
-}) => {
-	const theme = useTheme();
-
+const HasBeenUploadedCard = (file: UploadFilesResult, theme: Theme) => {
+	if (!file.success) return null;
 	return (
-		<Card key={uuid}>
+		<Card key={file.url}>
 			<TopRightButton
 				css={`
 					background-color: ${theme.color.success};
-					cursor: normal;
+					cursor: default;
 				`}>
 				<UploadSVG />
 			</TopRightButton>
 			<StyledImg
-				src={url}
+				src={file.url}
 				css={`
 					border: 2px ${theme.color.success} solid;
 				`}
 			/>
-			<DataName>{dataFile.name}</DataName>
+			<DataName>Uploaded :D</DataName>
 		</Card>
 	);
 };
@@ -86,33 +86,42 @@ const FailedTheUpload: React.FC<CardInterfaces> = ({ file: { dataFile, uuid, url
 	);
 };
 
-const FileDisplay: React.FC<IFileDisplay> = ({ files, setFiles }) => {
-	if (!files || !setFiles) return null;
+const FileDisplay: React.FC<IFileDisplay> = ({ files, setFiles, uploadedFiles }) => {
+	const theme = useTheme();
+	if ((!files || !setFiles) && !uploadedFiles) return null;
 	return (
 		<StyledFileDisplay>
-			{files.map((file, i) => {
-				switch (file.uploaded) {
-					case undefined:
-						return ToBeUploadedCard({ file, i, setFiles });
-					case true:
-						return HasBeenUploadedCard({ file });
-					case false:
-						return FailedTheUpload({ file, i, setFiles });
-				}
-			})}
+			{[
+				...(files
+					? files.map((file, i) => {
+							switch (file.uploaded) {
+								case undefined:
+									return ToBeUploadedCard({ file, i, setFiles });
+								case false:
+									return FailedTheUpload({ file, i, setFiles });
+								case true:
+									return null;
+							}
+					  })
+					: []),
+				...(uploadedFiles
+					? uploadedFiles.map(file => HasBeenUploadedCard(file, theme))
+					: []),
+			]}
 		</StyledFileDisplay>
 	);
 };
 
 var TopRightButton = styled.div<{ css?: string }>`
 	position: absolute;
+	z-index: 10;
 	border-radius: 50%;
-	width: 2vw;
-	height: 2vw;
-	padding: 1.5vw;
+	width: clamp(15px, 2vw, 40px);
+	height: clamp(15px, 2vw, 40px);
+	padding: 1em;
 	background: ${props => props.theme.color.danger};
-	top: -2vw;
-	right: -2vw;
+	top: clamp(-15px, -2vw, -40px);
+	right: clamp(-15px, -2vw, -40px);
 	cursor: pointer;
 	filter: drop-shadow(0 0 1vw #000) drop-shadow(0 0 2vw rgba(0, 0, 0, 0.5));
 	path {
@@ -136,7 +145,7 @@ var Card = styled.div`
 `;
 
 var StyledFileDisplay = styled.div`
-	padding: 0 0 2em 0;
+	padding: 2em;
 	display: flex;
 	justify-content: center;
 	margin: auto;
