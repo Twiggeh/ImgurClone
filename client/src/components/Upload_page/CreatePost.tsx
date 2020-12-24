@@ -21,68 +21,95 @@ const Card = <T extends { url: string; title?: string; text?: string }>(file: T)
 
 const CreatePost: React.FC<ICreatePost> = ({ setStoredUploadedFiles, uploadedFiles }) => {
 	return (
-		<CreateWrapper>
-			<Left />
-			<Center>
-				<CreatePostTitle>Create Post</CreatePostTitle>
-				{uploadedFiles.map(file => {
-					if (!file.success) return;
-					return Card(file);
-				})}
-
-				<Button
-					onClick={e => {
-						e.preventDefault();
-						setStoredUploadedFiles(undefined);
-					}}>
-					Reset
-				</Button>
-			</Center>
-			<Right>
-				<SideBar>
-					<Button css='width: 70%; box-sizing: border-box;'>Submit !</Button>
-				</SideBar>
-			</Right>
-		</CreateWrapper>
+		<>
+			<CreatePostTitle>Create Post</CreatePostTitle>
+			<CreateWrapper>
+				<Left />
+				<Center>
+					{uploadedFiles.map(file => {
+						if (!file.success) return;
+						return Card(file);
+					})}
+					<Button
+						onClick={e => {
+							e.preventDefault();
+							setStoredUploadedFiles(undefined);
+						}}>
+						Reset
+					</Button>
+				</Center>
+				<Right>
+					<SideBar>
+						<Button css='width: 70%; box-sizing: border-box;'>
+							<div>Submit !</div>
+						</Button>
+					</SideBar>
+				</Right>
+			</CreateWrapper>
+		</>
 	);
 };
 
 var SideBar = styled.div`
 	position: sticky;
-	padding-top: 30vh;
 	top: 2vw;
+	display: flex;
+	justify-content: center;
+	${props => props.theme.mq.phone} {
+		position: fixed;
+		top: 10vh;
+		right: 2vw;
+		background-color: ${props => props.theme.color.primary};
+		align-items: center;
+		width: 7em;
+		height: 7em;
+		border-radius: 50%;
+		filter: drop-shadow(0 0 12px #171718);
+		a {
+			border-radius: 50%;
+			height: 100%;
+			width: 100%;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+	}
 `;
 
 var Right = styled.div`
-	flex-basis: 33%;
 	align-self: stretch;
-	flex-shrink: 0;
-	flex-grow: 1;
+	flex: 0 1 33vw;
+	${props => props.theme.mq.phone} {
+		flex: 0 1 10vw;
+	}
 `;
 
 var Left = styled.div`
-	flex-basis: 33%;
 	align-self: stretch;
-	flex-shrink: 0;
-	flex-grow: 1;
+	flex: 0 1 33vw;
+	${props => props.theme.mq.phone} {
+		flex: 0 1 10vw;
+	}
 `;
 
 var Center = styled.div`
 	flex-direction: column;
 	justify-content: center;
-	flex-basis: 33%;
-	flex-shrink: 0;
-	flex-grow: 0;
+	flex: 0 1 33vw;
+	${props => props.theme.mq.phone} {
+		flex: 0 1 100vw;
+	}
 `;
 
 var CreateWrapper = styled.div`
 	display: flex;
-	flex-wrap: wrap;
 `;
 
 var CreatePostTitle = styled.h2`
+	width: fit-content;
 	font-size: ${props => props.theme.fontSize.big};
-	margin-bottom: 0.5em;
+	margin: 0.5em auto 0.5em auto;
 	font-weight: 400;
 `;
 
