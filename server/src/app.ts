@@ -31,6 +31,7 @@ const domain = process.env.DOMAIN ? process.env.DOMAIN : 'localhost';
 const subDom = process.env.SUBDOMAIN ? process.env.SUBDOMAIN : '';
 const domExt = process.env.DOMAIN_EXTENSION ? process.env.DOMAIN_EXTENSION : '';
 const hostname = [subDom, domain, domExt].filter(c => !!c).join('.');
+export const SERVER_URL = `${hostname}:${secureServerPort}`;
 export const rootDir = resolve(__dirname, '../');
 
 const app = express();
