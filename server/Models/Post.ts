@@ -1,33 +1,18 @@
 import mongoose from 'mongoose';
 import { Comment, CommentSchema } from './Comment.js';
+import { CardSchema, ICard } from './Card.js';
 
 const PostSchema = new mongoose.Schema({
 	userId: {
-		required: true,
+		required: false,
 		type: String,
 	},
 	userName: {
-		required: true,
+		required: false,
 		type: String,
 	},
 	profilePicture: {
 		required: false,
-		type: String,
-	},
-	title: {
-		required: true,
-		type: String,
-	},
-	description: {
-		required: function () {
-			return this.description || this.picture;
-		},
-		type: String,
-	},
-	picture: {
-		required: function () {
-			return this.description || this.picture;
-		},
 		type: String,
 	},
 	addedDate: {
@@ -35,18 +20,17 @@ const PostSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now(),
 	},
+	cards: [CardSchema],
 	comments: [CommentSchema],
 });
 
 export interface IPost {
-	userId: string;
-	userName: string;
+	userId?: string;
+	userName?: string;
 	profilePicture?: string;
-	title: string;
-	description?: string;
-	picture?: string;
 	addedDate: number;
 	comments?: Comment[];
+	cards: ICard[];
 }
 
 interface PostDocument extends IPost, mongoose.Document {}
