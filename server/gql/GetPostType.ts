@@ -8,16 +8,25 @@ export const GetPostType = gql`
 		profilePicture: String
 		addedDate: Int
 	}
+	type CardOut {
+		title: String
+		description: String
+		url: String!
+	}
+	type Post {
+		userId: String
+		userName: String
+		profilePicture: String
+		addedDate: Int!
+		comments: [Comment]
+		cards: [CardOut]
+	}
 	type PostResult {
 		success: Boolean!
 		message: String!
-		title: String!
-		userId: String!
-		userName: String!
-		email: String!
-		profilePicture: String
+		posts: [Post]
 	}
 	extend type Query {
-		getPost(postId: String, userName: String): PostResult
+		getPost(postId: String, userName: String, userId: String): PostResult
 	}
 `;

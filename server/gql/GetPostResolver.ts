@@ -3,51 +3,50 @@ import { IResolver } from '../src/types.js';
 
 interface GetPostResolverInput {
 	userName?: string;
-	title?: string;
 	userId?: string;
-	description?: string;
 	postId?: string;
 }
 
-interface GetPostResolverResult extends IPost {
-	success: boolean;
+type GetPostResolverResult = GetPostFailure | GetPostSuccess;
+
+type GetPostFailure = {
+	success: false;
 	message: string;
-}
+};
+
+type GetPostSuccess = {
+	success: true;
+	message: string;
+	posts: IPost[];
+};
 
 export const GetPostResolver: IResolver<
 	GetPostResolverInput,
 	GetPostResolverResult
-> = async (parent, { description, postId, title, userId, userName }) => {
+> = async (parent, { postId, userId, userName }) => {
 	try {
 		const PostQuery: GetPostResolverInput = {};
 		if (userName) PostQuery.userName = userName;
 		if (postId) PostQuery.postId = postId;
+		if (userId) PostQuery.userId = userId;
 
-		const post = await Post.findOne(PostQuery);
-		if (post)
+		const posts = await Post.find(PostQuery);
+		if (posts.length !== 0)
 			return {
-				message: `Post found.`,
+				message: `Post(s) found.`,
 				success: true,
-				title: post.title,
-				userId: post.userId,
-				userName: post.userName,
-				comments: post.comments,
-				description: post.description,
-				picture: post.picture,
-				profilePicture: post.profilePicture,
-				addedDate: post.addedDate,
+				posts: posts,
 			};
-		else throw 'No Post found';
+		else
+			return {
+				message: 'No Post found',
+				success: false,
+			};
 	} catch (e) {
 		console.error(e);
 		return {
 			message: `Could not find any post.`,
 			success: false,
-			title: 'No post Found',
-			userId: '1234',
-			userName: 'No one',
-			description: 'No post Found, try other parameters',
-			addedDate: Date.now(),
 		};
 	}
 };
