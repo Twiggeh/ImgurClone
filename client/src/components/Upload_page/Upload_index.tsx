@@ -2,24 +2,14 @@ import React, { useState } from 'react';
 import { PassedFile } from '../components/DragAndDrop';
 import { Page } from '../components/Page';
 import TitleBar from '../TitleBar';
-import { useMutation, gql } from '@apollo/client';
 import FileUploader from './FileUploader';
 import CreatePost from './CreatePost';
 import useLocalStorage from '../hooks/useLocalStorage';
 import styled from '@emotion/styled';
 import { bindLocalStore } from '../../utils/uploadHelper';
+import useUploadMutations from './useUploadMutations';
 
 const maximum = 3;
-
-const UPLOAD_FILES = gql`
-	mutation UploadFiles($files: [Upload]!) {
-		uploadFiles(files: $files) {
-			success
-			message
-			url
-		}
-	}
-`;
 
 export const allSucceeded: (
 	upFiles: Array<Record<string, unknown> & { success: boolean }>
@@ -45,6 +35,11 @@ const Upload = () => {
 		false
 	);
 
+	// Control bad state
+	if (storedUploadedFiles === undefined && storedCreatePost === true) {
+		setStoredCreatedPost(false);
+	}
+
 	// Create React State with LocalStorage Items
 	const [passedFiles, setPassedFiles] = useState<PassedFile[] | undefined>(undefined);
 	const [uploadedFiles, _setUploadedFiles] = useState<UploadFilesResult[] | undefined>(
@@ -59,25 +54,11 @@ const Upload = () => {
 	);
 	const setCreatePost = bindLocalStore(_setCreatePost, setStoredCreatedPost);
 
-	// Run Upload Mutation
-	const [uploadFile] = useMutation(UPLOAD_FILES, {
-		onCompleted: (data: { uploadFiles: UploadFilesResult[] }) => {
-			const uploadedFiles = data.uploadFiles;
-			if (!passedFiles) return;
-			for (let i = 0; i < uploadedFiles.length; i++) {
-				const uploadedFile = uploadedFiles[Number(i)];
-				if (uploadedFile.success) {
-					passedFiles[Number(i)].uploaded = true;
-					continue;
-				}
-				passedFiles[Number(i)].uploaded = false;
-			}
-			const filteredFiles = passedFiles.filter(file => !file.uploaded);
-
-			setPassedFiles(filteredFiles);
-			setUploadedFiles(c => (c ? [...c, ...uploadedFiles] : uploadedFiles));
-		},
-	});
+	const [uploadFile, uploadPost] = useUploadMutations(
+		setPassedFiles,
+		setUploadedFiles,
+		passedFiles
+	);
 
 	let showFileUploader = false;
 
@@ -107,21 +88,44 @@ const Upload = () => {
 			</Container>
 			{uploadedFiles && amountSucceeded(uploadedFiles) > 0 && createPost ? (
 				<CreatePost
-					setStoredUploadedFiles={setStoredUploadedFiles}
+					setUploadedFiles={setUploadedFiles}
 					uploadedFiles={uploadedFiles}
+					uploadPost={uploadPost}
 				/>
 			) : null}
 		</Page>
 	);
 };
-export default Upload;
-
-export type UploadFilesResult =
-	| { success: true; message: string; url: string; title?: string; text: string }
-	| { success: false; message: string };
 
 var Container = styled.div`
 	max-width: 900px;
 	width: 80%;
 	margin: auto;
 `;
+
+export default Upload;
+
+export type SuccessFileUpload = {
+	success: true;
+	message: string;
+	url: string;
+	title?: string;
+	text?: string;
+};
+
+export type FailedFileUpload = {
+	success: false;
+	message: string;
+};
+
+export type UploadFilesResult = SuccessFileUpload | FailedFileUpload;
+
+export type SuccessPostUpload = {
+	success: true;
+	message: string;
+	url: string;
+};
+
+export type FailedPostResult = FailedFileUpload;
+
+export type UploadPostResult = SuccessPostUpload | FailedPostResult;
