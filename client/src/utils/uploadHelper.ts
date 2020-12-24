@@ -4,14 +4,11 @@ export const bindLocalStore = <T>(
 ) => {
 	return (input: T | ((input: T) => T)): void => {
 		if (input instanceof Function) {
-			let currentData: T | any;
-
 			_reactDispatch(c => {
-				currentData = input(c);
-				return currentData as T;
+				const currentData = input(c);
+				localStoreDispatch(currentData);
+				return currentData;
 			});
-
-			localStoreDispatch(currentData as T);
 			return;
 		}
 		_reactDispatch(input);
