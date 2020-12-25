@@ -6,7 +6,7 @@ export const GetPostType = gql`
 		userName: String!
 		content: String!
 		profilePicture: String
-		addedDate: Int
+		addedDate: Date!
 	}
 	type CardOut {
 		title: String
@@ -17,7 +17,7 @@ export const GetPostType = gql`
 		userId: String
 		userName: String
 		profilePicture: String
-		addedDate: Int!
+		addedDate: Date!
 		comments: [Comment]
 		cards: [CardOut]
 	}

@@ -32,7 +32,8 @@ const subDom = process.env.SUBDOMAIN ? process.env.SUBDOMAIN : '';
 const domExt = process.env.DOMAIN_EXTENSION ? process.env.DOMAIN_EXTENSION : '';
 const hostname = [subDom, domain, domExt].filter(c => !!c).join('.');
 export const SERVER_URL = `${hostname}:${secureServerPort}`;
-export const rootDir = resolve(__dirname, '../../../');
+export const PROJECT_ROOT = resolve(__dirname, '../../../');
+export const SERVER_ROOT = resolve(__dirname, '../');
 
 const app = express();
 
@@ -107,16 +108,16 @@ if (isProd) {
 	});
 }
 app.get('/public/uploads/*', (req, res) => {
-	res.sendFile(join(rootDir, req.url));
+	res.sendFile(join(SERVER_ROOT, req.url));
 });
 
 app.get('/public/*', (req, res) => {
-	res.sendFile(join(rootDir, 'client', 'dist', req.url));
+	res.sendFile(join(PROJECT_ROOT, 'client', 'dist', req.url));
 });
 
 app.get('*', (req, res) => {
 	console.log(__dirname);
-	res.sendFile(join(rootDir, 'client', 'dist', 'index.html'));
+	res.sendFile(join(PROJECT_ROOT, 'client', 'dist', 'index.html'));
 });
 
 if (isProd) {

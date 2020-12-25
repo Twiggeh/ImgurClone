@@ -15,3 +15,7 @@ export interface IResolver<Args, Return> {
 		}
 	): Return | Promise<Return>;
 }
+
+export type Optional<Input> = {
+	[P in keyof Input]?: Input[P];
+};

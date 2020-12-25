@@ -3,7 +3,7 @@ import { createWriteStream, unlinkSync } from 'fs';
 import { Readable, ReadableOptions } from 'stream';
 import { IResolver } from '../src/types';
 import { config } from 'dotenv';
-import { rootDir } from '../src/app.js';
+import { SERVER_ROOT } from '../src/app.js';
 config();
 
 const writeFileToDisk = (file: File) => {
@@ -14,7 +14,7 @@ const writeFileToDisk = (file: File) => {
 	// TODO : Make this a global
 	const directory = 'public/uploads';
 
-	const path = join(rootDir, directory);
+	const path = join(SERVER_ROOT, directory);
 	const filePath = join(path, filename);
 	const urlPath = join(directory, filename);
 

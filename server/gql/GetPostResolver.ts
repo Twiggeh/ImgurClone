@@ -1,5 +1,6 @@
+import { Document } from 'mongoose';
 import Post, { IPost } from '../Models/Post.js';
-import { IResolver } from '../src/types.js';
+import { IResolver, Optional } from '../src/types.js';
 
 interface GetPostResolverInput {
 	userName?: string;
@@ -25,9 +26,9 @@ export const GetPostResolver: IResolver<
 	GetPostResolverResult
 > = async (parent, { postId, userId, userName }) => {
 	try {
-		const PostQuery: GetPostResolverInput = {};
+		const PostQuery: Optional<IPost & Document> = {};
 		if (userName) PostQuery.userName = userName;
-		if (postId) PostQuery.postId = postId;
+		if (postId) PostQuery._id = postId;
 		if (userId) PostQuery.userId = userId;
 
 		const posts = await Post.find(PostQuery);
