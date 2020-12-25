@@ -1,26 +1,22 @@
 import { IResolver } from '../src/types.js';
-import User from '../Models/User.js';
-
-interface AddUserResolverInput {
-	email: string;
-	password: string;
-	userName: string;
-}
+import User, { IUser } from '../Models/User.js';
 
 interface AddUserResolverResult {
 	success: boolean;
 	message: string;
 }
 
-export const AddUserResolver: IResolver<
-	AddUserResolverInput,
-	AddUserResolverResult
-> = async (parent, { email, password, userName }) => {
-	const newUser = new User({
+export const AddUserResolver: IResolver<IUser, AddUserResolverResult> = async (
+	parent,
+	{ email, password, userName, profilePicture }
+) => {
+	const user: IUser = {
 		email,
 		password,
 		userName,
-	});
+		profilePicture,
+	};
+	const newUser = new User(user);
 	try {
 		const user = await newUser.save();
 		return {

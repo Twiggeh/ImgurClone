@@ -6,6 +6,11 @@ export const AddUserType = gql`
 		message: String
 	}
 	extend type Mutation {
-		addUser(email: String!, password: String!, userName: String!): LoginResult
+		addUser(
+			email: String!
+			password: String!
+			profilePicture: String
+			userName: String!
+		): LoginResult
 	}
 `;
