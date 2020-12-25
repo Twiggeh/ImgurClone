@@ -24,7 +24,7 @@ type GetPostSuccess = {
 export const GetPostResolver: IResolver<
 	GetPostResolverInput,
 	GetPostResolverResult
-> = async (parent, { postId, userId, userName }) => {
+> = async (_, { postId, userId, userName }) => {
 	try {
 		const PostQuery: Optional<IPost & Document> = {};
 		if (userName) PostQuery.userName = userName;
@@ -36,7 +36,10 @@ export const GetPostResolver: IResolver<
 			return {
 				message: `Post(s) found.`,
 				success: true,
-				posts: posts,
+				posts: posts.map(post => {
+					post.postId = post.id;
+					return post;
+				}),
 			};
 		else
 			return {

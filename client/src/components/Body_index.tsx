@@ -22,7 +22,7 @@ const Body = () => {
 				<Route path='/posts' exact>
 					<Posts_Index />
 				</Route>
-				<Route path='/posts/:id'>
+				<Route path='/posts/:postId'>
 					<Posts_Index />
 				</Route>
 				<Route path='/upload'>

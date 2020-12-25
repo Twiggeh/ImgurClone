@@ -14,12 +14,13 @@ export const GetPostType = gql`
 		url: String!
 	}
 	type Post {
+		postId: String!
 		userId: String
 		userName: String
 		profilePicture: String
 		addedDate: Date!
 		comments: [Comment]
-		cards: [CardOut]
+		cards: [CardOut]!
 	}
 	type PostResult {
 		success: Boolean!

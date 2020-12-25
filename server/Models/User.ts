@@ -20,14 +20,14 @@ const UserSchema = new mongoose.Schema({
 	},
 });
 
-export interface User {
+export interface IUser {
 	email: string;
 	password: string;
 	userName: string;
 	profilePicture?: string;
 }
 
-interface UserDocument extends User, mongoose.Document {}
+interface UserDocument extends IUser, mongoose.Document {}
 
 export interface UserModel extends mongoose.Model<UserDocument> {}
 
