@@ -1,22 +1,23 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Page } from '../components/Page';
-import Posts from './Posts';
+import TitleBar from '../TitleBar';
+import Post from './Posts';
+import usePostsQuery from './useGetPostsQuery';
 
 const Posts_Index: React.FC = () => {
 	const { postId } = useParams<{ postId: string }>();
+	// TODO : Add loading / error shower
+	const { data, loading, error } = usePostsQuery({ postId });
+
+	const posts = data?.getPost?.posts ? data.getPost.posts : [];
+
 	return (
 		<Page>
-			<Posts></Posts>
-			<div>Masonry image{id ? id : 'Undefined'}</div>
+			<TitleBar css='margin-bottom : 2em;' />
+			<Post posts={posts}></Post>
 		</Page>
 	);
 };
 
 export default Posts_Index;
-
-interface IPost {
-	match?: {
-		id?: string;
-	};
-}
