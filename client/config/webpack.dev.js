@@ -11,9 +11,15 @@ const curProcess = process.cwd();
 
 module.exports = {
 	entry: ['react-hot-loader/patch', path.resolve(curProcess, 'src')],
+	output: {
+		path: path.resolve(curProcess, './dist'),
+		publicPath: '/',
+		filename: 'public/js/bundle.js',
+	},
 	devtool: 'source-map',
 	devServer: {
-		contentBase: path.resolve(curProcess, 'src/'),
+		contentBase: path.resolve(curProcess, 'src/assets'),
+		contentBasePublicPath: '/',
 		historyApiFallback: true,
 		hot: true,
 		compress: true,
@@ -138,12 +144,12 @@ module.exports = {
 		modules: ['src', 'node_modules'],
 		extensions: ['.ts', '.tsx', '.js', '.jsx'],
 	},
-	node: { __dirname: true, __filename: true }, // to get correct __dirname and __filename
 	// prettier-ignore
 	plugins: [
 		new ESLintPlugin,
 		new HtmlWebpackPlugin({
-			template: path.resolve(curProcess, 'src/index.dev.html'),
+			template: path.resolve(curProcess, 'src/index_dev.html'),
+
 			filename: 'index.html',
 		}),
 		new webpack.DefinePlugin({
