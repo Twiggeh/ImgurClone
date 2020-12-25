@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Posts = () => {
-	return <div>Masonry image</div>;
+	return <div>Postssssss</div>;
 };
 
 export default Posts;

@@ -59,10 +59,11 @@ const useUploadMutations = (
 		onCompleted: (data: { addPost: UploadPostResult }) => {
 			const result = data.addPost;
 			if (!result.success) {
-				// TODO : put into global messaging system
+				// TODO : put into global messaging system -- try again
 				console.log(result.message);
 				return;
 			}
+			setUploadedFiles(undefined);
 			history.push(result.url);
 		},
 	});

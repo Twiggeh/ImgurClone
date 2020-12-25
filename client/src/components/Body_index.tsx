@@ -1,3 +1,11 @@
+import React from 'react';
+import Home from './Home_index';
+import Register from './Register_index';
+import Upload from './Upload_page/Upload_index';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Login from './Login_index';
+import Posts_Index from './Posts_page/Posts_index';
+
 const Body = () => {
 	return (
 		<BrowserRouter>
@@ -11,7 +19,12 @@ const Body = () => {
 				<Route path='/register'>
 					<Register />
 				</Route>
-				<Route path='/posts'></Route>
+				<Route path='/posts' exact>
+					<Posts_Index />
+				</Route>
+				<Route path='/posts/:id'>
+					<Posts_Index />
+				</Route>
 				<Route path='/upload'>
 					<Upload />
 				</Route>
@@ -21,9 +34,3 @@ const Body = () => {
 };
 
 export default Body;
-import React from 'react';
-import Home from './Home_index';
-import Register from './Register_index';
-import Upload from './Upload_page/Upload_index';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Login from './Login_index';

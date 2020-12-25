@@ -19,7 +19,7 @@ export const AddPostResolver: IResolver<
 		return {
 			message: `Post : has been created Successfully`,
 			success: true,
-			url: `${SERVER_URL}/posts/id:${savedPost.id}`,
+			url: `/posts/${savedPost.id}`,
 		};
 	} catch (e) {
 		console.error(e);
