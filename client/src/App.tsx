@@ -4,7 +4,6 @@ import { css, Global, Theme, ThemeProvider } from '@emotion/react';
 import createCtx from './components/Providers/createStateCtx';
 import Body from './components/Body_index';
 import './assets/global.css';
-import { Modal } from './@types/main';
 
 import {
 	ApolloClient,

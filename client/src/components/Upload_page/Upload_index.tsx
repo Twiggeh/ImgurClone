@@ -8,27 +8,27 @@ import useLocalStorage from '../hooks/useLocalStorage';
 import styled from '@emotion/styled';
 import { bindLocalStore } from '../../utils/uploadHelper';
 import useUploadMutations from './useUploadMutations';
+import { UploadFileResult } from '../../generated/graphql';
 
 const maximum = 3;
 
-export const allSucceeded: (
-	upFiles: Array<Record<string, unknown> & { success: boolean }>
-) => boolean = upFiles => {
+export const allSucceeded: (upFiles: Array<UploadFileResult>) => boolean = upFiles => {
 	return upFiles.reduce<boolean>((acc, upFile) => {
-		return acc && upFile.success;
+		return acc && upFile.__typename === 'UploadFileSuccess';
 	}, true);
 };
 
-const amountSucceeded: (
-	upFiles: Array<Record<string, unknown> & { success: boolean }>
-) => number = upFiles => {
-	return upFiles.reduce<number>((acc, upFile) => (upFile.success ? acc + 1 : acc), 0);
+const amountSucceeded: (upFiles: UploadFileResult[]) => number = upFiles => {
+	return upFiles.reduce<number>(
+		(acc, upFile) => (upFile.__typename === 'UploadFileSuccess' ? acc + 1 : acc),
+		0
+	);
 };
 
 const Upload = () => {
 	// Create LocalStorage Space / retrieve stored values
 	const [storedUploadedFiles, setStoredUploadedFiles] = useLocalStorage<
-		UploadFilesResult[] | undefined
+		UploadFileResult[] | undefined
 	>('__Uploaded_Files__', undefined);
 	const [storedCreatePost, setStoredCreatedPost] = useLocalStorage<boolean>(
 		'__Creating_Post__',
@@ -42,13 +42,13 @@ const Upload = () => {
 
 	// Create React State with LocalStorage Items
 	const [passedFiles, setPassedFiles] = useState<PassedFile[] | undefined>(undefined);
-	const [uploadedFiles, _setUploadedFiles] = useState<UploadFilesResult[] | undefined>(
+	const [uploadedFiles, _setUploadedFiles] = useState<UploadFileResult[] | undefined>(
 		storedUploadedFiles
 	);
 	const [createPost, _setCreatePost] = useState(storedCreatePost);
 
 	// Bind React State to LocalStorage
-	const setUploadedFiles = bindLocalStore<UploadFilesResult[] | undefined>(
+	const setUploadedFiles = bindLocalStore<UploadFileResult[] | undefined>(
 		_setUploadedFiles,
 		setStoredUploadedFiles
 	);
@@ -104,28 +104,3 @@ var Container = styled.div`
 `;
 
 export default Upload;
-
-export type SuccessFileUpload = {
-	success: true;
-	message: string;
-	url: string;
-	title?: string;
-	text?: string;
-};
-
-export type FailedFileUpload = {
-	success: false;
-	message: string;
-};
-
-export type UploadFilesResult = SuccessFileUpload | FailedFileUpload;
-
-export type SuccessPostUpload = {
-	success: true;
-	message: string;
-	url: string;
-};
-
-export type FailedPostResult = FailedFileUpload;
-
-export type UploadPostResult = SuccessPostUpload | FailedPostResult;

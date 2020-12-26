@@ -3,14 +3,14 @@
 import { Theme, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import React from 'react';
+import { UploadFileResult } from '../../generated/graphql';
 import { CrossSVG, UploadSVG } from '../../utils/assetImport';
 import { PassedFile } from '../components/DragAndDrop';
-import { UploadFilesResult } from './Upload_index';
 
 interface IFileDisplay {
 	files: PassedFile[] | undefined;
 	setFiles: React.Dispatch<React.SetStateAction<PassedFile[] | undefined>>;
-	uploadedFiles: UploadFilesResult[] | undefined;
+	uploadedFiles: UploadFileResult[] | undefined;
 }
 
 const onClose: (
@@ -47,8 +47,8 @@ const ToBeUploadedCard: React.FC<CardInterfaces> = ({
 	);
 };
 
-const HasBeenUploadedCard = (file: UploadFilesResult, theme: Theme) => {
-	if (!file.success) return null;
+const HasBeenUploadedCard = (file: UploadFileResult, theme: Theme) => {
+	if (file.__typename === 'UploadFileFailure') return null;
 	return (
 		<Card key={file.url}>
 			<TopRightButton

@@ -1,6 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { FetchResult, MutationFunctionOptions } from '@apollo/client';
 import React from 'react';
+import {
+	UploadFileResult,
+	AddPostMutationFn,
+	UploadFileSuccess,
+	UploadFileFailure,
+	Card as _Card,
+} from '../../generated/graphql';
 import Button from '../components/Button';
 import {
 	CardImg,
@@ -14,7 +20,6 @@ import {
 	StyledCard,
 	CenteredLayoutWrap,
 } from '../components/CenteredImgLayoutComponents';
-import { SuccessFileUpload, UploadFilesResult, UploadPostResult } from './Upload_index';
 
 const Card = <T extends { url: string; title?: string; text?: string }>(
 	file: T,
@@ -24,18 +29,16 @@ const Card = <T extends { url: string; title?: string; text?: string }>(
 	const { url, text = '', title = '' } = file;
 	const handleOnChange = (
 		e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
-		property: keyof SuccessFileUpload
+		property: keyof T
 	) => {
 		updateFile(c => {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			const curFile = c![Number(i)] as SuccessFileUpload;
+			if (!c) return undefined;
+			const curFile = c[Number(i)];
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			curFile[String(property)] = e.target.value;
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			c!.splice(i, 1, curFile);
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			return [...c!];
+			c.splice(i, 1, curFile);
+			return [...c];
 		});
 	};
 	return (
@@ -64,15 +67,17 @@ const CreatePost: React.FC<ICreatePost> = ({
 }) => {
 	const handleSubmit = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
 		e.preventDefault();
+		const cards = uploadedFiles.map(upFile => {
+			if (upFile.__typename === 'UploadFileSuccess')
+				return { title: upFile.title, description: upFile.text, url: upFile.url };
+		}) as _Card[];
+
 		uploadPost({
 			variables: {
-				userId: 'TODO',
-				userName: 'TODO',
-				profilePicture: 'TODO',
-				cards: uploadedFiles.map(upFile => {
-					if (upFile.success)
-						return { title: upFile.title, description: upFile.text, url: upFile.url };
-				}),
+				// userId: 'TODO',
+				// userName: 'TODO',
+				// profilePicture: 'TODO',
+				cards,
 			},
 		});
 	};
@@ -83,7 +88,7 @@ const CreatePost: React.FC<ICreatePost> = ({
 				<Left />
 				<Center>
 					{uploadedFiles.map((file, i) => {
-						if (!file.success) return;
+						if (file.__typename === 'UploadFileFailure') return;
 						return Card(file, setUploadedFiles, i);
 					})}
 					<Button
@@ -111,27 +116,13 @@ export default CreatePost;
 interface ICreatePost {
 	setUploadedFiles: (
 		input:
-			| UploadFilesResult[]
-			| ((input: UploadFilesResult[] | undefined) => UploadFilesResult[] | undefined)
+			| UploadFileResult[]
 			| undefined
+			| ((input: UploadFileResult[] | undefined) => UploadFileResult[] | undefined)
 	) => void;
-	uploadedFiles: UploadFilesResult[];
-	uploadPost: (
-		options?:
-			| MutationFunctionOptions<
-					{
-						addPost: UploadPostResult;
-					},
-					Record<string, any>
-			  >
-			| undefined
-	) => Promise<
-		FetchResult<
-			{
-				addPost: UploadPostResult;
-			},
-			Record<string, any>,
-			Record<string, any>
-		>
-	>;
+	uploadedFiles: (
+		| (UploadFileSuccess & { title?: string; text?: string })
+		| UploadFileFailure
+	)[];
+	uploadPost: AddPostMutationFn;
 }

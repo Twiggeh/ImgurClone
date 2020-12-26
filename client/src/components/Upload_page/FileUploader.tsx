@@ -1,11 +1,11 @@
-import { FetchResult, MutationFunctionOptions } from '@apollo/client';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import React from 'react';
+import { UploadFileResult, UploadFilesMutationFn } from '../../generated/graphql';
 import Button from '../components/Button';
 import DragAndDrop, { PassedFile } from '../components/DragAndDrop';
 import FileDisplay from './FileDisplay';
-import { allSucceeded, UploadFilesResult } from './Upload_index';
+import { allSucceeded } from './Upload_index';
 
 const FileUploader: React.FC<IFileUploader> = ({
 	passedFiles,
@@ -119,27 +119,9 @@ export default FileUploader;
 interface IFileUploader {
 	passedFiles: PassedFile[] | undefined;
 	setPassedFiles: React.Dispatch<React.SetStateAction<PassedFile[] | undefined>>;
-	uploadedFiles: UploadFilesResult[] | undefined;
+	uploadedFiles: UploadFileResult[] | undefined;
 	maximum: number;
 	totalFilesUploaded: number;
 	setCreatePost:  React.Dispatch<React.SetStateAction<boolean>>
-	uploadFile: (
-		options?:
-			| MutationFunctionOptions<
-					{
-						uploadFiles: UploadFilesResult[];
-					},
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					Record<string, any>
-				>
-			| undefined
-	) => Promise<
-		FetchResult<
-			{
-				uploadFiles: UploadFilesResult[];
-			},
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			Record<string, any>
-		>
-	>;
+	uploadFile: UploadFilesMutationFn
 }

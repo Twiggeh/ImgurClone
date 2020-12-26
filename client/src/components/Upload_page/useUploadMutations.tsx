@@ -1,25 +1,37 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { gql, useMutation } from '@apollo/client';
+import { gql } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
+import {
+	UploadFileResult,
+	useAddPostMutation,
+	useUploadFilesMutation,
+} from '../../generated/graphql';
 import { PassedFile } from '../components/DragAndDrop';
-import { UploadFilesResult, UploadPostResult } from './Upload_index';
 
-const UPLOAD_FILES = gql`
+gql`
 	mutation UploadFiles($files: [Upload]!) {
 		uploadFiles(files: $files) {
-			success
-			message
-			url
+			... on UploadFileSuccess {
+				message
+				url
+			}
+			... on UploadFileFailure {
+				message
+			}
 		}
 	}
 `;
 
-const UPLOAD_POST = gql`
+gql`
 	mutation addPost($cards: [Card]!) {
 		addPost(userId: "hello", cards: $cards) {
-			success
-			url
-			message
+			... on AddPostSuccess {
+				message
+				url
+			}
+			... on AddPostFailure {
+				message
+			}
 		}
 	}
 `;
@@ -28,21 +40,22 @@ const useUploadMutations = (
 	setPassedFiles: React.Dispatch<React.SetStateAction<PassedFile[] | undefined>>,
 	setUploadedFiles: (
 		input:
-			| UploadFilesResult[]
-			| ((input: UploadFilesResult[] | undefined) => UploadFilesResult[] | undefined)
+			| UploadFileResult[]
+			| ((input: UploadFileResult[] | undefined) => UploadFileResult[] | undefined)
 			| undefined
 	) => void,
 	passedFiles: PassedFile[] | undefined
 ) => {
 	const history = useHistory();
 
-	const [uploadFile] = useMutation(UPLOAD_FILES, {
-		onCompleted: (data: { uploadFiles: UploadFilesResult[] }) => {
+	const [uploadFile] = useUploadFilesMutation({
+		onCompleted: data => {
 			const uploadedFiles = data.uploadFiles;
+			if (!uploadedFiles) return;
 			if (!passedFiles) return;
 			for (let i = 0; i < uploadedFiles.length; i++) {
 				const uploadedFile = uploadedFiles[Number(i)];
-				if (uploadedFile.success) {
+				if (uploadedFile?.__typename === 'UploadFileSuccess') {
 					passedFiles[Number(i)].uploaded = true;
 					continue;
 				}
@@ -55,16 +68,16 @@ const useUploadMutations = (
 		},
 	});
 
-	const [uploadPost] = useMutation(UPLOAD_POST, {
-		onCompleted: (data: { addPost: UploadPostResult }) => {
+	const [uploadPost] = useAddPostMutation({
+		onCompleted: data => {
 			const result = data.addPost;
-			if (!result.success) {
+			if (result.__typename === 'AddPostFailure') {
 				// TODO : put into global messaging system -- try again
 				console.log(result.message);
 				return;
 			}
 			setUploadedFiles(undefined);
-			history.push(result.url);
+			if (result.url) history.push(result.url);
 		},
 	});
 
