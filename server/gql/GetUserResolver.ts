@@ -1,26 +1,12 @@
+import { QueryResolvers } from '../generated/gql.js';
 import User from '../Models/User.js';
-import { IResolver } from '../src/types.js';
 
-interface GetUserResolverInput {
-	email: string;
-	userName?: string;
-}
-
-interface GetUserResolverResult {
-	success: boolean;
-	message: string;
-	userName: string;
-	email: string;
-	profilePicture?: string;
-}
-
-export const GetUserResolver: IResolver<
-	GetUserResolverInput,
-	GetUserResolverResult
-> = async (parent, { email, userName }) => {
+export const GetUserResolver: QueryResolvers['getUser'] = async (
+	_,
+	{ email, userName }
+) => {
 	try {
-		const UserQuey: GetUserResolverInput = { email };
-		if (userName) UserQuey.userName = userName;
+		const UserQuey = { email, userName };
 
 		const user = await User.findOne(UserQuey);
 		return {

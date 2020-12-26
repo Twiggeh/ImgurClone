@@ -1,13 +1,17 @@
 import { gql } from 'apollo-server-express';
 
 export const UploadFileType = gql`
-	extend type Mutation {
-		uploadFile(file: Upload!): file!
-		uploadFiles(files: [Upload]!): [file]!
-	}
-	type file {
-		url: String
+	type UploadFileSuccess {
 		message: String!
-		success: Boolean!
+		url: String!
+	}
+	type UploadFileFailure {
+		message: String!
+	}
+	union UploadFileResult = UploadFileSuccess | UploadFileFailure
+
+	extend type Mutation {
+		uploadFile(file: Upload!): UploadFileResult!
+		uploadFiles(files: [Upload]!): [UploadFileResult!]!
 	}
 `;

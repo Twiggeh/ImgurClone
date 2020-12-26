@@ -4,6 +4,7 @@ import { Readable, ReadableOptions } from 'stream';
 import { IResolver } from '../src/types';
 import { config } from 'dotenv';
 import { SERVER_ROOT } from '../src/app.js';
+import { MutationResolvers, UploadFileResult } from 'generated/gql';
 config();
 
 const writeFileToDisk = (file: File) => {
@@ -23,16 +24,16 @@ const writeFileToDisk = (file: File) => {
 			.on('error', error => {
 				unlinkSync(path);
 				stream.destroy();
-				rej({
-					success: false,
+				res({
+					__typename: 'UploadFileFailure',
 					message: `File "${filename}" could not be saved. \n Error: ${error}`,
 				});
 			})
 			.pipe(createWriteStream(filePath))
 			.on('finish', () => {
 				res({
+					__typename: 'UploadFileSuccess',
 					url: `http://localhost:5050/${urlPath}`,
-					success: true,
 					message: `File "${filename}" was saved successfully.`,
 				});
 			});
@@ -46,18 +47,15 @@ export const UploadFileResolver: IResolver<FileUpload, UploadFileResult> = async
 	return await writeFileToDisk(await args.file);
 };
 
-export const UploadFilesResolver: IResolver<FilesUpload, UploadFileResult[]> = async (
-	_,
-	{ files }
-) => {
-	const allFiles = await Promise.allSettled(files);
+export const UploadFilesResolver: MutationResolvers['uploadFiles'] = async (_, args) => {
+	const allFiles = await Promise.allSettled(args.files);
 
 	const fileBuffer = [];
 	const result: UploadFileResult[] = [];
 
 	for (const file of allFiles) {
 		if (file.status === 'fulfilled') fileBuffer.push(writeFileToDisk(file.value));
-		else result.push({ success: false, message: `Couldn\'t upload the file.` });
+		else result.push({ message: `Couldn\'t upload the file.` });
 	}
 
 	const writtenFiles = await Promise.allSettled(fileBuffer);
@@ -79,14 +77,4 @@ interface File {
 
 interface FileUpload {
 	file: Promise<File>;
-}
-
-interface FilesUpload {
-	files: Array<Promise<File>>;
-}
-
-interface UploadFileResult {
-	url?: string;
-	success: boolean;
-	message: string;
 }

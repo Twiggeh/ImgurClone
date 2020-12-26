@@ -1,13 +1,10 @@
-import { IResolver } from '../src/types.js';
-import Post, { IPost } from '../Models/Post.js';
-import { SERVER_URL } from '../src/app.js';
+import Post from '../Models/Post.js';
+import { Resolvers } from '../generated/gql.js';
 
-interface AddPostResolverInput extends IPost {}
-
-export const AddPostResolver: IResolver<
-	AddPostResolverInput,
-	AddPostResolverResult
-> = async (parent, { userId, userName, profilePicture, cards }) => {
+export const AddPostResolver: Resolvers['Mutation']['addPost'] = async (
+	_,
+	{ userId, userName, profilePicture, cards }
+) => {
 	const newPost = new Post({
 		userId,
 		userName,
@@ -17,25 +14,12 @@ export const AddPostResolver: IResolver<
 	try {
 		const savedPost = await newPost.save();
 		return {
+			__typename: 'AddPostSuccess',
 			message: `Post : has been created Successfully`,
-			success: true,
 			url: `/posts/${savedPost.id}`,
 		};
 	} catch (e) {
 		console.error(e);
-		return { message: `Could not create Post`, success: false };
+		return { message: `Could not create Post`, __typename: 'AddPostFailure' };
 	}
-};
-
-type AddPostResolverResult = AddPostFail | AddPostSuccess;
-
-type AddPostSuccess = {
-	success: boolean;
-	message: string;
-	url: string;
-};
-
-type AddPostFail = {
-	success: false;
-	message: string;
 };
