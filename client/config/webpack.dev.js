@@ -27,38 +27,54 @@ module.exports = {
 	mode: 'development',
 	module: {
 		rules: [
-			{ test: /\.tsx?$/, loader: 'ts-loader' },
 			{
-				test: /\.js/,
-				exclude: /node_modules/,
-				loader: 'babel-loader',
-				options: {
-					presets: [
-						'@babel/preset-env',
-						'@babel/react',
-						'@emotion/babel-preset-css-prop',
-					],
-					// don't inject babel code into each file, create a global import for them
-					plugins: [
-						'react-hot-loader/babel',
-						'@babel/plugin-transform-runtime',
-						// [
-						// 	'@emotion',
-						// 	{
-						// 		// sourceMap is on by default but source maps are dead code eliminated in production
-						// 		sourceMap: true,
-						// 		autoLabel: 'always',
-						// 		labelFormat: '[local]',
-						// 		cssPropOptimization: true,
-						// 	},
-						// ],
-					],
-					compact: false,
-					cacheDirectory: true,
-					cacheCompression: false,
-					sourceMaps: true,
-					inputSourceMap: true,
-				},
+				test: /\.tsx?$/,
+				exclude: '/node_modules',
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							presets: [
+								'@babel/preset-env',
+								'@babel/react',
+								'@emotion/babel-preset-css-prop',
+							],
+							// don't inject babel code into each file, create a global import for them
+							plugins: ['react-hot-loader/babel', '@babel/plugin-transform-runtime'],
+							compact: false,
+							cacheDirectory: true,
+							cacheCompression: false,
+							sourceMaps: true,
+							inputSourceMap: true,
+						},
+					},
+					{
+						loader: 'ts-loader',
+					},
+				],
+			},
+			{
+				test: /\.jsx?$/,
+				exclude: '/node_modules/',
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							presets: [
+								'@babel/preset-env',
+								'@babel/react',
+								'@emotion/babel-preset-css-prop',
+							],
+							// don't inject babel code into each file, create a global import for them
+							plugins: ['react-hot-loader/babel', '@babel/plugin-transform-runtime'],
+							compact: false,
+							cacheDirectory: true,
+							cacheCompression: false,
+							sourceMaps: true,
+							inputSourceMap: true,
+						},
+					},
+				],
 			},
 			{
 				test: /\.css?$/,
