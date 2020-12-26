@@ -4,16 +4,13 @@
 		"target": "esnext",
 		"lib": ["ESNext"],
 		"moduleResolution": "Node",
-		"baseUrl": "./",
+		"baseUrl": ".",
 		"module": "ESNext",
 		"noImplicitAny": true,
 		"sourceMap": true,
 		"allowSyntheticDefaultImports": true,
 		"outDir": "dist",
-		"typeRoots": ["src/@types"],
-		"paths": {
-			"*": ["node_modules/*", "src/@types/*"]
-		}
+		"typeRoots": ["src/@types"]
 	},
 	"compileOnSave": false,
 	"include": ["src/**/*"]

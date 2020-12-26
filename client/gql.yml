@@ -1,0 +1,15 @@
+overwrite: true
+schema: 'http://localhost:5050/graphql'
+documents: 'src/**/*.tsx'
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+      - 'fragment-matcher'
+    config:
+      nonOptionalTypename: true
+      strict: true
+      scalars:
+        Date: { name: string }
