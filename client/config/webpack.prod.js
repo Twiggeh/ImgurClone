@@ -36,20 +36,46 @@ module.exports = {
 	mode: 'production',
 	module: {
 		rules: [
-			{ test: /\.tsx?$/, loader: 'ts-loader' },
 			{
-				test: /\.js$/,
+				test: /\.tsx?$/,
 				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							presets: [
+								'@babel/preset-env',
+								'@babel/react',
+								'@emotion/babel-preset-css-prop',
+							],
+							// don't inject babel code into each file, create a global import for them
+							plugins: ['@babel/plugin-transform-runtime'],
+							compact: false,
+							cacheDirectory: false,
+							cacheCompression: false,
+							sourceMaps: false,
+							inputSourceMap: false,
+						},
+					},
+					{ loader: 'ts-loader' },
+				],
+			},
+			{
+				test: /\.jsx$/,
 				loader: 'babel-loader',
 				options: {
-					presets: ['@babel/preset-react'],
+					presets: [
+						'@babel/preset-env',
+						'@babel/react',
+						'@emotion/babel-preset-css-prop',
+					],
 					// don't inject babel code into each file, create a global import for them
 					plugins: ['@babel/plugin-transform-runtime'],
 					compact: false,
-					cacheDirectory: true,
+					cacheDirectory: false,
 					cacheCompression: false,
-					sourceMaps: true,
-					inputSourceMap: true,
+					sourceMaps: false,
+					inputSourceMap: false,
 				},
 			},
 			{
