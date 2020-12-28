@@ -29,18 +29,25 @@ module.exports = {
 		rules: [
 			{
 				test: /\.tsx?$/,
-				exclude: '/node_modules',
+				exclude: /node_modules/,
 				use: [
 					{
 						loader: 'babel-loader',
 						options: {
 							presets: [
-								'@babel/preset-env',
-								'@babel/react',
+								[
+									'@babel/preset-env',
+									{
+										targets: {
+											esmodules: true,
+										},
+									},
+								],
+								'@babel/preset-react',
 								'@emotion/babel-preset-css-prop',
 							],
 							// don't inject babel code into each file, create a global import for them
-							plugins: ['react-hot-loader/babel', '@babel/plugin-transform-runtime'],
+							plugins: ['@babel/plugin-transform-runtime', 'react-hot-loader/babel'],
 							compact: false,
 							cacheDirectory: true,
 							cacheCompression: false,
@@ -50,12 +57,14 @@ module.exports = {
 					},
 					{
 						loader: 'ts-loader',
+						options: { compilerOptions: { target: 'esnext', module: 'esnext' } },
 					},
 				],
 			},
 			{
 				test: /\.jsx?$/,
-				exclude: '/node_modules/',
+				exclude: /node_modules/,
+				include: '/mnt/Storage/projects/Webdev/ImgurClone/client/src/index.js',
 				use: [
 					{
 						loader: 'babel-loader',
@@ -169,7 +178,7 @@ module.exports = {
 			filename: 'index.html',
 		}),
 		new webpack.DefinePlugin({
-			MY_VARIABLES: JSON.stringify('Must stringify a String, don\'t ask me why.'),
+			BACKEND_SERVER_URL: JSON.stringify(process.env.BACKEND_URL),
 		}),
 	],
 };

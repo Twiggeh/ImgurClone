@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "es2018",
-		"lib": ["dom", "dom.iterable", "esnext"],
+		// "lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,
@@ -16,9 +16,9 @@
 		"noEmit": false,
 		"typeRoots": ["src/@types"],
 		"baseUrl": "/",
-		// "paths": {
-		// 	"*": ["src/@types/*.d.ts"]
-		// },
+		"paths": {
+			"*": ["src/@types/*.d.ts"]
+		},
 		"removeComments": true
 	},
 	"include": ["./src"],

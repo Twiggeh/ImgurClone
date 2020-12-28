@@ -17,7 +17,9 @@ import { createUploadLink } from 'apollo-upload-client';
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 	cache: new InMemoryCache(),
 	link: createUploadLink({
-		uri: 'http://localhost:5050/graphql',
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		uri: `${BACKEND_SERVER_URL}/graphql`,
 	}),
 });
 

@@ -12,6 +12,7 @@ export const AddPostResolver: Resolvers['Mutation']['addPost'] = async (
 		cards,
 	});
 	try {
+		// TODO : Saving the post should not save the path to the images, just their filename
 		const savedPost = await newPost.save();
 		return {
 			__typename: 'AddPostSuccess',

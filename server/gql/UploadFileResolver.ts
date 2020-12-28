@@ -3,7 +3,7 @@ import { createWriteStream, unlinkSync } from 'fs';
 import { Readable, ReadableOptions } from 'stream';
 import { IResolver } from '../src/types';
 import { config } from 'dotenv';
-import { SERVER_ROOT } from '../src/app.js';
+import { SERVER_ROOT, SERVER_URL } from '../src/app.js';
 import { MutationResolvers, UploadFileResult } from 'generated/gql';
 config();
 
@@ -33,7 +33,7 @@ const writeFileToDisk = (file: File) => {
 			.on('finish', () => {
 				res({
 					__typename: 'UploadFileSuccess',
-					url: `http://localhost:5050/${urlPath}`,
+					url: `http://${SERVER_URL}/${urlPath}`,
 					message: `File "${filename}" was saved successfully.`,
 				});
 			});
