@@ -74,11 +74,11 @@ const CreatePost: React.FC<ICreatePost> = ({
 		e.preventDefault();
 		const cards = uploadedFiles.map(upFile => {
 			if (upFile.__typename !== 'UploadFileSuccess') return null;
-			const location = upFile.url.split('/'); // TODO : Fix this
+			const location = '/' + upFile.url.split('/').splice(3).join('/'); // TODO : Fix this (need to make uploaded files locations as well)
 			return {
 				title: upFile.title,
 				description: upFile.description,
-				location: location[3],
+				location: location,
 			};
 		});
 

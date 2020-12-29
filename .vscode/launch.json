@@ -7,7 +7,7 @@
 			"outFiles": ["./client/public/js/*.js", "!**/node_modules/**"],
 			"request": "launch",
 			"type": "pwa-chrome",
-			"url": "http://localhost:5010",
+			"url": "http://localhost:5000",
 			"webRoot": "${workspaceFolder}/client",
 			"postDebugTask": "Linux kill webpack"
 		},

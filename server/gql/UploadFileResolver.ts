@@ -7,7 +7,7 @@ import { SERVER_ROOT, SERVER_URL } from '../src/app.js';
 import { MutationResolvers, UploadFileResult } from 'generated/gql';
 config();
 
-const writeFileToDisk = (file: File) => {
+const writeFileToDisk = async (file: File) => {
 	const { createReadStream, filename } = file;
 
 	const stream = createReadStream();
@@ -22,7 +22,7 @@ const writeFileToDisk = (file: File) => {
 	return new Promise<UploadFileResult>((res, rej) => {
 		stream
 			.on('error', error => {
-				unlinkSync(path);
+				unlinkSync(filePath);
 				stream.destroy();
 				res({
 					__typename: 'UploadFileFailure',

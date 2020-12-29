@@ -51,12 +51,11 @@ const gqlServer = new ApolloServer({
 app.use(
 	cors({
 		origin: (origin, cb) => {
+			if (!allowedOrigins.includes(origin)) {
+				const msg = `The CORS policy doesn't allow access from ${origin}.`;
+				return cb(msg as any, false);
+			}
 			return cb(null, true);
-			// if (!allowedOrigins.includes(origin)) {
-			// 	const msg = `The CORS policy doesn't allow access from ${origin}.`;
-			// 	return cb(msg as any, false);
-			// }
-			// return cb(null, true);
 		},
 	})
 );
@@ -79,8 +78,8 @@ const logger = morgan(':time :url :method :remote-addr :user-agent :response-tim
 app.disable('x-powered-by');
 
 const allowedOrigins = [`https://${hostname}`];
-// if (!isProd)
-allowedOrigins.push('http://localhost:5000', 'http://127.0.0.1:5000', undefined);
+if (!isProd)
+	allowedOrigins.push('http://localhost:5000', 'http://127.0.0.1:5000', undefined);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -104,12 +103,12 @@ app.use((req, res, next) => {
 
 app.use(logger);
 
-//if (isProd) {
-//	app.use((req, res, next) => {
-//		if (req.hostname.startsWith(`${subDom}.`)) return next();
-//		res.redirect(301, `https://${subDom}.${req.hostname}${req.url}`);
-//	});
-//}
+if (isProd) {
+	app.use((req, res, next) => {
+		if (req.hostname.startsWith(`${subDom}.`)) return next();
+		res.redirect(301, `https://${subDom}.${req.hostname}${req.url}`);
+	});
+}
 app.get('/public/uploads/*', (req, res) => {
 	res.sendFile(join(SERVER_ROOT, req.url));
 });
@@ -123,36 +122,36 @@ app.get('*', (req, res) => {
 	res.sendFile(join(PROJECT_ROOT, 'client', 'dist', 'index.html'));
 });
 
-////if (isProd) {
-//	http
-//		.createServer((req, res) => {
-//			console.log('Redirecting to: ', `https://${hostname}${req.url}`);
-//			logger(req, res, err => {
-//				if (err) console.error(err);
-//				res
-//					.writeHead(301, {
-//						Location: `https://${hostname}${req.url}`,
-//					})
-//					.end();
-//			});
-//		})
-//		.listen(upgradeServerPort, () => {
-//			console.log(`Http upgrade server online on port ${upgradeServerPort}`);
-//		});
-//
-//	https
-//		.createServer(
-//			{
-//				key: readFileSync(resolve(cwd(), 'cert', 'privkey.pem')),
-//				cert: readFileSync(resolve(cwd(), 'cert', 'fullchain.pem')),
-//			},
-//			app
-//		)
-//		.listen(secureServerPort, () => {
-//			console.log(`Secure Server is listening on port ${secureServerPort}`);
-//		});
-//} else {
-app.listen(secureServerPort, () => {
-	console.log(`Dev server is listening on port ${secureServerPort}`);
-});
-// }
+if (isProd) {
+	http
+		.createServer((req, res) => {
+			console.log('Redirecting to: ', `https://${hostname}${req.url}`);
+			logger(req, res, err => {
+				if (err) console.error(err);
+				res
+					.writeHead(301, {
+						Location: `https://${hostname}${req.url}`,
+					})
+					.end();
+			});
+		})
+		.listen(upgradeServerPort, () => {
+			console.log(`Http upgrade server online on port ${upgradeServerPort}`);
+		});
+
+	https
+		.createServer(
+			{
+				key: readFileSync(resolve(cwd(), 'cert', 'privkey.pem')),
+				cert: readFileSync(resolve(cwd(), 'cert', 'fullchain.pem')),
+			},
+			app
+		)
+		.listen(secureServerPort, () => {
+			console.log(`Secure Server is listening on port ${secureServerPort}`);
+		});
+} else {
+	app.listen(secureServerPort, () => {
+		console.log(`Dev server is listening on port ${secureServerPort}`);
+	});
+}
