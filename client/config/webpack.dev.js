@@ -173,7 +173,7 @@ module.exports = {
 	plugins: [
 		new ESLintPlugin,
 		new HtmlWebpackPlugin({
-			template: path.resolve(curProcess, 'src/index_dev.html'),
+			template: path.resolve(curProcess, 'src/index.html'),
 
 			filename: 'index.html',
 		}),

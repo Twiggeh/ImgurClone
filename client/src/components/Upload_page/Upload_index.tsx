@@ -8,7 +8,13 @@ import useLocalStorage from '../hooks/useLocalStorage';
 import styled from '@emotion/styled';
 import { bindLocalStore } from '../../utils/uploadHelper';
 import useUploadMutations from './useUploadMutations';
-import { UploadFileResult } from '../../generated/graphql';
+import {
+	Card,
+	UploadFileFailure,
+	UploadFileResult,
+	UploadFileSuccess,
+} from '../../generated/graphql';
+import { Optional } from '../../globals';
 
 const maximum = 3;
 
@@ -42,13 +48,13 @@ const Upload = () => {
 
 	// Create React State with LocalStorage Items
 	const [passedFiles, setPassedFiles] = useState<PassedFile[] | undefined>(undefined);
-	const [uploadedFiles, _setUploadedFiles] = useState<UploadFileResult[] | undefined>(
+	const [uploadedFiles, _setUploadedFiles] = useState<UploadedFiles | undefined>(
 		storedUploadedFiles
 	);
 	const [createPost, _setCreatePost] = useState(storedCreatePost);
 
 	// Bind React State to LocalStorage
-	const setUploadedFiles = bindLocalStore<UploadFileResult[] | undefined>(
+	const setUploadedFiles = bindLocalStore<UploadedFiles | undefined>(
 		_setUploadedFiles,
 		setStoredUploadedFiles
 	);
@@ -104,3 +110,5 @@ var Container = styled.div`
 `;
 
 export default Upload;
+
+type UploadedFiles = ((UploadFileSuccess & Optional<Card>) | UploadFileFailure)[];

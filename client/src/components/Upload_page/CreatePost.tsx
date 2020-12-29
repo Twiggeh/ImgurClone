@@ -7,6 +7,8 @@ import {
 	UploadFileFailure,
 	Card as _Card,
 } from '../../generated/graphql';
+import { Optional } from '../../globals';
+import { getUrlFromLocation } from '../../utils/utils';
 import Button from '../components/Button';
 import {
 	CardImg,
@@ -21,15 +23,17 @@ import {
 	CenteredLayoutWrap,
 } from '../components/CenteredImgLayoutComponents';
 
-const Card = <T extends { url: string; title?: string; text?: string }>(
-	file: T,
+const Card = (
+	file: UploadFileSuccess & Optional<_Card>,
 	updateFile: ICreatePost['setUploadedFiles'],
 	i: number
 ) => {
-	const { url, text = '', title = '' } = file;
+	const title = file.title === null ? undefined : file.title;
+	const description = file.description === null ? undefined : file.description;
+
 	const handleOnChange = (
 		e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
-		property: keyof T
+		property: keyof _Card
 	) => {
 		updateFile(c => {
 			if (!c) return undefined;
@@ -41,9 +45,10 @@ const Card = <T extends { url: string; title?: string; text?: string }>(
 			return [...c];
 		});
 	};
+
 	return (
-		<StyledCard key={url}>
-			<CardImg src={url} />
+		<StyledCard key={file.url}>
+			<CardImg src={getUrlFromLocation(file.url)} />
 			<CardTitleInput
 				value={title}
 				placeholder='Add a title'
@@ -51,10 +56,10 @@ const Card = <T extends { url: string; title?: string; text?: string }>(
 				onChange={e => handleOnChange(e, 'title')}
 			/>
 			<CardTextArea
-				value={text}
+				value={description}
 				placeholder='Add a description'
 				maxLength={400}
-				onChange={e => handleOnChange(e, 'text')}
+				onChange={e => handleOnChange(e, 'description')}
 			/>
 		</StyledCard>
 	);
@@ -68,9 +73,14 @@ const CreatePost: React.FC<ICreatePost> = ({
 	const handleSubmit = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
 		e.preventDefault();
 		const cards = uploadedFiles.map(upFile => {
-			if (upFile.__typename === 'UploadFileSuccess')
-				return { title: upFile.title, description: upFile.text, url: upFile.url };
-		}) as _Card[];
+			if (upFile.__typename !== 'UploadFileSuccess') return null;
+			const location = upFile.url.split('/'); // TODO : Fix this
+			return {
+				title: upFile.title,
+				description: upFile.description,
+				location: location[3],
+			};
+		});
 
 		uploadPost({
 			variables: {
@@ -88,7 +98,7 @@ const CreatePost: React.FC<ICreatePost> = ({
 				<Left />
 				<Center>
 					{uploadedFiles.map((file, i) => {
-						if (file.__typename === 'UploadFileFailure') return;
+						if (file.__typename === 'UploadFileFailure') return null;
 						return Card(file, setUploadedFiles, i);
 					})}
 					<Button
@@ -120,9 +130,6 @@ interface ICreatePost {
 			| undefined
 			| ((input: UploadFileResult[] | undefined) => UploadFileResult[] | undefined)
 	) => void;
-	uploadedFiles: (
-		| (UploadFileSuccess & { title?: string; text?: string })
-		| UploadFileFailure
-	)[];
+	uploadedFiles: ((UploadFileSuccess & Optional<_Card>) | UploadFileFailure)[];
 	uploadPost: AddPostMutationFn;
 }

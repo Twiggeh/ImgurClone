@@ -12,7 +12,7 @@ export const AddPostType = gql`
 	input Card {
 		title: String
 		description: String
-		url: String!
+		location: String!
 	}
 	extend type Mutation {
 		addPost(

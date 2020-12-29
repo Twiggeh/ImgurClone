@@ -13,6 +13,7 @@ const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 console.log(mode);
+console.log(process.env.BACKEND_URL);
 const curProcess = process.cwd();
 
 module.exports = {
@@ -220,7 +221,7 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 		new webpack.DefinePlugin({
-			MY_VARIABLES: JSON.stringify('Must stringify a String, don\'t ask me why.')
+			BACKEND_SERVER_URL: JSON.stringify(process.env.BACKEND_URL),
 		})
 	].filter(Boolean),
 };

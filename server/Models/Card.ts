@@ -9,7 +9,7 @@ export const CardSchema = new mongoose.Schema({
 		required: false,
 		type: String,
 	},
-	url: {
+	location: {
 		required: true,
 		type: String,
 	},
@@ -18,7 +18,7 @@ export const CardSchema = new mongoose.Schema({
 export interface ICard {
 	title?: string;
 	description?: string;
-	url: string;
+	location: string;
 }
 
 interface CardDocument extends ICard, mongoose.Document {}

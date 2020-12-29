@@ -11,7 +11,7 @@ export const GetPostType = gql`
 	type CardOut {
 		title: String
 		description: String
-		url: String!
+		location: String!
 	}
 	type Post {
 		postId: String!
@@ -20,7 +20,7 @@ export const GetPostType = gql`
 		profilePicture: String
 		addedDate: Date!
 		comments: [Comment]
-		cards: [CardOut]!
+		cards: [CardOut!]!
 	}
 	type PostResult {
 		success: Boolean!

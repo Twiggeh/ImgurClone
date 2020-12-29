@@ -1,7 +1,7 @@
 import { QueryResolvers } from '../generated/gql.js';
 import { Document } from 'mongoose';
 import Post, { IPost } from '../Models/Post.js';
-import { IResolver, Optional } from '../src/types.js';
+import { Optional } from '../src/types.js';
 
 export const GetPostResolver: QueryResolvers['getPost'] = async (
 	_,

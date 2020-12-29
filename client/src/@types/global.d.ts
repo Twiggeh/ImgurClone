@@ -13,3 +13,5 @@ type ImgurUpload<T> = {
 	file?: T;
 	files?: T[];
 };
+
+declare const BACKEND_SERVER_URL: string;
