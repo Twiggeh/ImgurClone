@@ -60,8 +60,8 @@ const Register = () => {
 									value={formState.password}
 									onChange={e => updateForm('password', e.target.value)}
 								/>
-								<PassVisToggle onClick={() => toggleVisibility('pass')}>
-									Toggle
+								<PassVisToggle as='i' onClick={() => toggleVisibility('pass')}>
+									{passVis.pass ? <OpenEyeSVG /> : <ClosedEyeSVG />}
 								</PassVisToggle>
 							</PassWrap>
 						</StyledLabel>
@@ -75,8 +75,8 @@ const Register = () => {
 									value={formState.confirmPassword}
 									onChange={e => updateForm('confirmPassword', e.target.value)}
 								/>
-								<PassVisToggle onClick={() => toggleVisibility('confirm')}>
-									Toggle
+								<PassVisToggle as='i' onClick={() => toggleVisibility('confirm')}>
+									{passVis.confirm ? <OpenEyeSVG /> : <ClosedEyeSVG />}
 								</PassVisToggle>
 							</PassWrap>
 						</StyledLabel>
@@ -101,9 +101,9 @@ const Register = () => {
 export default Register;
 
 import React, { useState } from 'react';
-import { validateInputs } from '../utils/formHelpers';
-import BackHomeBtn from './components/BackHomeBtn';
-import Button from './components/Button';
+import { validateInputs } from '../../utils/formHelpers';
+import BackHomeBtn from '../components/BackHomeBtn';
+import Button from '../components/Button';
 import {
 	AlignRight,
 	Center,
@@ -116,5 +116,6 @@ import {
 	StyledForm,
 	StyledInput,
 	StyledLabel,
-} from './components/AuthComponents';
-import SignInButton from './components/SignIn';
+} from '../components/AuthComponents';
+import SignInButton from '../components/SignIn';
+import { OpenEyeSVG, ClosedEyeSVG } from '../../utils/assetImport';

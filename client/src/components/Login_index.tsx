@@ -49,7 +49,7 @@ const Login = () => {
 									onChange={e => updateForm('password', e.target.value)}
 								/>
 								<PassVisToggle onClick={() => toggleVisibility('pass')}>
-									Toggle
+									{passVis.pass ? <OpenEyeSVG /> : <ClosedEyeSVG />}
 								</PassVisToggle>
 							</PassWrap>
 						</StyledLabel>
@@ -91,3 +91,4 @@ import {
 	StyledLabel,
 } from './components/AuthComponents';
 import SignUpButton from './components/SignUpButton';
+import { ClosedEyeSVG, OpenEyeSVG } from '../utils/assetImport';

@@ -12,9 +12,15 @@ export const StyledBackToHome = styled.div`
 
 export const PassVisToggle = styled.p`
 	position: absolute;
-	left: 80%;
+	display: flex;
+	right: 1em;
 	top: 0%;
 	height: 100%;
+	justify-content: center;
+	align-items: center;
+	svg {
+		min-width: 2.5em;
+	}
 `;
 
 export const PassWrap = styled.div`
