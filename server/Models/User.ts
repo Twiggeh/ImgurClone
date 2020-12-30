@@ -35,7 +35,7 @@ UserSchema.pre<UserDocument>('save', async function (next) {
 		const document = await User.find({
 			$or: [{ 'local.email': this.local.email }, { 'google.email': this.google.email }],
 		});
-		if (document)
+		if (document.length)
 			throw new Error(
 				`User with email ${this.google.email} / ${this.local.email} already exists.`
 			);
@@ -50,12 +50,10 @@ UserSchema.pre<UserDocument>('save', async function (next) {
 		if (document.length)
 			throw new Error(`User with email ${this.google.email} already exists.`);
 	}
+
 	try {
 		// Hash password
-		if (
-			(authMethod === 'all' || authMethod === 'local') &&
-			this.isModified(this.local.password)
-		) {
+		if (authMethod === 'all' || authMethod === 'local') {
 			const salts = await genSalt(SALT_WORK);
 			const hashedPass = await hash(this.local.password, salts);
 			this.local.password = hashedPass;

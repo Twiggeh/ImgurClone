@@ -18,6 +18,18 @@ const Register = () => {
 
 	const isValid = validateInputs(formState);
 
+	const [addUser] = AddUserMutation();
+	const addUserVars: AddUserMutationVariables = {
+		addUserInput: {
+			userName: formState.userName,
+			local: {
+				email: formState.email,
+				password: formState.password,
+				verifyPassword: formState.confirmPassword,
+			},
+		},
+	};
+
 	return (
 		<CenteredFormPage>
 			<BackHomeBtn />
@@ -88,6 +100,7 @@ const Register = () => {
 							disabled={isValid}
 							onClick={e => {
 								e.preventDefault();
+								addUser({ variables: addUserVars });
 							}}>
 							Submit
 						</Button>
@@ -119,3 +132,5 @@ import {
 } from '../components/AuthComponents';
 import SignInButton from '../components/SignIn';
 import { OpenEyeSVG, ClosedEyeSVG } from '../../utils/assetImport';
+import { AddUserMutationVariables } from '../../generated/graphql';
+import AddUserMutation from './AddUserMutation';

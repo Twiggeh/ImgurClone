@@ -1,14 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useGetPostQuery } from '../../generated/graphql';
 import { Page } from '../components/Page';
 import TitleBar from '../TitleBar';
 import Post from './Posts';
-import usePostsQuery from './useGetPostsQuery';
 
 const Posts_Index: React.FC = () => {
 	const { postId } = useParams<{ postId: string }>();
 	// TODO : Add loading / error shower
-	const { data, loading, error } = usePostsQuery({ variables: { postId } });
+	const { data, loading, error } = useGetPostQuery({ variables: { postId } });
 
 	const posts = data?.getPost?.posts ? data.getPost.posts : [];
 
