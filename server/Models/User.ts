@@ -3,18 +3,16 @@ import { genSalt, hash } from 'bcrypt';
 
 const SALT_WORK = 10;
 
-const reqGoogle = function (this: IUser) {
-	return !(this.local && this.local.email && this.local.password);
-};
+const LocalSchema = new mongoose.Schema({
+	email: { required: true, type: String, unique: true },
+	password: { required: true, type: String },
+});
 
-const reqLocal = function (this: IUser) {
-	return !(
-		this.google &&
-		this.google.email &&
-		this.google.accessToken &&
-		this.google.refreshToken
-	);
-};
+const GoogleSchema = new mongoose.Schema({
+	email: { required: true, type: String, unique: true },
+	accessToken: { required: true, type: String },
+	refreshToken: { required: true, type: String },
+});
 
 const UserSchema = new mongoose.Schema<IUser>({
 	userName: {
@@ -25,22 +23,39 @@ const UserSchema = new mongoose.Schema<IUser>({
 		required: false,
 		type: String,
 	},
-	local: {
-		email: { required: reqLocal, type: String, unique: true },
-		password: { required: reqLocal, type: String },
-	},
-	google: {
-		accessToken: { required: reqGoogle, type: String },
-		refreshToken: { required: reqGoogle, type: String },
-		name: { required: reqGoogle, type: String },
-		email: { required: reqGoogle, type: String, unique: true },
-	},
+	local: LocalSchema,
+	google: GoogleSchema,
 });
 
 UserSchema.pre<UserDocument>('save', async function (next) {
+	const authMethod = this.google && this.local ? 'all' : this.google ? 'google' : 'local';
+
+	// UNIQUENESS QUERIES
+	if (authMethod === 'all') {
+		const document = await User.find({
+			$or: [{ 'local.email': this.local.email }, { 'google.email': this.google.email }],
+		});
+		if (document)
+			throw new Error(
+				`User with email ${this.google.email} / ${this.local.email} already exists.`
+			);
+	}
+	if (authMethod === 'local') {
+		const document = await User.find({ 'local.email': this.local.email });
+		if (document.length)
+			throw new Error(`User with email ${this.local.email} already exists.`);
+	}
+	if (authMethod === 'google') {
+		const document = await User.find({ 'google.email': this.google.email });
+		if (document.length)
+			throw new Error(`User with email ${this.google.email} already exists.`);
+	}
 	try {
 		// Hash password
-		if (this.isModified(this.local.password)) {
+		if (
+			(authMethod === 'all' || authMethod === 'local') &&
+			this.isModified(this.local.password)
+		) {
 			const salts = await genSalt(SALT_WORK);
 			const hashedPass = await hash(this.local.password, salts);
 			this.local.password = hashedPass;

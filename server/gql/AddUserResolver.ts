@@ -24,17 +24,17 @@ export const AddUserResolver: Resolvers['Mutation']['addUser'] = async (
   Email: ${Boolean(google.email)} )`
 			);
 		}
-		newUser.google.accessToken = google.accessToken;
-		newUser.google.email = google.email;
-		newUser.google.refreshToken = google.refreshToken;
+		newUser.google = {
+			accessToken: google.accessToken,
+			email: google.email,
+			refreshToken: google.refreshToken,
+		};
 	}
 
 	if (local) {
 		if (local.password !== local.verifyPassword)
 			errors.push(`User : ${userName} could not be created. Passwords do not match`);
-
-		newUser.local.password = local.password;
-		newUser.local.email = local.email;
+		newUser.local = { email: local.email, password: local.password };
 	}
 
 	if (errors.length)
