@@ -25,7 +25,8 @@
 			"cwd": "${workspaceFolder}/client",
 			"name": "TSC Watcher Client",
 			"request": "launch",
-			"type": "node-terminal"
+			"type": "node-terminal",
+			"internalConsoleOptions": "neverOpen"
 		},
 		{
 			"command": "yarn debug",

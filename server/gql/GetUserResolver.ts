@@ -10,20 +10,16 @@ export const GetUserResolver: QueryResolvers['getUser'] = async (
 
 		const user = await User.findOne(UserQuey);
 		return {
+			__typename: 'GetUserResultSuccess',
 			message: `User found.`,
-			success: true,
-			email: user.email,
 			userName: user.userName,
 			profilePicture: user.profilePicture,
 		};
 	} catch (e) {
 		console.error(e);
 		return {
+			__typename: 'GetUserResultFailure',
 			message: `Could not find user : ${userName}`,
-			success: false,
-			email: 'example@example.com',
-			userName: 'exampleName',
-			profilePicture: '',
 		};
 	}
 };
