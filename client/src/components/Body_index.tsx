@@ -4,6 +4,7 @@ import Register from './Register_page/Register_index';
 import Upload from './Upload_page/Upload_index';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Login from './Login_index';
+import Profile from './Profile_index';
 import Posts_Index from './Posts_page/Posts_index';
 
 const Body = () => {
@@ -27,6 +28,15 @@ const Body = () => {
 				</Route>
 				<Route path='/upload'>
 					<Upload />
+				</Route>
+				<Route path='/profile'>
+					<Profile />
+				</Route>
+				<Route path='/'>
+					<Home />
+				</Route>
+				<Route>
+					<Home />
 				</Route>
 			</Switch>
 		</BrowserRouter>
