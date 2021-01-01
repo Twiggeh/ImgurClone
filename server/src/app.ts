@@ -1,3 +1,4 @@
+// Libraries
 import express from 'express';
 import cors from 'cors';
 import https from 'https';
@@ -9,12 +10,21 @@ import { createWriteStream, readFileSync } from 'fs';
 import morgan from 'morgan';
 import { URL } from 'url';
 import mongoose from 'mongoose';
-import { mongooseKey } from '../keys/keys.js';
 import { ApolloServer } from 'apollo-server-express';
+import session from 'express-session';
+import MongoDBStoreConstructor from 'connect-mongodb-session';
+import grant from 'grant';
+import { graphqlUploadExpress } from 'graphql-upload';
 
+// JS Files
+import { googleKey, googleSecret, mongooseKey, sessionSecret } from '../keys/keys.js';
+import { fetchCurrentUser } from '../helper/authHelper.js';
 import typeDefs from '../gql/types.js';
 import resolvers from '../gql/resolvers.js';
-import { graphqlUploadExpress } from 'graphql-upload';
+
+// Routes
+import Auth_Redirect from '../routes/authRedirectRoutes.js';
+import { AuthReq } from '../@types/global.js';
 
 config();
 
@@ -39,14 +49,80 @@ export const SERVER_ROOT = resolve(__dirname, '../');
 
 const app = express();
 
+// Initialize Sessions
+const MongoDBStore = MongoDBStoreConstructor(session);
+
+app.use(
+	session({
+		secret: sessionSecret,
+		resave: false,
+		saveUninitialized: false,
+		cookie: {
+			maxAge: 1000 * 60 * 60 * 24 * 7,
+		},
+		store: new MongoDBStore({
+			uri: mongooseKey,
+			collection: 'sessions',
+			connectionOptions: {
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+			},
+		}),
+	})
+);
+
+// Start OAuth Proxy
+app.use(
+	grant.express({
+		defaults: {
+			origin: 'http://localhost:5050',
+			transport: 'session',
+			prefix: '/oauth',
+			state: true,
+		},
+		google: {
+			key: googleKey,
+			secret: googleSecret,
+			scope: ['openid', 'profile', 'email'],
+			nonce: true,
+			custom_params: { access_type: 'offline' },
+			callback: '/auth_redirect/google',
+		},
+	})
+);
+
+// Start gql
 const gqlServer = new ApolloServer({
 	uploads: false,
 	typeDefs,
 	resolvers,
-	context: ({ req, res }) => {
-		return {};
+	context: async ({ req }: { req: AuthReq }) => {
+		try {
+			if (req.session.userId) {
+				const currentUser = await fetchCurrentUser(req.session.userId);
+				return { currentUser };
+			}
+		} catch (e) {
+			console.warn(
+				`Unable to authenticate, userId ${req.session.userId} does not yield any users`
+			);
+		}
 	},
 });
+
+app.use('/graphql', graphqlUploadExpress());
+gqlServer.applyMiddleware({ app });
+
+// Configure CORS
+const allowedOrigins = [`https://${hostname}`];
+
+if (!isProd)
+	allowedOrigins.push(
+		'http://localhost:5050',
+		'http://localhost:5000',
+		'http://127.0.0.1:5050',
+		undefined
+	);
 
 app.use(
 	cors({
@@ -60,10 +136,7 @@ app.use(
 	})
 );
 
-app.use('/graphql', graphqlUploadExpress());
-
-gqlServer.applyMiddleware({ app });
-
+// Start logger
 const logStream = createWriteStream(join(__dirname, 'access.log'), { flags: 'a' });
 const myDate = new Date();
 
@@ -74,21 +147,14 @@ morgan.token('time', () => {
 const logger = morgan(':time :url :method :remote-addr :user-agent :response-time ms', {
 	stream: logStream,
 });
+app.use(logger);
 
-app.disable('x-powered-by');
-
-const allowedOrigins = [`https://${hostname}`];
-if (!isProd)
-	allowedOrigins.push('http://localhost:5000', 'http://127.0.0.1:5000', undefined);
-
+// Body Parsers
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-mongoose.connect(mongooseKey, { useNewUrlParser: true, useUnifiedTopology: true }, e => {
-	if (e) return void console.log('Mongoose failed to connect', e);
-	console.log('Mongoose connected successfully');
-});
-
+// Set secure headers
+app.disable('x-powered-by');
 app.use((req, res, next) => {
 	res.header('X-XSS-Protection', '1; mode=block');
 	res.header('X-Frame-Options', 'deny');
@@ -101,14 +167,24 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.use(logger);
+// Connect to database
+mongoose.connect(mongooseKey, { useNewUrlParser: true, useUnifiedTopology: true }, e => {
+	if (e) return void console.log('Mongoose failed to connect', e);
+	console.log('Mongoose connected successfully');
+});
 
+// Redirect http to https
 if (isProd) {
 	app.use((req, res, next) => {
 		if (req.hostname.startsWith(`${subDom}.`)) return next();
 		res.redirect(301, `https://${subDom}.${req.hostname}${req.url}`);
 	});
 }
+
+// routes
+
+app.use('/auth_redirect', Auth_Redirect);
+
 app.get('/public/uploads/*', (req, res) => {
 	res.sendFile(join(SERVER_ROOT, req.url));
 });
@@ -122,6 +198,7 @@ app.get('*', (req, res) => {
 	res.sendFile(join(PROJECT_ROOT, 'client', 'dist', 'index.html'));
 });
 
+// Start up server
 if (isProd) {
 	http
 		.createServer((req, res) => {
