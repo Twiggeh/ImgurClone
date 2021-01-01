@@ -15,12 +15,12 @@ const typeDefs = gql`
 	type Mutation {
 		_empty: String
 	}
+	${UploadFileType}
+	${GetPostType}
+	${GetUserType}
 	${GetMeType}
 	${AddPostType}
-	${GetPostType}
 	${AddUserType}
-	${GetUserType}
-	${UploadFileType}
 `;
 
 export default typeDefs;

@@ -1,65 +1,38 @@
 import User, { IUser } from '../Models/User.js';
-import { Resolvers } from 'generated/gql.js';
+import { MutationAddUserArgs, Resolvers, ResolversTypes } from '../generated/gql.js';
 
-export const AddUserResolver: Resolvers['Mutation']['addUser'] = async (
-	parent,
-	{ AddUserInput: { userName, profilePicture, google, local } }
-) => {
+export const AddUserFn = async ({
+	AddUserInput: { userName, profilePicture, google, local },
+}: MutationAddUserArgs): Promise<ResolversTypes['AddUserResult']> => {
 	const user: IUser = {
 		userName,
 		profilePicture,
+		google,
+		local,
 	};
 
 	const newUser = new User(user);
-	const errors: string[] = [];
-
-	if (!google && !local) return { message: 'No auth provider provided', success: false };
-
-	if (google) {
-		if (!google.accessToken || !google.refreshToken || !google.email) {
-			errors.push(
-				`Not all google relevant data has been provided :
-( AccessToken : ${Boolean(google.accessToken)},
-  RefreshToken :${Boolean(google.refreshToken)},
-  Email: ${Boolean(google.email)} )`
-			);
-		}
-		newUser.google = {
-			accessToken: google.accessToken,
-			email: google.email,
-			refreshToken: google.refreshToken,
-		};
-	}
-
-	if (local) {
-		if (local.password !== local.verifyPassword)
-			errors.push(`User : ${userName} could not be created. Passwords do not match`);
-		newUser.local = { email: local.email, password: local.password };
-	}
-
-	if (errors.length)
-		return {
-			message: errors.join('\n'),
-			success: false,
-		};
 
 	try {
 		const user = await newUser.save();
 		return {
 			message: `User : ${user.userName} has been created Successfully`,
-			success: true,
+			id: newUser.id,
 		};
 	} catch (e: unknown) {
 		console.error(e);
 		if (e instanceof Error) {
 			return {
 				message: `Could not create user : ${userName}; Error: ${e.message}`,
-				success: false,
+				__typename: 'AddUserFailure',
 			};
 		}
 		return {
 			message: `Could not create user : ${userName}; Error: ${e}`,
-			success: false,
+			__typename: 'AddUserFailure',
 		};
 	}
 };
+
+export const AddUserResolver: Resolvers['Mutation']['addUser'] = async (parent, args) =>
+	await AddUserFn(args);

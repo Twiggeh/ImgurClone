@@ -1,12 +1,18 @@
 import { gql } from 'apollo-server-express';
 
 export const AddUserType = gql`
-	type LoginResult {
-		success: Boolean!
+	type AddUserSuccess {
+		message: String!
+		id: String!
+	}
+	type AddUserFailure {
 		message: String!
 	}
+	union AddUserResult = AddUserSuccess | AddUserFailure
+
 	input AddUserGoogleInput {
 		email: String!
+		id: String!
 		refreshToken: String!
 		accessToken: String!
 	}
@@ -22,6 +28,6 @@ export const AddUserType = gql`
 		google: AddUserGoogleInput
 	}
 	extend type Mutation {
-		addUser(AddUserInput: AddUserInput!): LoginResult
+		addUser(AddUserInput: AddUserInput!): AddUserResult!
 	}
 `;

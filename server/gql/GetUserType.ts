@@ -10,9 +10,9 @@ export const GetUserType = gql`
 		message: String!
 	}
 
-	union UserResult = GetUserResultSuccess | GetUserResultFailure
+	union GetUserResult = GetUserResultSuccess | GetUserResultFailure
 
 	extend type Query {
-		getUser(email: String!, userName: String): UserResult
+		getUser(email: String, userName: String, mongoId: String): GetUserResult
 	}
 `;

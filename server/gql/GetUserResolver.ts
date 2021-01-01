@@ -1,12 +1,13 @@
-import { QueryResolvers } from '../generated/gql.js';
+import { QueryGetUserArgs, QueryResolvers, ResolversTypes } from '../generated/gql.js';
 import User from '../Models/User.js';
 
-export const GetUserResolver: QueryResolvers['getUser'] = async (
-	_,
-	{ email, userName }
-) => {
+export const GetUserFn = async ({
+	email,
+	userName,
+	mongoId,
+}: QueryGetUserArgs): Promise<ResolversTypes['GetUserResult']> => {
 	try {
-		const UserQuey = { email, userName };
+		const UserQuey = { email, userName, id: mongoId };
 
 		const user = await User.findOne(UserQuey);
 		return {
@@ -23,3 +24,6 @@ export const GetUserResolver: QueryResolvers['getUser'] = async (
 		};
 	}
 };
+
+export const GetUserResolver: QueryResolvers['getUser'] = async (_, args) =>
+	GetUserFn(args);
