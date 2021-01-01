@@ -4,6 +4,7 @@ import { AddUserType } from './AddUserType.js';
 import { GetPostType } from './GetPostType.js';
 import { AddPostType } from './AddPostType.js';
 import { UploadFileType } from './UploadFileType.js';
+import { GetMeType } from './GetMeType.js';
 
 const typeDefs = gql`
 	scalar Upload
@@ -14,6 +15,7 @@ const typeDefs = gql`
 	type Mutation {
 		_empty: String
 	}
+	${GetMeType}
 	${AddPostType}
 	${GetPostType}
 	${AddUserType}
