@@ -23,6 +23,7 @@ module.exports = {
 		historyApiFallback: true,
 		hot: true,
 		compress: true,
+		writeToDisk: true,
 	},
 	mode: 'development',
 	module: {
