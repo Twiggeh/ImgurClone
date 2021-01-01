@@ -30,6 +30,18 @@ const resolvers: Resolvers = {
 			return obj.__typename;
 		},
 	},
+	GetUserResult: {
+		__resolveType(obj) {
+			console.log('resolving user', obj);
+			return obj.__typename;
+		},
+	},
+	AddUserResult: {
+		__resolveType(obj) {
+			console.log('adding user', obj);
+			return obj.__typename;
+		},
+	},
 };
 
 export default resolvers;

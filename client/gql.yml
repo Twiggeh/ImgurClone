@@ -12,4 +12,5 @@ generates:
       nonOptionalTypename: true
       strict: true
       scalars:
-        Date: { name: string }
+        Date:
+          name: string

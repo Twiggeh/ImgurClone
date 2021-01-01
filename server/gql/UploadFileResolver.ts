@@ -1,13 +1,13 @@
-import { join, resolve } from 'path';
+import { join } from 'path';
 import { createWriteStream, unlinkSync } from 'fs';
-import { Readable, ReadableOptions } from 'stream';
-import { IResolver } from '../src/types';
 import { config } from 'dotenv';
 import { SERVER_ROOT, SERVER_URL } from '../src/app.js';
 import { MutationResolvers, UploadFileResult } from 'generated/gql';
+import { File } from '../@types/global.js';
+import { UnPromisify } from '../src/types';
 config();
 
-const writeFileToDisk = async (file: File) => {
+const writeFileToDisk = async (file: UnPromisify<File>) => {
 	const { createReadStream, filename } = file;
 
 	const stream = createReadStream();
@@ -40,10 +40,7 @@ const writeFileToDisk = async (file: File) => {
 	});
 };
 
-export const UploadFileResolver: IResolver<FileUpload, UploadFileResult> = async (
-	_,
-	args
-) => {
+export const UploadFileResolver: MutationResolvers['uploadFile'] = async (_, args) => {
 	return await writeFileToDisk(await args.file);
 };
 
@@ -67,14 +64,3 @@ export const UploadFilesResolver: MutationResolvers['uploadFiles'] = async (_, a
 
 	return result;
 };
-
-interface File {
-	filename: string;
-	mimetype: string;
-	encoding: string;
-	createReadStream: (options?: ReadableOptions) => Readable;
-}
-
-interface FileUpload {
-	file: Promise<File>;
-}

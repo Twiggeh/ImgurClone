@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { Session, SessionData } from 'express-session';
+import { Readable, ReadableOptions } from 'stream';
 
 declare namespace Express {
 	//export interface Request extends Express.Request {
@@ -35,3 +36,10 @@ interface MyContext {
 		profilePicture?: string;
 	};
 }
+
+type File = Promise<{
+	filename: string;
+	mimetype: string;
+	encoding: string;
+	createReadStream: (options?: ReadableOptions) => Readable;
+}>;

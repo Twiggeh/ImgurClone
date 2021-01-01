@@ -11,3 +11,6 @@ generates:
       strict: true
       avoidOptionals: false
       contextType: ../@types/global#MyContext
+      scalars:
+        Upload: ../@types/global#File
+        Date: number

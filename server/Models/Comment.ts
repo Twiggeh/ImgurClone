@@ -29,7 +29,7 @@ export interface Comment {
 	userName: string;
 	profilePicture?: string;
 	content: string;
-	addedDate: string;
+	addedDate: number;
 }
 
 interface CommentDocument extends Comment, mongoose.Document {}
