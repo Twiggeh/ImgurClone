@@ -10,8 +10,8 @@
 		"sourceMap": true,
 		"allowSyntheticDefaultImports": true,
 		"outDir": "dist",
-		"typeRoots": ["src/@types"]
+		"typeRoots": ["@types"]
 	},
 	"compileOnSave": false,
-	"include": ["src/**/*"]
+	"include": ["src/**/*", "@types"]
 }
