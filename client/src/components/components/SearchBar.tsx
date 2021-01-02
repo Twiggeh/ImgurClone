@@ -5,6 +5,7 @@ import { StyledInput } from './AuthComponents';
 const SearchBar = () => {
 	const [search, setSearch] = useState('');
 	const theme = useTheme();
+
 	return (
 		<label htmlFor='search'>
 			<StyledInput

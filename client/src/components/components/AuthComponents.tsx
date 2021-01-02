@@ -20,6 +20,7 @@ export const PassVisToggle = styled.p`
 	align-items: center;
 	svg {
 		min-width: 2.5em;
+		width: 2.5em;
 	}
 `;
 
