@@ -7,9 +7,10 @@ export const GetUserFn = async ({
 	mongoId,
 }: QueryGetUserArgs): Promise<ResolversTypes['GetUserResult']> => {
 	try {
-		const UserQuey = { email, userName, id: mongoId };
+		const UserQuey = { email, userName };
 
-		const user = await User.findOne(UserQuey);
+		const user = mongoId ? await User.findById(mongoId) : await User.findOne(UserQuey);
+
 		return {
 			__typename: 'GetUserResultSuccess',
 			message: `User found.`,

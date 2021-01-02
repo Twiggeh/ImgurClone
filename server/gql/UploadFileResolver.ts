@@ -33,7 +33,7 @@ const writeFileToDisk = async (file: UnPromisify<File>) => {
 			.on('finish', () => {
 				res({
 					__typename: 'UploadFileSuccess',
-					url: `http://${SERVER_URL}/${urlPath}`,
+					url: `${SERVER_URL}/${urlPath}`,
 					message: `File "${filename}" was saved successfully.`,
 				});
 			});

@@ -2,7 +2,6 @@ import { Router } from 'express';
 import { AuthReq } from '../@types/global';
 import fetch from 'node-fetch';
 import { AddUserFn } from '../gql/AddUserResolver.js';
-import { SERVER_URL } from '../src/app.js';
 
 const router = Router();
 
@@ -21,11 +20,10 @@ interface GoogleResult {
 router.get('/google*', async (req: AuthReq, res, next) => {
 	const access_token: string | undefined = req.session.grant?.response.access_token;
 	const refresh_token: string | undefined = req.session.grant?.response.refresh_token;
+	if (req.session.userId) return res.redirect('/profile');
 
-	// req.session.grant = undefined;
-
-	if (access_token && refresh_token && !req.session.userId) {
-		try {
+	try {
+		if (access_token && refresh_token) {
 			const request = await fetch('https://www.googleapis.com/userinfo/v2/me', {
 				method: 'GET',
 				headers: { Authorization: 'Bearer ' + access_token },
@@ -55,15 +53,14 @@ router.get('/google*', async (req: AuthReq, res, next) => {
 
 			req.session.userId = localUserData.id;
 			// await new Promise((res, rej) => req.session.save(err => (err ? rej(err) : res())));
-		} catch (error) {
-			// TODO : Send error to the ui
-			console.log(error);
-			res.send(error);
+			return res.redirect('http://localhost:5000/profile');
 		}
+	} catch (error) {
+		// TODO : Send error to the ui
+		console.log(error);
+		return res.send(JSON.stringify(error));
 	}
-
-	res.redirect(`/profile`);
-	//next();
+	res.send('Something went wrong');
 });
 
 export default router;

@@ -1,4 +1,4 @@
-import { GetUserFn } from 'gql/GetUserResolver';
+import { GetUserFn } from '../gql/GetUserResolver.js';
 
 export interface User {
 	userName: string;

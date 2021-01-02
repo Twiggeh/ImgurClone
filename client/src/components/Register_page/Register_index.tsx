@@ -37,7 +37,7 @@ const Register = () => {
 				<SpaceItems>
 					<SmallHeader>Login with</SmallHeader>
 					<LayoutLogins>
-						<Button href='todo'>google</Button>
+						<Button href={`${BACKEND_SERVER_URL}/oauth/google`}>google</Button>
 						<Button href='todo'>github</Button>
 					</LayoutLogins>
 

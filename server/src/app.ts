@@ -33,6 +33,7 @@ config();
 const SECURE_PORT = process.env.SECURE_PORT;
 const UPGRADE_PORT = process.env.UPGRADE_PORT;
 const DEV_PORT = process.env.DEV_PORT;
+const PROTOCOL = process.env.BACKEND_PROTOCOL;
 
 const isProd = process.env.NODE_ENV === 'production';
 const secureServerPort = isProd ? SECURE_PORT : DEV_PORT;
@@ -43,11 +44,38 @@ const domain = process.env.DOMAIN ? process.env.DOMAIN : 'localhost';
 const subDom = process.env.SUBDOMAIN ? process.env.SUBDOMAIN : '';
 const domExt = process.env.DOMAIN_EXTENSION ? process.env.DOMAIN_EXTENSION : '';
 const hostname = [subDom, domain, domExt].filter(c => !!c).join('.');
-export const SERVER_URL = `${hostname}:${secureServerPort}`;
+
+// Change based on protocol hostname and port, not based on production
+export const SERVER_URL = `${PROTOCOL}://${hostname}:${secureServerPort}`;
 export const PROJECT_ROOT = resolve(__dirname, '../../../');
 export const SERVER_ROOT = resolve(__dirname, '../');
 
 const app = express();
+
+// Configure CORS
+const allowedOrigins = [`https://${hostname}`];
+
+if (!isProd)
+	allowedOrigins.push(
+		'localhost',
+		'http://localhost:5050',
+		'http://localhost:5000',
+		'http://127.0.0.1:5050',
+		undefined
+	);
+
+app.use(
+	cors({
+		origin: (origin, cb) => {
+			if (!allowedOrigins.includes(origin)) {
+				const msg = `The CORS policy doesn't allow access from ${origin}.`;
+				return cb(msg as any, false);
+			}
+			return cb(null, true);
+		},
+		credentials: true,
+	})
+);
 
 // Initialize Sessions
 const MongoDBStore = MongoDBStoreConstructor(session);
@@ -59,6 +87,7 @@ app.use(
 		saveUninitialized: false,
 		cookie: {
 			maxAge: 1000 * 60 * 60 * 24 * 7,
+			sameSite: 'none',
 		},
 		store: new MongoDBStore({
 			uri: mongooseKey,
@@ -75,7 +104,7 @@ app.use(
 app.use(
 	grant.express({
 		defaults: {
-			origin: 'http://localhost:5050',
+			origin: SERVER_URL,
 			transport: 'session',
 			prefix: '/oauth',
 			state: true,
@@ -85,7 +114,7 @@ app.use(
 			secret: googleSecret,
 			scope: ['openid', 'profile', 'email'],
 			nonce: true,
-			custom_params: { access_type: 'offline' },
+			custom_params: { access_type: 'offline', prompt: 'select_account' },
 			callback: '/auth_redirect/google',
 		},
 	})
@@ -111,30 +140,7 @@ const gqlServer = new ApolloServer({
 });
 
 app.use('/graphql', graphqlUploadExpress());
-gqlServer.applyMiddleware({ app });
-
-// Configure CORS
-const allowedOrigins = [`https://${hostname}`];
-
-if (!isProd)
-	allowedOrigins.push(
-		'http://localhost:5050',
-		'http://localhost:5000',
-		'http://127.0.0.1:5050',
-		undefined
-	);
-
-app.use(
-	cors({
-		origin: (origin, cb) => {
-			if (!allowedOrigins.includes(origin)) {
-				const msg = `The CORS policy doesn't allow access from ${origin}.`;
-				return cb(msg as any, false);
-			}
-			return cb(null, true);
-		},
-	})
-);
+gqlServer.applyMiddleware({ app, cors: false });
 
 // Start logger
 const logStream = createWriteStream(join(__dirname, 'access.log'), { flags: 'a' });

@@ -7,7 +7,6 @@ import './assets/global.css';
 
 import {
 	ApolloClient,
-	gql,
 	NormalizedCacheObject,
 	InMemoryCache,
 	ApolloProvider,
@@ -16,7 +15,9 @@ import { createUploadLink } from 'apollo-upload-client';
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 	cache: new InMemoryCache(),
+	credentials: 'include',
 	link: createUploadLink({
+		credentials: 'include',
 		uri: `${BACKEND_SERVER_URL}/graphql`,
 	}),
 });
