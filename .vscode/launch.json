@@ -2,14 +2,40 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"name": "Launch FireFox",
+			"skipFiles": ["!**/node_modules/**"],
+			"request": "launch",
+			"type": "firefox",
+			"url": "http://localhost:5000",
+			"webRoot": "${workspaceFolder}/client",
+			"postDebugTask": "Linux kill webpack",
+			// Doesnt ingest source maps
+			"pathMappings": [
+				{ "url": "webpack:///~/", "path": "${webRoot}/node_modules/" },
+				{ "url": "webpack:///./~/", "path": "${webRoot}/node_modules/" },
+				{ "url": "webpack:///./", "path": "${webRoot}/" },
+				{ "url": "webpack:///src/", "path": "${webRoot}/src/" },
+				{ "url": "webpack:///node_modules/", "path": "${webRoot}/node_modules/" },
+				{ "url": "webpack:///webpack", "path": null },
+				{ "url": "webpack:///(webpack)", "path": null },
+				{ "url": "webpack:///pages/", "path": "${webRoot}/pages/" },
+				{
+					"url": "webpack://[name]_[chunkhash]/node_modules/",
+					"path": "${webRoot}/node_modules/"
+				},
+				{ "url": "webpack://[name]_[chunkhash]/", "path": null },
+				{ "url": "webpack:///", "path": "" }
+			]
+		},
+		{
 			"name": "Launch Chrome",
-			"sourceMaps": true,
 			"outFiles": ["./client/public/js/*.js", "!**/node_modules/**"],
 			"request": "launch",
 			"type": "pwa-chrome",
 			"url": "http://localhost:5000",
 			"webRoot": "${workspaceFolder}/client",
-			"postDebugTask": "Linux kill webpack"
+			"postDebugTask": "Linux kill webpack",
+			"sourceMaps": true
 		},
 		{
 			"name": "Development Backend",
@@ -38,7 +64,18 @@
 	],
 	"compounds": [
 		{
-			"name": "start debug session",
+			"name": "start firefox debug session",
+			"configurations": [
+				"Launch FireFox",
+				"TSC Watcher Client",
+				"TSC Compiler Server",
+				"Development Backend"
+			],
+			"preLaunchTask": "start Webpack",
+			"stopAll": true
+		},
+		{
+			"name": "start chrome debug session",
 			"configurations": [
 				"Launch Chrome",
 				"TSC Watcher Client",

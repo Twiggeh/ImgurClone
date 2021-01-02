@@ -6,6 +6,8 @@ import styled from '@emotion/styled';
 import NewPostBtn from './components/NewPostBtn';
 import ImgurBtn from './components/ImgurBtn';
 import { Theme, useTheme } from '@emotion/react';
+import { IdentityContext } from './Body_index';
+import ProfileBtn from './components/ProfileBtn';
 
 const smallScreen = (theme: Theme) => `${theme.mq.phone} {
 		display: none;
@@ -20,6 +22,8 @@ const TitleBar = ({
 	css = '',
 }) => {
 	const theme = useTheme();
+	const { identity } = IdentityContext();
+
 	return (
 		<StyledBar css={css}>
 			<StyledGroup>
@@ -27,10 +31,14 @@ const TitleBar = ({
 				{newPostVis ? <NewPostBtn css={smallScreen(theme)} /> : null}
 			</StyledGroup>
 			{searchBar ? <SearchBar /> : null}
-			<StyledGroup>
-				{signIn ? <SignInButton css={smallScreen(theme)} /> : null}
-				{signUp ? <SignUpButton /> : null}
-			</StyledGroup>
+			{identity ? (
+				<ProfileBtn name={identity.userName} />
+			) : (
+				<StyledGroup>
+					{signIn ? <SignInButton css={smallScreen(theme)} /> : null}
+					{signUp ? <SignUpButton /> : null}
+				</StyledGroup>
+			)}
 		</StyledBar>
 	);
 };
