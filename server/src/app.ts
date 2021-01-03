@@ -174,10 +174,14 @@ app.use((req, res, next) => {
 });
 
 // Connect to database
-mongoose.connect(mongooseKey, { useNewUrlParser: true, useUnifiedTopology: true }, e => {
-	if (e) return void console.log('Mongoose failed to connect', e);
-	console.log('Mongoose connected successfully');
-});
+mongoose.connect(
+	mongooseKey,
+	{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
+	e => {
+		if (e) return void console.log('Mongoose failed to connect', e);
+		console.log('Mongoose connected successfully');
+	}
+);
 
 // Redirect http to https
 if (isProd) {
