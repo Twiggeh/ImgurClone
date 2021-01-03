@@ -52,31 +52,6 @@ export const SERVER_ROOT = resolve(__dirname, '../');
 
 const app = express();
 
-// Configure CORS
-const allowedOrigins = [`https://${hostname}`];
-
-if (!isProd)
-	allowedOrigins.push(
-		'localhost',
-		'http://localhost:5050',
-		'http://localhost:5000',
-		'http://127.0.0.1:5050',
-		undefined
-	);
-
-app.use(
-	cors({
-		origin: (origin, cb) => {
-			if (!allowedOrigins.includes(origin)) {
-				const msg = `The CORS policy doesn't allow access from ${origin}.`;
-				return cb(msg as any, false);
-			}
-			return cb(null, true);
-		},
-		credentials: true,
-	})
-);
-
 // Initialize Sessions
 const MongoDBStore = MongoDBStoreConstructor(session);
 
@@ -87,7 +62,7 @@ app.use(
 		saveUninitialized: false,
 		cookie: {
 			maxAge: 1000 * 60 * 60 * 24 * 7,
-			sameSite: 'none',
+			sameSite: 'lax',
 		},
 		store: new MongoDBStore({
 			uri: mongooseKey,
@@ -117,6 +92,33 @@ app.use(
 			custom_params: { access_type: 'offline', prompt: 'select_account' },
 			callback: '/auth_redirect/google',
 		},
+	})
+);
+
+// Configure CORS
+const allowedOrigins = [`https://${hostname}`];
+
+if (!isProd)
+	allowedOrigins.push(
+		'localhost',
+		'http://localhost:5050',
+		'http://localhost:5000',
+		'http://127.0.0.1:5050',
+		undefined
+	);
+
+app.use(
+	cors({
+		origin: (origin, cb) => {
+			const allowedOriginIndex = allowedOrigins.indexOf(origin);
+			if (allowedOriginIndex === -1) {
+				const msg = `The CORS policy doesn't allow access from ${origin}.`;
+				return cb(msg as any, false);
+			}
+			// @ts-ignore
+			return cb(null, allowedOrigins[allowedOriginIndex]);
+		},
+		credentials: true,
 	})
 );
 
@@ -194,6 +196,18 @@ if (isProd) {
 // routes
 
 app.use('/auth_redirect', Auth_Redirect);
+
+app.use('/logout', async (req, res) => {
+	try {
+		await new Promise<void | string>((res, rej) =>
+			req.session.destroy(err => (err ? rej(err) : res()))
+		);
+		res.redirect('/');
+	} catch (e) {
+		// TODO : PROPER ERROR LOGGING
+		console.error(e);
+	}
+});
 
 app.get('/public/uploads/*', (req, res) => {
 	res.sendFile(join(SERVER_ROOT, req.url));

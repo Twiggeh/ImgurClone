@@ -8,6 +8,7 @@ import ImgurBtn from './components/ImgurBtn';
 import { Theme, useTheme } from '@emotion/react';
 import { IdentityContext } from './Body_index';
 import ProfileBtn from './components/ProfileBtn';
+import LogOutBtn from './components/LogOutBtn';
 
 interface ITitleBar {
 	logoVis?: boolean;
@@ -24,6 +25,9 @@ interface ITitleBar {
 }
 
 const smallScreen = (theme: Theme) => `${theme.mq.phone} {
+		display: none;
+	}`;
+const mediumScreen = (theme: Theme) => `${theme.mq.tablet} {
 		display: none;
 	}`;
 
@@ -57,7 +61,10 @@ const TitleBar: React.FC<ITitleBar> = ({
 			</StyledGroup>
 			{searchBar ? <SearchBar /> : null}
 			{identity ? (
-				<ProfileBtn name={identity.userName} css={ProfileColor} />
+				<StyledGroup>
+					<ProfileBtn name={identity.userName} css={ProfileColor} />
+					<LogOutBtn css={mediumScreen(theme)} />
+				</StyledGroup>
 			) : (
 				<StyledGroup>
 					{signIn ? <SignInButton css={smallScreen(theme) + SignInColor} /> : null}
