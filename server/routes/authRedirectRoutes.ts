@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { AuthReq } from '../@types/global';
 import fetch from 'node-fetch';
 import { AddUserFn } from '../gql/AddUserResolver.js';
+import User from '../Models/User.js';
 
 const router = Router();
 
@@ -35,6 +36,19 @@ router.get('/google*', async (req: AuthReq, res, next) => {
 
 			const googleUserData: GoogleResult = await request.json();
 
+			// If someone is trying to add an account, but already having one
+			const existingUser = await User.findOne({ 'google.id': googleUserData.id });
+			if (existingUser) {
+				req.session.userId = existingUser.id;
+				const result = await existingUser.updateOne({
+					$set: {
+						'google.accessToken': access_token,
+						'google.refreshToken': refresh_token,
+					},
+				});
+				return res.redirect('http://localhost:5000/profile');
+			}
+
 			const localUserData = await AddUserFn({
 				AddUserInput: {
 					profilePicture: googleUserData.picture,
@@ -50,8 +64,8 @@ router.get('/google*', async (req: AuthReq, res, next) => {
 
 			if (localUserData.__typename === 'AddUserFailure')
 				throw new Error(localUserData.message);
-
 			req.session.userId = localUserData.id;
+
 			// await new Promise((res, rej) => req.session.save(err => (err ? rej(err) : res())));
 			return res.redirect('http://localhost:5000/profile');
 		}
