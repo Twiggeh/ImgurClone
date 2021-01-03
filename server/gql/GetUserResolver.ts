@@ -2,17 +2,16 @@ import { QueryGetUserArgs, QueryResolvers, ResolversTypes } from '../generated/g
 import User from '../Models/User.js';
 
 export const GetUserFn = async ({
-	email,
 	userName,
 	mongoId,
 }: QueryGetUserArgs): Promise<ResolversTypes['GetUserResult']> => {
 	try {
-		const UserQuey = { email, userName };
+		const UserQuey = { userName };
 
 		const user = mongoId ? await User.findById(mongoId) : await User.findOne(UserQuey);
 
 		return {
-			__typename: 'GetUserResultSuccess',
+			__typename: 'GetUserSuccess',
 			message: `User found.`,
 			userName: user.userName,
 			profilePicture: user.profilePicture,
@@ -20,7 +19,7 @@ export const GetUserFn = async ({
 	} catch (e) {
 		console.error(e);
 		return {
-			__typename: 'GetUserResultFailure',
+			__typename: 'GetUserFailure',
 			message: `Could not find user : ${userName}`,
 		};
 	}

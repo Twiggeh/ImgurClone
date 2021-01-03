@@ -1,18 +1,18 @@
 import { gql } from 'apollo-server-express';
 
 export const GetUserType = gql`
-	type GetUserResultSuccess {
+	type GetUserSuccess {
 		message: String!
 		userName: String!
 		profilePicture: String
 	}
-	type GetUserResultFailure {
+	type GetUserFailure {
 		message: String!
 	}
 
-	union GetUserResult = GetUserResultSuccess | GetUserResultFailure
+	union GetUserResult = GetUserSuccess | GetUserFailure
 
 	extend type Query {
-		getUser(email: String, userName: String, mongoId: String): GetUserResult
+		getUser(userName: String, mongoId: String): GetUserResult
 	}
 `;
