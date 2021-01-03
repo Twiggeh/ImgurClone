@@ -18,7 +18,8 @@ const Register = () => {
 
 	const isValid = validateInputs(formState);
 
-	const [addUser] = AddUserMutation();
+	const [addUser] = useAddUserMutation();
+
 	const addUserVars: AddUserMutationVariables = {
 		addUserInput: {
 			userName: formState.userName,
@@ -35,13 +36,13 @@ const Register = () => {
 			<BackHomeBtn />
 			<Center>
 				<SpaceItems>
-					<SmallHeader>Login with</SmallHeader>
+					<MiniTitle>Login with</MiniTitle>
 					<LayoutLogins>
 						<Button href={`${BACKEND_SERVER_URL}/oauth/google`}>google</Button>
 						<Button href='todo'>github</Button>
 					</LayoutLogins>
 
-					<SmallHeader>or register with your email</SmallHeader>
+					<MiniTitle>or register with your email</MiniTitle>
 
 					<StyledForm>
 						<StyledLabel htmlFor='username'>
@@ -132,5 +133,4 @@ import {
 } from '../components/AuthComponents';
 import SignInButton from '../components/SignIn';
 import { OpenEyeSVG, ClosedEyeSVG } from '../../utils/assetImport';
-import { AddUserMutationVariables } from '../../generated/graphql';
-import AddUserMutation from './AddUserMutation';
+import { AddUserMutationVariables, useAddUserMutation } from '../../generated/graphql';

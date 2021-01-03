@@ -13,13 +13,3 @@ gql`
 		}
 	}
 `;
-
-const AddUserMutation = () => {
-	const addUser = useAddUserMutation();
-
-	return addUser;
-};
-
-export default AddUserMutation;
-
-import { useAddUserMutation } from '../../generated/graphql';
