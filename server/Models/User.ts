@@ -29,6 +29,8 @@ const UserSchema = new mongoose.Schema<IUser>({
 });
 
 UserSchema.pre<UserDocument>('save', async function (next) {
+	// TODO : ADD DEFAULT PROFILE IMAGE
+
 	// Validate all inputs
 	const errors: string[] = [];
 

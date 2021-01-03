@@ -5,6 +5,7 @@ import { GetPostType } from './GetPostType.js';
 import { AddPostType } from './AddPostType.js';
 import { UploadFileType } from './UploadFileType.js';
 import { GetMeType } from './GetMeType.js';
+import { SetUserType } from './SetUserType.js';
 
 const typeDefs = gql`
 	scalar Upload
@@ -21,6 +22,7 @@ const typeDefs = gql`
 	${GetMeType}
 	${AddPostType}
 	${AddUserType}
+	${SetUserType}
 `;
 
 export default typeDefs;

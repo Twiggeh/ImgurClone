@@ -1,4 +1,5 @@
 import { AddUserResolver } from './AddUserResolver.js';
+import { SetUserResolver } from './SetUserResolver.js';
 import { GetUserResolver } from './GetUserResolver.js';
 import { GetPostResolver } from './GetPostResolver.js';
 import { AddPostResolver } from './AddPostResolver.js';
@@ -14,6 +15,7 @@ const resolvers: Resolvers = {
 	Query: { getUser: GetUserResolver, getPost: GetPostResolver, getMe: GetMeResolver },
 	Mutation: {
 		addUser: AddUserResolver,
+		setUser: SetUserResolver,
 		addPost: AddPostResolver,
 		uploadFile: UploadFileResolver,
 		uploadFiles: UploadFilesResolver,
