@@ -21,13 +21,13 @@ const Login = () => {
 			<BackHomeBtn />
 			<Center>
 				<SpaceItems>
-					<SmallHeader>Login with</SmallHeader>
+					<MiniTitle>Login with</MiniTitle>
 					<LayoutLogins>
 						<Button href='todo'>google</Button>
 						<Button href='todo'>github</Button>
 					</LayoutLogins>
 
-					<SmallHeader>or login with your email</SmallHeader>
+					<MiniTitle>or login with your email</MiniTitle>
 
 					<StyledForm>
 						<StyledLabel htmlFor='email'>
@@ -84,7 +84,7 @@ import {
 	CenteredFormPage,
 	PassVisToggle,
 	PassWrap,
-	SmallHeader,
+	MiniTitle,
 	SpaceItems,
 	StyledForm,
 	StyledInput,

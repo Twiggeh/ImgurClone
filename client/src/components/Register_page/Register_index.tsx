@@ -124,7 +124,7 @@ import {
 	CenteredFormPage,
 	PassVisToggle,
 	PassWrap,
-	SmallHeader,
+	MiniTitle,
 	SpaceItems,
 	StyledForm,
 	StyledInput,

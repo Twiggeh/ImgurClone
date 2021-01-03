@@ -34,10 +34,11 @@ export const SpaceItems = styled.div`
 	}
 `;
 
-export const SmallHeader = styled.h4`
+export const MiniTitle = styled.h4<CustomCss>`
 	font-size: ${({ theme }) => theme.fontSize.mini};
 	text-align: center;
 	font-weight: 500;
+	${props => props.css}
 `;
 
 export const CenteredFormPage = styled.div`
