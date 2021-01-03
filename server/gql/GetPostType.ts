@@ -15,7 +15,7 @@ export const GetPostType = gql`
 	}
 	type Post {
 		postId: String!
-		userId: String
+		userId: String!
 		userName: String
 		profilePicture: String
 		addedDate: Date!
@@ -25,9 +25,14 @@ export const GetPostType = gql`
 	type PostResult {
 		success: Boolean!
 		message: String!
-		posts: [Post]
+		posts: [Post!]
 	}
 	extend type Query {
-		getPost(postId: String, userName: String, userId: String): PostResult
+		getPost(
+			postId: String
+			userName: String
+			userId: String
+			lastObjId: String
+		): PostResult!
 	}
 `;

@@ -4,7 +4,7 @@ import { CardSchema, ICard } from './Card.js';
 
 const PostSchema = new mongoose.Schema({
 	userId: {
-		required: false,
+		required: true,
 		type: String,
 	},
 	userName: {
@@ -26,7 +26,7 @@ const PostSchema = new mongoose.Schema({
 
 export interface IPost {
 	postId: string;
-	userId?: string;
+	userId: string;
 	userName?: string;
 	profilePicture?: string;
 	addedDate: number;
