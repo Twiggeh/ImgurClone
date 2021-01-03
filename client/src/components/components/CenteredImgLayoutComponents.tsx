@@ -29,7 +29,7 @@ export const SideBar = styled.div`
 
 export const Right = styled.div`
 	align-self: stretch;
-	flex: 0 1 33vw;
+	flex: 0 1 100%;
 	${props => props.theme.mq.phone} {
 		flex: 0 1 10vw;
 	}
@@ -37,23 +37,25 @@ export const Right = styled.div`
 
 export const Left = styled.div`
 	align-self: stretch;
-	flex: 0 1 33vw;
+	flex: 0 1 100%;
 	${props => props.theme.mq.phone} {
 		flex: 0 1 10vw;
 	}
 `;
 
-export const Center = styled.div`
+export const Center = styled.div<CustomCss>`
 	flex-direction: column;
 	justify-content: center;
-	flex: 0 1 60vw;
+	flex: 0 1 100%;
 	${props => props.theme.mq.phone} {
 		flex: 0 1 100vw;
 	}
+	${props => props.css}
 `;
 
-export const CenteredLayoutWrap = styled.div`
+export const CenteredLayoutWrap = styled.div<CustomCss>`
 	display: flex;
+	${props => props.css}
 `;
 
 export const CreatePostTitle = styled.h2`
