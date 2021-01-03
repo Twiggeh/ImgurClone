@@ -9,34 +9,59 @@ import { Theme, useTheme } from '@emotion/react';
 import { IdentityContext } from './Body_index';
 import ProfileBtn from './components/ProfileBtn';
 
+interface ITitleBar {
+	logoVis?: boolean;
+	newPostVis?: boolean;
+	searchBar?: boolean;
+	signIn?: boolean;
+	signUp?: boolean;
+	profCol?: string;
+	newPostCol?: string;
+	loginCol?: string;
+	signCol?: string;
+	imgurCol?: string;
+	css?: string;
+}
+
 const smallScreen = (theme: Theme) => `${theme.mq.phone} {
 		display: none;
 	}`;
 
-const TitleBar = ({
+const TitleBar: React.FC<ITitleBar> = ({
 	logoVis = true,
 	newPostVis = true,
 	searchBar = true,
 	signIn = true,
 	signUp = true,
+	profCol = '',
+	loginCol = '',
+	newPostCol = '',
+	signCol = '',
+	imgurCol = 'transparent',
 	css = '',
 }) => {
 	const theme = useTheme();
 	const { identity } = IdentityContext();
 
+	const ImgurColor = `background-color: ${imgurCol}`;
+	const NewPostColor = `background-color: ${newPostCol || theme.color.accent}`;
+	const ProfileColor = `background-color: ${profCol || theme.color.primary}`;
+	const SignInColor = `background-color: ${signCol || 'transparent'}`;
+	const SignUpColor = `background-color: ${loginCol || theme.color.primary}`;
+
 	return (
 		<StyledBar css={css}>
 			<StyledGroup>
-				{logoVis ? <ImgurBtn /> : null}
-				{newPostVis ? <NewPostBtn css={smallScreen(theme)} /> : null}
+				{logoVis ? <ImgurBtn css={ImgurColor} /> : null}
+				{newPostVis ? <NewPostBtn css={smallScreen(theme) + NewPostColor} /> : null}
 			</StyledGroup>
 			{searchBar ? <SearchBar /> : null}
 			{identity ? (
-				<ProfileBtn name={identity.userName} />
+				<ProfileBtn name={identity.userName} css={ProfileColor} />
 			) : (
 				<StyledGroup>
-					{signIn ? <SignInButton css={smallScreen(theme)} /> : null}
-					{signUp ? <SignUpButton /> : null}
+					{signIn ? <SignInButton css={smallScreen(theme) + SignInColor} /> : null}
+					{signUp ? <SignUpButton css={SignUpColor} /> : null}
 				</StyledGroup>
 			)}
 		</StyledBar>
