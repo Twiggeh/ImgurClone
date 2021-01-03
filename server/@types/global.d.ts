@@ -34,6 +34,7 @@ interface MyContext {
 	currentUser?: {
 		userName: string;
 		profilePicture?: string;
+		mongoId: string;
 	};
 }
 

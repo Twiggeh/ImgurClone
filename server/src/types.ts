@@ -1,7 +1,3 @@
-export type MyContext = {
-	user: null | { userName: string };
-};
-
 export type Optional<Input> = {
 	[P in keyof Input]?: Input[P];
 };
