@@ -49,8 +49,6 @@ export const CenteredFormPage = styled.div`
 	background-color: ${props => props.theme.color.background};
 `;
 
-type CustomCss = { css?: string };
-
 export const AlignRight = styled.div<CustomCss>`
 	display: flex;
 	justify-content: flex-end;

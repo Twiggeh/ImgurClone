@@ -1,20 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import React from 'react';
-import Home from './Home_index';
-import Register from './Register_page/Register_index';
-import Upload from './Upload_page/Upload_index';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Login from './Login_index';
-import Profile from './Profile_page/Profile_index';
-import Posts_Index from './Posts_page/Posts_index';
-import {
-	/* useGetMeLazyQuery */ Exact,
-	GetMeQuery,
-	useGetMeQuery,
-} from '../generated/graphql';
-import createCtx from './Providers/createStateCtx';
-import type { ApolloError, ApolloQueryResult } from '@apollo/client';
 
+// AUTH PROVIDER
 const [context, IdentityProvider] = createCtx<{
 	loading: boolean;
 	identity?: { userName: string; profilePicture?: string | null; userId: string };
@@ -28,14 +14,11 @@ const [context, IdentityProvider] = createCtx<{
 			  >
 			| undefined
 	) => Promise<ApolloQueryResult<GetMeQuery>>;
-	// refreshIdentity: () => void;
 }>();
 
 export const IdentityContext = context;
 
 const Body = () => {
-	// const [identity, setIdentity] = useState(true);
-	//const refreshIdentity = () => setIdentity(c => !c);
 	// TODO : Make lazy
 	const { data, loading, error, refetch } = useGetMeQuery();
 
@@ -85,3 +68,19 @@ const Body = () => {
 };
 
 export default Body;
+
+import React from 'react';
+import Home from './Home_index';
+import Register from './Register_page/Register_index';
+import Upload from './Upload_page/Upload_index';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Login from './Login_index';
+import Profile from './Profile_page/Profile_index';
+import Posts_Index from './Posts_page/Posts_index';
+import {
+	/* useGetMeLazyQuery */ Exact,
+	GetMeQuery,
+	useGetMeQuery,
+} from '../generated/graphql';
+import createCtx from './Providers/createStateCtx';
+import type { ApolloError, ApolloQueryResult } from '@apollo/client';

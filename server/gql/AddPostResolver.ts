@@ -1,29 +1,29 @@
-import Post from '../Models/Post.js';
-import { Resolvers } from '../generated/gql.js';
+import Post, { IPost } from '../Models/Post.js';
+import type { MakeOptional, Resolvers } from '../generated/gql.js';
+import type { Optional } from 'src/types.js';
 
 export const AddPostResolver: Resolvers['Mutation']['addPost'] = async (
 	_,
 	{ cards },
-	{ req, currentUser: { mongoId, profilePicture, userName } }
+	{ req, currentUser }
 ) => {
-	const newPost = new Post({
-		userId: mongoId,
-		userName,
-		profilePicture,
+	const postData: Optional<IPost> = {
+		userId: currentUser.mongoId ? currentUser.mongoId : req.sessionID,
+		userName: currentUser.userName,
+		profilePicture: currentUser.profilePicture,
 		cards,
-	});
+	};
+
 	try {
-		// TODO : Saving the post should not save the path to the images, just their filename
+		const newPost = new Post(postData);
+
 		const savedPost = await newPost.save();
 
-		if (req.session?.userId === undefined) {
-			// create a new User
+		if (!currentUser.mongoId) {
 			req.session.noAccountPosts = req.session.noAccountPosts
 				? [...req.session.noAccountPosts, savedPost.id]
 				: [savedPost.id];
-			//	await new Promise<string | void>((res, rej) =>
-			// req.session.save(err => (err ? rej(err) : res))
-			//);
+
 			req.session.save();
 		}
 
