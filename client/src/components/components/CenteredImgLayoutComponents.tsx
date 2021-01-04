@@ -66,6 +66,7 @@ export const CreatePostTitle = styled.h2`
 `;
 
 export const CardImg = styled.img`
+	display: block;
 	width: 100%;
 `;
 
