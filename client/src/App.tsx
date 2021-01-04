@@ -22,25 +22,9 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 	}),
 });
 
-// client
-// 	.query({
-// 		query: gql`
-// 			query GetUser {
-// 				getUser(email: "twiggeh99@gmail.com") {
-// 					success
-// 					message
-// 					userName
-// 					email
-// 					profilePicture
-// 				}
-// 			}
-// 		`,
-// 	})
-// 	.then(res => console.log(res));
-
 const theme: Theme = {
 	fontSize: {
-		mini: 'clamp(12px, .8vw, 20px)',
+		mini: 'clamp(12px, 1vw, 25px)',
 		small: 'clamp(18px, 1.2vw, 35px)',
 		medium: 'clamp(28px, 2vw, 45px)',
 		big: 'clamp(40px, 4vw, 200px)',
