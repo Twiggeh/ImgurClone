@@ -22,16 +22,21 @@ export const GetPostType = gql`
 		comments: [Comment]
 		cards: [CardOut!]!
 	}
-	type PostResult {
-		success: Boolean!
+	type PostSuccess {
 		message: String!
-		posts: [Post!]
+		page: Int!
+		posts: [Post!]!
 	}
+	type PostFailure {
+		message: String!
+	}
+	union PostResult = PostSuccess | PostFailure
 	extend type Query {
 		getPost(
 			postId: String
 			userName: String
 			userId: String
+			page: Int
 			lastObjId: String
 		): PostResult!
 	}

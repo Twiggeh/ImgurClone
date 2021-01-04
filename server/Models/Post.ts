@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { Comment, CommentSchema } from './Comment.js';
 import { CardSchema, ICard } from './Card.js';
 
-const PostSchema = new mongoose.Schema({
+export const PostSchema = new mongoose.Schema({
 	userId: {
 		required: true,
 		type: String,
@@ -34,7 +34,7 @@ export interface IPost {
 	cards: ICard[];
 }
 
-interface PostDocument extends IPost, mongoose.Document {}
+export interface PostDocument extends IPost, mongoose.Document {}
 
 export interface PostModel extends mongoose.Model<PostDocument> {}
 
