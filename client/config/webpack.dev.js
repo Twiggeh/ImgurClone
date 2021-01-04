@@ -65,7 +65,7 @@ module.exports = {
 			{
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
-				include: '/mnt/Storage/projects/Webdev/ImgurClone/client/src/index.js',
+				include: /src/,
 				use: [
 					{
 						loader: 'babel-loader',

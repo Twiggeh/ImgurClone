@@ -40,6 +40,7 @@
 		{
 			"name": "Development Backend",
 			"cwd": "${workspaceFolder}/server",
+			"outFiles": ["${workspaceFolder}/server/dist/**/*.js", "!**/node_modules/**"],
 			"restart": true,
 			"request": "launch",
 			"type": "pwa-node",
