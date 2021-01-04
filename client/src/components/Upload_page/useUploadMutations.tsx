@@ -24,7 +24,7 @@ gql`
 
 gql`
 	mutation addPost($cards: [Card]!) {
-		addPost(userId: "hello", cards: $cards) {
+		addPost(cards: $cards) {
 			... on AddPostSuccess {
 				message
 				url

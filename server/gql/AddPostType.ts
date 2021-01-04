@@ -15,12 +15,7 @@ export const AddPostType = gql`
 		location: String!
 	}
 	extend type Mutation {
-		addPost(
-			userId: String
-			userName: String
-			profilePicture: String
-			cards: [Card]!
-		): AddPostResult!
+		addPost(cards: [Card]!): AddPostResult!
 	}
 `;
 // TODO : Figure out how to return multiple things from one Mutation

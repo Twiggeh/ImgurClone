@@ -84,9 +84,6 @@ const CreatePost: React.FC<ICreatePost> = ({
 
 		uploadPost({
 			variables: {
-				// userId: 'TODO',
-				// userName: 'TODO',
-				// profilePicture: 'TODO',
 				cards,
 			},
 		});

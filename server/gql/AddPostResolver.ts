@@ -3,10 +3,11 @@ import { Resolvers } from '../generated/gql.js';
 
 export const AddPostResolver: Resolvers['Mutation']['addPost'] = async (
 	_,
-	{ userId, userName, profilePicture, cards }
+	{ cards },
+	{ req, currentUser: { mongoId, profilePicture, userName } }
 ) => {
 	const newPost = new Post({
-		userId,
+		userId: mongoId,
 		userName,
 		profilePicture,
 		cards,
@@ -14,6 +15,18 @@ export const AddPostResolver: Resolvers['Mutation']['addPost'] = async (
 	try {
 		// TODO : Saving the post should not save the path to the images, just their filename
 		const savedPost = await newPost.save();
+
+		if (req.session?.userId === undefined) {
+			// create a new User
+			req.session.noAccountPosts = req.session.noAccountPosts
+				? [...req.session.noAccountPosts, savedPost.id]
+				: [savedPost.id];
+			//	await new Promise<string | void>((res, rej) =>
+			// req.session.save(err => (err ? rej(err) : res))
+			//);
+			req.session.save();
+		}
+
 		return {
 			__typename: 'AddPostSuccess',
 			message: `Post : has been created Successfully`,
