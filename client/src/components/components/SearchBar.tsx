@@ -259,10 +259,23 @@ const SearchBar = () => {
 						/>
 					) : null}
 				</InputWrapper>
+				{showDropDown ? (
+					<DarkenBackground onClick={() => setSearch('showDropDown', false)} />
+				) : null}
 			</label>
 		</>
 	);
 };
+
+var DarkenBackground = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 20;
+	backdrop-filter: blur(1px) brightness(80%);
+`;
 
 var SearchSVGWrapper = styled.p`
 	width: 1.5em;
