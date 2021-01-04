@@ -1,4 +1,9 @@
 import { QueryResolvers } from '../generated/gql.js';
 
-export const GetMeResolver: QueryResolvers['getMe'] = (_, args, context) =>
-	context.currentUser;
+// @ts-ignore
+export const GetMeResolver: QueryResolvers['getMe'] = (_, args, { currentUser }) => {
+	if ('mongoId' in currentUser) {
+		return currentUser;
+	}
+	return null;
+};

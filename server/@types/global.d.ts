@@ -32,11 +32,18 @@ type SessionCtx = {
 	Partial<SessionData>;
 
 interface MyContext {
-	currentUser?: {
-		userName: string;
-		profilePicture?: string;
-		mongoId: string;
-	};
+	currentUser:
+		| {
+				userName: string;
+				profilePicture?: string;
+				mongoId: string;
+		  }
+		| {
+				userName?: undefined;
+				profilePicture?: undefined;
+				mongoId?: undefined;
+		  };
+
 	req: AuthReq;
 }
 

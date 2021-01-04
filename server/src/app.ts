@@ -128,7 +128,7 @@ const gqlServer = new ApolloServer({
 	typeDefs,
 	resolvers,
 	context: async ({ req }: { req: AuthReq }): Promise<MyContext> => {
-		const myContext: MyContext = { req };
+		const myContext: MyContext = { req, currentUser: {} };
 		try {
 			if (req.session.userId) {
 				const currentUser = await fetchCurrentUser(req.session.userId);
