@@ -70,10 +70,11 @@ export const LayoutLogins = styled.div`
 	background-color: ${({ theme }) => theme.color.lightBackground};
 `;
 
-export const Center = styled.div`
+export const Center = styled.div<CustomCss>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	${props => props.css}
 `;
 
 export const StyledForm = styled.form`
