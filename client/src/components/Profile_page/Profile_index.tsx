@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
-import { SetUserMutationVariables, useSetUserMutation } from '../../generated/graphql';
+import {
+	SetUserMutationVariables,
+	useGetPostQuery,
+	useSetUserMutation,
+} from '../../generated/graphql';
 
 const Profile = () => {
 	const history = useHistory();
@@ -16,7 +20,7 @@ const Profile = () => {
 		profilePicture: identity?.profilePicture ? identity.profilePicture : '',
 	});
 
-	const [setUser, { data, loading, error }] = useSetUserMutation({
+	const [setUser, { loading, error }] = useSetUserMutation({
 		onCompleted: ({ setUser }) => {
 			if (setUser?.__typename !== 'GetUserSuccess') return;
 			// TODO : Display data
@@ -55,13 +59,24 @@ const Profile = () => {
 		(formState.profilePicture !== '' && identity.profilePicture === undefined) ||
 		formState.userName !== identity?.userName;
 
+	// Fetch the Users Posts
+
+	const { data: postQueryData } = useGetPostQuery({
+		variables: { userId: identity?.userId },
+	});
+
+	const UsersPosts =
+		postQueryData?.getPost.__typename === 'PostSuccess'
+			? postQueryData.getPost.posts
+			: null;
+
 	return (
 		<Page>
 			{JSON.stringify(error) /*TODO : Handle errors properly*/}
 			<TitleBar profCol={anyChange ? 'transparent' : undefined} />
 			<CenteredLayoutWrap css='margin-top: 4rem;'>
 				<Left></Left>
-				<Center css='flex-basis: 200%;'>
+				<Center css='flex-basis: 100%;'>
 					<StyledBigTitle css='margin-top: 0;'>Profile</StyledBigTitle>
 					<StyledSmallTitle css='text-align: left;'>Username</StyledSmallTitle>
 					<StyledInput
@@ -82,6 +97,12 @@ const Profile = () => {
 						</TitleInputWrap>
 						<StyledImg src={formState.profilePicture}></StyledImg>
 					</FlexContainer>
+					{UsersPosts ? (
+						<>
+							<StyledBigTitle css='margin-top: 1.5em;'>Your Posts</StyledBigTitle>
+							<PostList posts={UsersPosts} />
+						</>
+					) : null}
 				</Center>
 				<Right>
 					{anyChange ? (
@@ -145,3 +166,4 @@ import { Page } from '../components/Page';
 import { StyledBigTitle, StyledSmallTitle } from '../components/RandomComponents';
 
 import TitleBar from '../TitleBar';
+import PostList from '../components/PostList';
