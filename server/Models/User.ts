@@ -4,7 +4,7 @@ import { genSalt, hash } from 'bcrypt';
 const SALT_WORK = 10;
 
 const LocalSchema = new mongoose.Schema({
-	email: { required: true, type: String, unique: true },
+	email: { required: true, type: String, unique: true, sparse: true },
 	password: { required: true, type: String },
 });
 

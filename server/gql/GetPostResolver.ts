@@ -13,14 +13,20 @@ const paginatedSearch = <T extends Document, U extends Model<T>>(
 ) => {
 	if (!lastObjId) {
 		if (postQuery._id) {
-			return model.findById(postQuery._id).limit(PAGINATION_DEFAULT);
+			return model.findById(postQuery._id).sort({ _id: -1 }).limit(PAGINATION_DEFAULT);
 		}
 		// @ts-ignore
-		return model.find(postQuery).limit(PAGINATION_DEFAULT);
+		return model.find(postQuery).sort({ _id: -1 }).limit(PAGINATION_DEFAULT);
 	}
 	// TODO : Implement pagination without lastObjectId
 	// @ts-ignore
-	return model.find({ _id: { $gt: lastObjId }, ...postQuery }).limit(PAGINATION_DEFAULT);
+	return (
+		model
+			// @ts-ignore
+			.find({ _id: { $gt: lastObjId }, ...postQuery })
+			.sort({ _id: -1 })
+			.limit(PAGINATION_DEFAULT)
+	);
 };
 
 export const GetPostResolver: QueryResolvers['getPost'] = async (

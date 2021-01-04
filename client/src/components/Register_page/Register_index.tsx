@@ -39,7 +39,9 @@ const Register = () => {
 					<MiniTitle>Login with</MiniTitle>
 					<LayoutLogins>
 						<Button href={`${BACKEND_SERVER_URL}/oauth/google`}>google</Button>
-						<Button href='todo'>github</Button>
+						<Button disabled={true} href='todo'>
+							github
+						</Button>
 					</LayoutLogins>
 
 					<MiniTitle>or register with your email</MiniTitle>
@@ -48,6 +50,8 @@ const Register = () => {
 						<StyledLabel htmlFor='username'>
 							Username
 							<StyledInput
+								disabled={true}
+								placeholder='Currently not available'
 								type='text'
 								name='username'
 								value={formState.userName}
@@ -58,6 +62,8 @@ const Register = () => {
 						<StyledLabel htmlFor='email'>
 							E-Mail
 							<StyledInput
+								disabled={true}
+								placeholder='Currently not available'
 								name='email'
 								value={formState.email}
 								onChange={e => updateForm('email', e.target.value)}
@@ -68,6 +74,8 @@ const Register = () => {
 							Password
 							<PassWrap>
 								<StyledInput
+									disabled={true}
+									placeholder='Currently not available'
 									type={passVis.pass ? 'text' : 'password'}
 									name='password'
 									value={formState.password}
@@ -83,6 +91,8 @@ const Register = () => {
 							Repeat Password
 							<PassWrap>
 								<StyledInput
+									disabled={true}
+									placeholder='Currently not available'
 									type={passVis.confirm ? 'text' : 'password'}
 									name='confirmPassword'
 									value={formState.confirmPassword}

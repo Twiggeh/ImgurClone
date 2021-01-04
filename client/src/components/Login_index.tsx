@@ -23,8 +23,10 @@ const Login = () => {
 				<SpaceItems>
 					<MiniTitle>Login with</MiniTitle>
 					<LayoutLogins>
-						<Button href='todo'>google</Button>
-						<Button href='todo'>github</Button>
+						<Button href={`${BACKEND_SERVER_URL}/oauth/google`}>google</Button>
+						<Button disabled={true} href='todo'>
+							github
+						</Button>
 					</LayoutLogins>
 
 					<MiniTitle>or login with your email</MiniTitle>
@@ -33,6 +35,8 @@ const Login = () => {
 						<StyledLabel htmlFor='email'>
 							E-Mail
 							<StyledInput
+								disabled={true}
+								placeholder='Currently not available'
 								name='email'
 								value={formState.email}
 								onChange={e => updateForm('email', e.target.value)}
@@ -43,6 +47,8 @@ const Login = () => {
 							Password
 							<PassWrap>
 								<StyledInput
+									disabled={true}
+									placeholder='Currently not available'
 									type={passVis.pass ? 'text' : 'password'}
 									name='password'
 									value={formState.password}
