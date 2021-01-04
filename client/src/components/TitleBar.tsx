@@ -86,7 +86,7 @@ var StyledGroup = styled.div`
 
 var StyledBar = styled.div<{ css: string }>`
 	display: flex;
-	align-items: center;
+	align-content: center;
 	flex-direction: row;
 	justify-content: space-between;
 	padding: 0.4em 1em 0.4em 1em;
