@@ -1,7 +1,12 @@
 const Posts_Index: React.FC = () => {
+	const getQuery = useQueryParams();
+
+	const userId = getQuery.get('userId');
+	const userName = getQuery.get('userName');
+
 	const { postId } = useParams<{ postId: string }>();
 	// TODO : Add loading / error shower
-	const { data } = useGetPostQuery({ variables: { postId } });
+	const { data } = useGetPostQuery({ variables: { postId, userId } });
 
 	const posts = data?.getPost?.__typename === 'PostSuccess' ? data.getPost.posts : [];
 
@@ -11,6 +16,7 @@ const Posts_Index: React.FC = () => {
 			<CenteredLayoutWrap>
 				<Left></Left>
 				<Center>
+					{userName ? <StyledBigTitle>All uploads by : {userName}</StyledBigTitle> : null}
 					<PostList posts={posts} />
 				</Center>
 				<Right></Right>
@@ -32,4 +38,6 @@ import {
 } from '../components/CenteredImgLayoutComponents';
 import { Page } from '../components/Page';
 import PostList from '../components/PostList';
+import { StyledBigTitle } from '../components/RandomComponents';
+import useQueryParams from '../hooks/useQuery';
 import TitleBar from '../TitleBar';

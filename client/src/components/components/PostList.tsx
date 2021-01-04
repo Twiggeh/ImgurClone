@@ -31,7 +31,7 @@ const PostList: React.FC<{
 										<CardFooter
 											onClick={e => {
 												e.preventDefault();
-												history.push(`/posts/${userId}`);
+												history.push(`/posts?userId=${userId}&userName=${userName}`);
 											}}>
 											<MiniTitle>uploaded by {userName}</MiniTitle>
 											<MiniImg src={profilePicture ? profilePicture : ''} />
@@ -61,6 +61,7 @@ var ImageWrapper = styled.div`
 
 var MiniImg = styled.img`
 	width: 10%;
+	display: block;
 `;
 
 var CardFooter = styled.a`
