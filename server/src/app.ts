@@ -24,7 +24,7 @@ import resolvers from '../gql/resolvers.js';
 
 // Routes
 import Auth_Redirect from '../routes/authRedirectRoutes.js';
-import { AuthReq } from '../@types/global.js';
+import { AuthReq, MyContext } from '../@types/global.js';
 
 config();
 
@@ -127,12 +127,14 @@ const gqlServer = new ApolloServer({
 	uploads: false,
 	typeDefs,
 	resolvers,
-	context: async ({ req }: { req: AuthReq }) => {
+	context: async ({ req }: { req: AuthReq }): Promise<MyContext> => {
+		const myContext: MyContext = { req };
 		try {
 			if (req.session.userId) {
 				const currentUser = await fetchCurrentUser(req.session.userId);
-				return { currentUser };
+				myContext.currentUser = currentUser;
 			}
+			return myContext;
 		} catch (e) {
 			console.warn(
 				`Unable to authenticate, userId ${req.session.userId} does not yield any users`

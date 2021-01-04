@@ -17,7 +17,7 @@ import type { ApolloError, ApolloQueryResult } from '@apollo/client';
 
 const [context, IdentityProvider] = createCtx<{
 	loading: boolean;
-	identity?: { userName: string; profilePicture?: string | null };
+	identity?: { userName: string; profilePicture?: string | null; userId: string };
 	error?: ApolloError;
 	refetch: (
 		variables?:
@@ -39,9 +39,16 @@ const Body = () => {
 	// TODO : Make lazy
 	const { data, loading, error, refetch } = useGetMeQuery();
 
+	const identity = data?.getMe
+		? {
+				userName: data.getMe.userName,
+				profilePicture: data.getMe.profilePicture,
+				userId: data.getMe.mongoId,
+		  }
+		: undefined;
+
 	return (
-		<IdentityProvider
-			value={{ loading, error, identity: data?.getMe ? data.getMe : undefined, refetch }}>
+		<IdentityProvider value={{ loading, error, identity, refetch }}>
 			<BrowserRouter>
 				<Switch>
 					<Route path='/' exact>

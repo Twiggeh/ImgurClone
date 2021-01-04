@@ -5,6 +5,7 @@ gql`
 		getMe {
 			userName
 			profilePicture
+			mongoId
 		}
 	}
 `;

@@ -27,6 +27,7 @@ type SessionCtx = {
 		};
 	};
 	userId?: string;
+	noAccountPosts?: string[];
 } & Session &
 	Partial<SessionData>;
 
@@ -36,6 +37,7 @@ interface MyContext {
 		profilePicture?: string;
 		mongoId: string;
 	};
+	req: AuthReq;
 }
 
 type File = Promise<{
