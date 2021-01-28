@@ -10,20 +10,27 @@ const validateInputs: ValidateInputs = formState => {
 	const whichSucceeded: ReturnType<ValidateInputs>['1'] = {};
 
 	const allValid = Object.keys(formState).reduce<boolean>((acc, curKey) => {
-		let condition: boolean;
+		let didFail: boolean;
+
 		switch (curKey) {
 			case 'email':
-				condition = !isEmail(formState.email);
-				whichSucceeded.email = !condition;
+				didFail = !isEmail(formState.email);
+				whichSucceeded.email = !didFail;
+				break;
+			case 'confirmPassword':
+			case 'password':
+				didFail = formState.password !== formState.confirmPassword;
+				whichSucceeded.password = !didFail;
+				whichSucceeded.confirmPassword = !didFail;
 				break;
 			default:
-				condition = formState[String(curKey)] === '';
+				didFail = formState[String(curKey)] === '';
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
-				whichSucceeded[String(curKey)] = !condition;
+				whichSucceeded[String(curKey)] = !didFail;
 				break;
 		}
-		return acc === true || condition;
+		return acc === true || didFail;
 	}, false);
 
 	return [allValid, whichSucceeded];
