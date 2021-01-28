@@ -39,7 +39,7 @@ const Login = () => {
 						<StyledLabel htmlFor='email'>
 							E-Mail
 							{showEmailError ? (
-								<StyledLabelError>- Email formatted incorrectly</StyledLabelError>
+								<StyledLabelError>- Email incorrectly formatted</StyledLabelError>
 							) : null}
 							<StyledInput
 								name='email'
