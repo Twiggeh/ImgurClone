@@ -3,10 +3,11 @@ const Login = () => {
 	const [formState, setFormState] = useState({
 		email: '',
 		password: '',
+		emailVisited: false,
 	});
 
-	const updateForm = (key: keyof typeof formState, value: string) => {
-		setFormState(c => ({ ...c, [String(key)]: String(value) }));
+	const updateForm = (key: keyof typeof formState, value: string | boolean) => {
+		setFormState(c => ({ ...c, [String(key)]: value }));
 	};
 
 	// Password Visibility
@@ -14,7 +15,10 @@ const Login = () => {
 	const toggleVisibility = (name: string) =>
 		setPassVis(c => ({ ...c, [String(name)]: !c[String(name)] }));
 
-	const isValid = validateInputs(formState);
+	const [allValid, { email: emailIsCorrect }] = validateInputs(formState);
+
+	const showEmailError: boolean =
+		!formState.emailVisited || emailIsCorrect ? false : true;
 
 	return (
 		<CenteredFormPage>
@@ -34,12 +38,14 @@ const Login = () => {
 					<StyledForm>
 						<StyledLabel htmlFor='email'>
 							E-Mail
+							{showEmailError ? (
+								<StyledLabelError>- Email formatted incorrectly</StyledLabelError>
+							) : null}
 							<StyledInput
-								disabled={true}
-								placeholder='Currently not available'
 								name='email'
 								value={formState.email}
 								onChange={e => updateForm('email', e.target.value)}
+								onBlur={() => updateForm('emailVisited', true)}
 							/>
 						</StyledLabel>
 
@@ -47,8 +53,6 @@ const Login = () => {
 							Password
 							<PassWrap>
 								<StyledInput
-									disabled={true}
-									placeholder='Currently not available'
 									type={passVis.pass ? 'text' : 'password'}
 									name='password'
 									value={formState.password}
@@ -64,7 +68,7 @@ const Login = () => {
 					<AlignRight css={'* + * {margin-left: 0.2em;}'}>
 						<SignUpButton bgColor='transparent'>need an account?</SignUpButton>
 						<Button
-							disabled={isValid}
+							disabled={allValid}
 							onClick={e => {
 								e.preventDefault();
 							}}>
@@ -95,6 +99,7 @@ import {
 	StyledForm,
 	StyledInput,
 	StyledLabel,
+	StyledLabelError,
 } from './components/AuthComponents';
 import SignUpButton from './components/SignUpButton';
 import { ClosedEyeSVG, OpenEyeSVG } from '../utils/assetImport';

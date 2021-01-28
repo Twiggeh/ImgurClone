@@ -88,6 +88,14 @@ export const StyledLabel = styled.label`
 	}
 	display: block;
 	font-weight: 500;
+	position: relative;
+	user-select: none;
+`;
+
+export const StyledLabelError = styled.span`
+	margin-left: 1em;
+	user-select: none;
+	color: ${({ theme }) => theme.color.danger};
 `;
 
 export const StyledInput = styled.input<CustomCss>`
