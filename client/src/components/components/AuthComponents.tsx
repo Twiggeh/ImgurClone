@@ -134,3 +134,19 @@ export const EmailError: React.FC<IEmailError> = ({
 
 	return <StyledLabelError>- Email incorrectly formatted</StyledLabelError>;
 };
+
+interface PasswordError {
+	password: boolean | undefined;
+	confirmPassword: boolean | undefined;
+	confirmPasswordVisited: boolean;
+}
+
+export const PasswordError: React.FC<PasswordError> = ({
+	password,
+	confirmPassword,
+	confirmPasswordVisited,
+}) => {
+	if ((confirmPassword && password) || !confirmPasswordVisited) return null;
+
+	return <StyledLabelError>- Passwords do not match</StyledLabelError>;
+};

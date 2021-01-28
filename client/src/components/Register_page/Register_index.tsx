@@ -74,6 +74,11 @@ const Register = () => {
 
 						<StyledLabel htmlFor='password'>
 							Password
+							<PasswordError
+								password={password}
+								confirmPassword={confirmPassword}
+								confirmPasswordVisited={formState.confirmPasswordVisited}
+							/>
 							<PassWrap>
 								<StyledInput
 									type={passVis.pass ? 'text' : 'password'}
@@ -89,12 +94,18 @@ const Register = () => {
 
 						<StyledLabel htmlFor='confirmPassword'>
 							Repeat Password
+							<PasswordError
+								password={password}
+								confirmPassword={confirmPassword}
+								confirmPasswordVisited={formState.confirmPasswordVisited}
+							/>
 							<PassWrap>
 								<StyledInput
 									type={passVis.confirm ? 'text' : 'password'}
 									name='confirmPassword'
 									value={formState.confirmPassword}
 									onChange={e => setForm('confirmPassword', e.target.value)}
+									onBlur={() => setForm('confirmPasswordVisited', true)}
 								/>
 								<PassVisToggle as='i' onClick={() => toggleVisibility('confirm')}>
 									{passVis.confirm ? <OpenEyeSVG /> : <ClosedEyeSVG />}
@@ -139,6 +150,7 @@ import {
 	StyledForm,
 	StyledInput,
 	StyledLabel,
+	PasswordError,
 } from '../components/AuthComponents';
 import SignInButton from '../components/SignIn';
 import { OpenEyeSVG, ClosedEyeSVG } from '../../utils/assetImport';
