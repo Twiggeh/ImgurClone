@@ -90,12 +90,15 @@ export const StyledLabel = styled.label`
 	font-weight: 500;
 	position: relative;
 	user-select: none;
+	position: relative;
 `;
 
 export const StyledLabelError = styled.span`
 	margin-left: 1em;
 	user-select: none;
 	color: ${({ theme }) => theme.color.danger};
+	right: 0;
+	position: absolute;
 `;
 
 export const StyledInput = styled.input<CustomCss>`
