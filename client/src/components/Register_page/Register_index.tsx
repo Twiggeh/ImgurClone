@@ -16,7 +16,7 @@ const Register = () => {
 	const toggleVisibility = (name: string) =>
 		setPassVis(c => ({ ...c, [String(name)]: !c[String(name)] }));
 
-	const isValid = validateInputs(formState);
+	const [allValid] = validateInputs(formState);
 
 	const [addUser] = useAddUserMutation();
 
@@ -108,7 +108,7 @@ const Register = () => {
 					<AlignRight css={'* + * {margin-left: 0.2em;}'}>
 						<SignInButton />
 						<Button
-							disabled={isValid}
+							disabled={allValid}
 							onClick={e => {
 								e.preventDefault();
 								addUser({ variables: addUserVars });

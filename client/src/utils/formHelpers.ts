@@ -4,15 +4,33 @@ const isEmail = (email: string) => {
 	return res.test(String(email).toLowerCase());
 };
 
-const validateInputs: <In extends { email: string } & Record<string, unknown>>(
-	obj: In
-) => boolean = formState => {
-	return Object.keys(formState).reduce<boolean>((acc, curKey) => {
-		const condition =
-			curKey === 'email' ? !isEmail(formState.email) : formState[String(curKey)] === '';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const validateInputs: ValidateInputs = formState => {
+	const whichSucceeded: ReturnType<ValidateInputs>['1'] = {};
 
+	const allValid = Object.keys(formState).reduce<boolean>((acc, curKey) => {
+		let condition: boolean;
+		switch (curKey) {
+			case 'email':
+				condition = !isEmail(formState.email);
+				whichSucceeded.email = !condition;
+				break;
+			default:
+				condition = formState[String(curKey)] === '';
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				whichSucceeded[String(curKey)] = !condition;
+				break;
+		}
 		return acc === true || condition;
 	}, false);
+
+	return [allValid, whichSucceeded];
 };
+
+type ValidateInputs = <In extends { email: string } & Record<string, unknown>>(
+	obj: In
+) => [allValid: boolean, whichSucceeded: { [P in keyof In]?: boolean }];
 
 export { isEmail, validateInputs };
