@@ -32,7 +32,7 @@ const theme: Theme = {
 	color: {
 		accent: 'hotpink',
 		primary: '#0066ff',
-		danger: '#941b1b',
+		danger: '#ff7373',
 		success: '#1b942f',
 		border: 'lightGray',
 		fontColor: '#fff',

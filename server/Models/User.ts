@@ -15,7 +15,7 @@ const GoogleSchema = new mongoose.Schema({
 	id: { required: true, type: String },
 });
 
-const UserSchema = new mongoose.Schema<IUser>({
+const UserSchema = new mongoose.Schema({
 	userName: {
 		required: true,
 		type: String,
@@ -62,19 +62,15 @@ UserSchema.pre<UserDocument>('save', async function (next) {
 			$or: [{ 'local.email': this.local.email }, { 'google.id': this.google.id }],
 		});
 		if (document.length)
-			throw new Error(
-				`User with email ${this.google.email} / ${this.local.email} already exists.`
-			);
+			throw `User with email ${this.google.email} / ${this.local.email} already exists.`;
 	}
 	if (authMethod === 'local') {
 		const document = await User.find({ 'local.email': this.local.email });
-		if (document.length)
-			throw new Error(`User with email ${this.local.email} already exists.`);
+		if (document.length) throw `User with email ${this.local.email} already exists.`;
 	}
 	if (authMethod === 'google') {
 		const document = await User.find({ 'google.id': this.google.id });
-		if (document.length)
-			throw new Error(`User with email ${this.google.email} already exists.`);
+		if (document.length) throw `User with email ${this.google.email} already exists.`;
 	}
 
 	try {
@@ -88,6 +84,7 @@ UserSchema.pre<UserDocument>('save', async function (next) {
 		return next();
 	} catch (e) {
 		throw new Error(e);
+		// TODO: Send errors to the client
 	}
 });
 
