@@ -116,3 +116,21 @@ export const StyledInput = styled.input<CustomCss>`
 	}
 	${({ css }) => css}
 `;
+
+import React from 'react';
+
+interface IEmailError {
+	emailValid: boolean | undefined;
+	emailVisited: boolean;
+}
+
+export const EmailError: React.FC<IEmailError> = ({
+	emailValid: validEmail,
+	emailVisited,
+}) => {
+	const showEmailError: boolean = !emailVisited || validEmail ? false : true;
+
+	if (!showEmailError) return null;
+
+	return <StyledLabelError>- Email incorrectly formatted</StyledLabelError>;
+};

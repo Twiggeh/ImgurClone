@@ -15,10 +15,7 @@ const Login = () => {
 	const toggleVisibility = (name: string) =>
 		setPassVis(c => ({ ...c, [String(name)]: !c[String(name)] }));
 
-	const [allValid, { email: emailIsCorrect }] = validateInputs(formState);
-
-	const showEmailError: boolean =
-		!formState.emailVisited || emailIsCorrect ? false : true;
+	const [allValid, { email: emailValid }] = validateInputs(formState);
 
 	return (
 		<CenteredFormPage>
@@ -27,20 +24,16 @@ const Login = () => {
 				<SpaceItems>
 					<MiniTitle>Login with</MiniTitle>
 					<LayoutLogins>
-						<Button href={`${BACKEND_SERVER_URL}/oauth/google`}>google</Button>
+						<Button href={`${BACKEND_SERVER_URL}/oauth/google`}>Google</Button>
 						<Button disabled={true} href='todo'>
-							github
+							Github
 						</Button>
 					</LayoutLogins>
-
 					<MiniTitle>or login with your email</MiniTitle>
-
 					<StyledForm>
 						<StyledLabel htmlFor='email'>
 							E-Mail
-							{showEmailError ? (
-								<StyledLabelError>- Email incorrectly formatted</StyledLabelError>
-							) : null}
+							<EmailError {...{ emailValid, emailVisited: formState.emailVisited }} />
 							<StyledInput
 								name='email'
 								value={formState.email}
@@ -89,6 +82,7 @@ import BackHomeBtn from './components/BackHomeBtn';
 import Button from './components/Button';
 import {
 	AlignRight,
+	EmailError,
 	Center,
 	LayoutLogins,
 	CenteredFormPage,
@@ -99,7 +93,6 @@ import {
 	StyledForm,
 	StyledInput,
 	StyledLabel,
-	StyledLabelError,
 } from './components/AuthComponents';
 import SignUpButton from './components/SignUpButton';
 import { ClosedEyeSVG, OpenEyeSVG } from '../utils/assetImport';

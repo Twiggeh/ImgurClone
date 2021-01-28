@@ -2,13 +2,15 @@ const Register = () => {
 	// Form Inputs
 	const [formState, setFormState] = useState({
 		email: '',
+		emailVisited: false,
 		password: '',
 		confirmPassword: '',
+		confirmPasswordVisited: false,
 		userName: '',
 	});
 
-	const updateForm = (key: keyof typeof formState, value: string) => {
-		setFormState(c => ({ ...c, [String(key)]: String(value) }));
+	const setForm = (key: keyof typeof formState, value: string | boolean) => {
+		setFormState(c => ({ ...c, [String(key)]: value }));
 	};
 
 	// Password Visibility
@@ -16,7 +18,9 @@ const Register = () => {
 	const toggleVisibility = (name: string) =>
 		setPassVis(c => ({ ...c, [String(name)]: !c[String(name)] }));
 
-	const [allValid] = validateInputs(formState);
+	const [allValid, { email: emailValid, confirmPassword, password }] = validateInputs(
+		formState
+	);
 
 	const [addUser] = useAddUserMutation();
 
@@ -50,23 +54,21 @@ const Register = () => {
 						<StyledLabel htmlFor='username'>
 							Username
 							<StyledInput
-								disabled={true}
-								placeholder='Currently not available'
 								type='text'
 								name='username'
 								value={formState.userName}
-								onChange={e => updateForm('userName', e.target.value)}
+								onChange={e => setForm('userName', e.target.value)}
 							/>
 						</StyledLabel>
 
 						<StyledLabel htmlFor='email'>
 							E-Mail
+							<EmailError {...{ emailValid, emailVisited: formState.emailVisited }} />
 							<StyledInput
-								disabled={true}
-								placeholder='Currently not available'
 								name='email'
 								value={formState.email}
-								onChange={e => updateForm('email', e.target.value)}
+								onChange={e => setForm('email', e.target.value)}
+								onBlur={() => setForm('emailVisited', true)}
 							/>
 						</StyledLabel>
 
@@ -74,12 +76,10 @@ const Register = () => {
 							Password
 							<PassWrap>
 								<StyledInput
-									disabled={true}
-									placeholder='Currently not available'
 									type={passVis.pass ? 'text' : 'password'}
 									name='password'
 									value={formState.password}
-									onChange={e => updateForm('password', e.target.value)}
+									onChange={e => setForm('password', e.target.value)}
 								/>
 								<PassVisToggle as='i' onClick={() => toggleVisibility('pass')}>
 									{passVis.pass ? <OpenEyeSVG /> : <ClosedEyeSVG />}
@@ -91,12 +91,10 @@ const Register = () => {
 							Repeat Password
 							<PassWrap>
 								<StyledInput
-									disabled={true}
-									placeholder='Currently not available'
 									type={passVis.confirm ? 'text' : 'password'}
 									name='confirmPassword'
 									value={formState.confirmPassword}
-									onChange={e => updateForm('confirmPassword', e.target.value)}
+									onChange={e => setForm('confirmPassword', e.target.value)}
 								/>
 								<PassVisToggle as='i' onClick={() => toggleVisibility('confirm')}>
 									{passVis.confirm ? <OpenEyeSVG /> : <ClosedEyeSVG />}
@@ -129,6 +127,7 @@ import { validateInputs } from '../../utils/formHelpers';
 import BackHomeBtn from '../components/BackHomeBtn';
 import Button from '../components/Button';
 import {
+	EmailError,
 	AlignRight,
 	Center,
 	LayoutLogins,
