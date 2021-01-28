@@ -36,14 +36,7 @@ module.exports = {
 						loader: 'babel-loader',
 						options: {
 							presets: [
-								[
-									'@babel/preset-env',
-									{
-										targets: {
-											esmodules: true,
-										},
-									},
-								],
+								'@babel/preset-env',
 								'@babel/preset-react',
 								'@emotion/babel-preset-css-prop',
 							],
@@ -58,7 +51,14 @@ module.exports = {
 					},
 					{
 						loader: 'ts-loader',
-						options: { compilerOptions: { target: 'esnext', module: 'esnext' } },
+						options: {
+							compilerOptions: {
+								target: 'esnext',
+								module: 'esnext',
+								react: 'preserve',
+								lib: ['dom', 'dom.iterable', 'esnext'],
+							},
+						},
 					},
 				],
 			},
