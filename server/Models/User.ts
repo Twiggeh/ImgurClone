@@ -58,20 +58,27 @@ UserSchema.pre<UserDocument>('save', async function (next) {
 	// UNIQUENESS QUERIES
 	const authMethod = this.google && this.local ? 'all' : this.google ? 'google' : 'local';
 
-	if (authMethod === 'all') {
-		const document = await User.find({
-			$or: [{ 'local.email': this.local.email }, { 'google.id': this.google.id }],
-		});
-		if (document.length)
-			throw `User with email ${this.google.email} / ${this.local.email} already exists.`;
-	}
-	if (authMethod === 'local') {
-		const document = await User.find({ 'local.email': this.local.email });
-		if (document.length) throw `User with email ${this.local.email} already exists.`;
-	}
-	if (authMethod === 'google') {
-		const document = await User.find({ 'google.id': this.google.id });
-		if (document.length) throw `User with email ${this.google.email} already exists.`;
+	switch (authMethod) {
+		case 'all': {
+			const document = await User.find({
+				$or: [{ 'local.email': this.local.email }, { 'google.id': this.google.id }],
+			});
+			if (document.length)
+				throw `User with email ${this.google.email} / ${this.local.email} already exists.`;
+			break;
+		}
+
+		case 'local': {
+			const document = await User.find({ 'local.email': this.local.email });
+			if (document.length) throw `User with email ${this.local.email} already exists.`;
+			break;
+		}
+
+		case 'google': {
+			const document = await User.find({ 'google.id': this.google.id });
+			if (document.length) throw `User with email ${this.google.email} already exists.`;
+			break;
+		}
 	}
 
 	try {
