@@ -1,4 +1,6 @@
 const Register = () => {
+	const history = useHistory();
+
 	// Form Inputs
 	const [formState, setFormState] = useState({
 		email: '',
@@ -22,7 +24,11 @@ const Register = () => {
 		formState
 	);
 
-	const [addUser, { data, loading, error }] = useAddUserMutation();
+	const [addUser, { data, loading, error }] = useAddUserMutation({
+		onCompleted: mutation => {
+			mutation.addUser.__typename === 'AddUserSuccess' && history.push('/profile');
+		},
+	});
 
 	const addUserVars: AddUserMutationVariables = {
 		addUserInput: {
@@ -157,3 +163,4 @@ import {
 import SignInButton from '../components/SignIn';
 import { OpenEyeSVG, ClosedEyeSVG } from '../../utils/assetImport';
 import { AddUserMutationVariables, useAddUserMutation } from '../../generated/graphql';
+import { useHistory } from 'react-router';
