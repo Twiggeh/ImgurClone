@@ -19,7 +19,10 @@ const validateInputs: ValidateInputs = formState => {
 				break;
 			case 'confirmPassword':
 			case 'password':
-				didFail = formState.password !== formState.confirmPassword;
+				didFail =
+					formState.password !== formState.confirmPassword ||
+					formState[String(curKey)] === '';
+
 				whichSucceeded.password = !didFail;
 				whichSucceeded.confirmPassword = !didFail;
 				break;
