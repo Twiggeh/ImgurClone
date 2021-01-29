@@ -35,5 +35,14 @@ export const AddUserFn = async ({
 	}
 };
 
-export const AddUserResolver: Resolvers['Mutation']['addUser'] = async (parent, args) =>
-	await AddUserFn(args);
+export const AddUserResolver: Resolvers['Mutation']['addUser'] = async (
+	parent,
+	args,
+	context
+) => {
+	const result = await AddUserFn(args);
+	if (result.__typename === 'AddUserSuccess') {
+		context.req.session.userId = result.id;
+	}
+	return result;
+};

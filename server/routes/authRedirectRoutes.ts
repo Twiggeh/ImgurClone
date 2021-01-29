@@ -18,7 +18,7 @@ interface GoogleResult {
 }
 
 // Routes
-router.get('/google*', async (req: AuthReq, res, next) => {
+router.get('/google*', async (req: AuthReq, res) => {
 	const access_token: string | undefined = req.session.grant?.response.access_token;
 	const refresh_token: string | undefined = req.session.grant?.response.refresh_token;
 	if (req.session.userId) return res.redirect('/profile');
