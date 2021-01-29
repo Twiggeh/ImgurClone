@@ -6,6 +6,7 @@ const SALT_WORK = 10;
 const LocalSchema = new mongoose.Schema({
 	email: { required: true, type: String, unique: true, sparse: true },
 	password: { required: true, type: String },
+	verifyPassword: { required: false, type: String },
 });
 
 const GoogleSchema = new mongoose.Schema({
@@ -79,6 +80,7 @@ UserSchema.pre<UserDocument>('save', async function (next) {
 			const salts = await genSalt(SALT_WORK);
 			const hashedPass = await hash(this.local.password, salts);
 			this.local.password = hashedPass;
+			this.local.verifyPassword = undefined;
 		}
 
 		return next();
