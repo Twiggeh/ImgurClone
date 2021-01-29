@@ -10,7 +10,10 @@ const Profile = () => {
 	const { identity, loading: identityLoading, refetch } = IdentityContext();
 
 	// Stop from visiting profile when no user is present
-	if (!identity && !identityLoading) history.push('/');
+	if (!identity && !identityLoading) {
+		refetch();
+		history.push('/');
+	}
 
 	const [formState, setFormState] = useState<{
 		userName: string;
