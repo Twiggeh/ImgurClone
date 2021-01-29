@@ -18,6 +18,7 @@ export const AddUserFn = async ({
 		return {
 			message: `User : ${user.userName} has been created Successfully`,
 			id: newUser.id,
+			__typename: 'AddUserSuccess',
 		};
 	} catch (e: unknown) {
 		console.error(e);
