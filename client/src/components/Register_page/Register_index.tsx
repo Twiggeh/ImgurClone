@@ -22,7 +22,7 @@ const Register = () => {
 		formState
 	);
 
-	const [addUser] = useAddUserMutation();
+	const [addUser, { data, loading, error }] = useAddUserMutation();
 
 	const addUserVars: AddUserMutationVariables = {
 		addUserInput: {
@@ -39,12 +39,14 @@ const Register = () => {
 		<CenteredFormPage>
 			<BackHomeBtn />
 			<Center>
+				{JSON.stringify(error) /* TODO: FIX ERROR HANDLING*/}
+				{JSON.stringify(data?.addUser.message) /* TODO: FIX ERROR HANDLING*/}
 				<SpaceItems>
 					<MiniTitle>Login with</MiniTitle>
 					<LayoutLogins>
-						<Button href={`${BACKEND_SERVER_URL}/oauth/google`}>google</Button>
+						<Button href={`${BACKEND_SERVER_URL}/oauth/google`}>Google</Button>
 						<Button disabled={true} href='todo'>
-							github
+							Github
 						</Button>
 					</LayoutLogins>
 
@@ -122,7 +124,7 @@ const Register = () => {
 								e.preventDefault();
 								addUser({ variables: addUserVars });
 							}}>
-							Submit
+							{loading ? `Trying to create user: ${formState.userName}.` : 'Submit'}
 						</Button>
 					</AlignRight>
 				</SpaceItems>
