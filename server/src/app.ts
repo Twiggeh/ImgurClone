@@ -31,12 +31,13 @@ config();
 // TODO : make them clearer to use, secure port means port that the server is running on, upgrade port is a https upgrader
 
 const SECURE_PORT = process.env.SECURE_PORT;
-const INSECURE_PORT = process.env.INSECURE_PORT;
+const UPGRADE_PORT = process.env.UPGRADE_PORT;
 const DEV_PORT = process.env.DEV_PORT;
 const PROTOCOL = process.env.BACKEND_PROTOCOL;
 
 const isProd = process.env.NODE_ENV === 'production';
-const mainServerPort = isProd ? SECURE_PORT : DEV_PORT;
+const secureServerPort = isProd ? SECURE_PORT : DEV_PORT;
+const upgradeServerPort = UPGRADE_PORT;
 
 const __dirname = decodeURI(dirname(new URL(import.meta.url).pathname));
 const domain = process.env.DOMAIN ? process.env.DOMAIN : 'localhost';
@@ -45,7 +46,7 @@ const domExt = process.env.DOMAIN_EXTENSION ? process.env.DOMAIN_EXTENSION : '';
 const hostname = [subDom, domain, domExt].filter(c => !!c).join('.');
 
 // Change based on protocol hostname and port, not based on production
-export const SERVER_URL = `${PROTOCOL}://${hostname}:${mainServerPort}`;
+export const SERVER_URL = `${PROTOCOL}://${hostname}:${secureServerPort}`;
 export const PROJECT_ROOT = resolve(__dirname, '../../../');
 export const SERVER_ROOT = resolve(__dirname, '../');
 
@@ -237,8 +238,8 @@ if (isProd) {
 					.end();
 			});
 		})
-		.listen(INSECURE_PORT, () => {
-			console.log(`Http upgrade server online on port ${INSECURE_PORT}`);
+		.listen(upgradeServerPort, () => {
+			console.log(`Http upgrade server online on port ${upgradeServerPort}`);
 		});
 
 	https
@@ -249,11 +250,11 @@ if (isProd) {
 			},
 			app
 		)
-		.listen(mainServerPort, () => {
-			console.log(`Secure Server is listening on port ${mainServerPort}`);
+		.listen(secureServerPort, () => {
+			console.log(`Secure Server is listening on port ${secureServerPort}`);
 		});
 } else {
-	app.listen(mainServerPort, () => {
-		console.log(`Dev server is listening on port ${mainServerPort}`);
+	app.listen(secureServerPort, () => {
+		console.log(`Dev server is listening on port ${secureServerPort}`);
 	});
 }

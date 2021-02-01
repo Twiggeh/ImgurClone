@@ -1,4 +1,28 @@
 #!/usr/bin/bash
+
+for i in "$@"
+do 
+case $i in
+-d=* | --domain=*)
+EXTENSION = "${i#*=}"
+shift
+;;
+-s=* | --subdomain=*)
+SUBDOMAIN = "${i#*=}"
+shift
+;;
+-sp=* | --secureport=*)
+SECUREPORT = "${i#*=}"
+shift
+;;
+-dp=* | --secureport=*)
+SECUREPORT = "${i#*=}"
+shift
+;;
+
+
+
+
 # Set all environ variables, then run node (with tmux, otherwise use something like pm2 to deamonize)
 echo NODE_ENV=production > .env
 echo SERVER_DIR=$PWD >> .env
