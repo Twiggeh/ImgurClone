@@ -1,5 +1,7 @@
 #!/usr/bin/bash
-source parseParameters.sh
+DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+. "$DIR/parseParameters.sh"
 
 # Set all .env parameters
 echo NODE_ENV=production >.env

@@ -1,5 +1,7 @@
 #!/usr/bin/bash
-source parseParameters.sh
+DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+. "$DIR/parseParameters.sh"
 
 # Set all environ variables, then run nodemon
 echo NODE_ENV=development >.env
