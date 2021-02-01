@@ -38,7 +38,7 @@ for i in "$@"; do
     shift
     ;;
   -bp=* | --backendprotocol=*)
-    if ["${i#*=}" != "http" && "${i#*=}" != "https"]; then
+    if [ "${i#*=}" != "http" && "${i#*=}" != "https" ]; then
       echo "${i#*=} has to be either http or https"
       exit 1
     fi
