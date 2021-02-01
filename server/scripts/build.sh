@@ -1,42 +1,23 @@
 #!/usr/bin/bash
+source parseParameters.sh
 
-for i in "$@"
-do 
-case $i in
--d=* | --domain=*)
-EXTENSION = "${i#*=}"
-shift
-;;
--s=* | --subdomain=*)
-SUBDOMAIN = "${i#*=}"
-shift
-;;
--sp=* | --secureport=*)
-SECUREPORT = "${i#*=}"
-shift
-;;
--dp=* | --secureport=*)
-SECUREPORT = "${i#*=}"
-shift
-;;
-
-
-
-
-# Set all environ variables, then run node (with tmux, otherwise use something like pm2 to deamonize)
-echo NODE_ENV=production > .env
-echo SERVER_DIR=$PWD >> .env
+# Set all .env parameters
+echo NODE_ENV=production >.env
+echo SERVER_DIR=$PWD >>.env
 
 # DOMAINS
-echo DOMAIN=91.89.120.211 >> .env
-echo SUBDOMAIN= >> .env
-echo DOMAINEXTENSION= >> .env
+echo DOMAIN="${arguments[DOMAIN]}" >>.env
+echo SUBDOMAIN="${arguments[SUBDOMAIN]}" >>.env
+echo DOMAINEXTENSION="${arguments[DOMAINEXTENSION]}" >>.env
 
 # PORTS
-echo SECURE_PORT= 5000 >> .env
-echo DEV_PORT= 5000 >> .env
-echo INSECURE_PORT= 5000  >> .env
+echo SECURE_PORT="${arguments[SECUREPORT]}" >>.env
+echo DEV_PORT="${arguments[DEVELOPMENTPORT]}" >>.env
+echo INSECURE_PORT="${arguments[INSECUREPORT]}" >>.env
 # TODO : add config for production to not use maps
+
+# PROTOCOL
+echo BACKEND_PROTOCOL="${arguments[BACKENDPROTOCOL]}" >>.env
 
 # DIRECTORIES
 mkdir -p public/uploads
