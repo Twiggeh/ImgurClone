@@ -11,7 +11,7 @@ echo DOMAINEXTENSION= >> .env
 # PORTS
 echo SECURE_PORT= 5000 >> .env
 echo DEV_PORT= 5000 >> .env
-echo UPGRADE_PORT= 5000  >> .env
+echo INSECURE_PORT= 5000  >> .env
 # TODO : add config for production to not use maps
 
 # DIRECTORIES
