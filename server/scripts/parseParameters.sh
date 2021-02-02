@@ -3,9 +3,9 @@ declare -A arguments=(
   ["DOMAIN"]="localhost"
   ["DOMAINEXTENSION"]=""
   ["SUBDOMAIN"]=""
-  ["SECUREPORT"]="5000"
-  ["INSECUREPORT"]="5000"
-  ["DEVELOPMENTPORT"]="5000"
+  ["SECUREPORT"]="8080"
+  ["INSECUREPORT"]="8081"
+  ["DEVELOPMENTPORT"]="5050"
   ["BACKENDPROTOCOL"]="http"
 )
 
