@@ -1,0 +1,1 @@
+posts should contain a userid instead of a username and userpicture
