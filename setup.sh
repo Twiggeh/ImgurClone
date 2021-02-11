@@ -6,7 +6,7 @@ echo "installing imgur client dependencies"
 cd "$DIR/client"
 yarn install
 
-echo "installing imgur Imgur Clone dependencies"
+echo "installing imgur server dependencies"
 cd "$DIR/server"
 yarn install
 
@@ -45,11 +45,18 @@ fi
 
 echo "Configuration of Imgur Clone completed"
 
+echo ""
 echo "================================"
+echo ""
 
 echo "Generating types for graphql ..."
 
-cd ./server
-yarn debug
+cd "$DIR/server"
+
+echo "Starting the development server ..."
+"$DIR/server/scripts/stdEquals.sh" -c='yarn debug' -s='Watching for file changes.'
+wait %1
+
+echo "Server is running, building types for server."
 
 # Start the server in development mode
