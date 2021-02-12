@@ -1,32 +1,34 @@
-import { QueryResolvers } from '../generated/gql.js';
-import { Document, Model } from 'mongoose';
-import Post, { IPost, PostDocument, PostModel } from '../Models/Post.js';
-import { Optional } from '../src/types.js';
+import { Post as GeneratedPostType, QueryResolvers } from '../generated/gql.js';
+import { FilterQuery, LeanDocument } from 'mongoose';
+import Post, { PostDocument, PostModel } from '../Models/Post.js';
 import { PAGINATION_DEFAULT } from '../src/globals.js';
-import { AddPostResolver } from './AddPostResolver.js';
+import type { Await } from '../src/types';
 
-const paginatedSearch = <T extends Document, U extends Model<T>>(
-	model: U,
+const paginatedSearch = async (
+	model: PostModel,
 	page: number,
-	postQuery: Optional<T & Document> = {},
+	postQuery: FilterQuery<LeanDocument<PostDocument>>,
 	lastObjId: string | undefined
-) => {
+): Promise<LeanDocument<PostDocument>[]> => {
 	if (!lastObjId) {
 		if (postQuery._id) {
-			return model.findById(postQuery._id).sort({ _id: -1 }).limit(PAGINATION_DEFAULT);
+			const result = await model
+				.findById(postQuery._id)
+				.sort({ _id: -1 })
+				.limit(PAGINATION_DEFAULT)
+				.lean();
+			return [result];
 		}
-		// @ts-ignore
-		return model.find(postQuery).sort({ _id: -1 }).limit(PAGINATION_DEFAULT);
+
+		return model.find(postQuery).sort({ _id: -1 }).limit(PAGINATION_DEFAULT).lean();
 	}
 	// TODO : Implement pagination without lastObjectId
-	// @ts-ignore
-	return (
-		model
-			// @ts-ignore
-			.find({ _id: { $gt: lastObjId }, ...postQuery })
-			.sort({ _id: -1 })
-			.limit(PAGINATION_DEFAULT)
-	);
+
+	return model
+		.find({ _id: { $gt: lastObjId }, ...postQuery })
+		.sort({ _id: -1 })
+		.limit(PAGINATION_DEFAULT)
+		.lean();
 };
 
 export const GetPostResolver: QueryResolvers['getPost'] = async (
@@ -34,17 +36,30 @@ export const GetPostResolver: QueryResolvers['getPost'] = async (
 	{ postId, userId, userName, lastObjId, page = 0 }
 ) => {
 	try {
-		const postQuery: Optional<IPost & Document> = {};
+		const postQuery: FilterQuery<LeanDocument<PostDocument>> = {};
 		if (userName) postQuery.userName = userName;
 		if (postId) postQuery._id = postId;
 		if (userId) postQuery.userId = userId;
 
-		const posts = await paginatedSearch<PostDocument, PostModel>(
-			Post,
-			page,
-			postQuery,
-			lastObjId
-		);
+		const posts = await paginatedSearch(Post, page, postQuery, lastObjId);
+
+		const transformPosts = (
+			posts: Await<ReturnType<typeof paginatedSearch>>
+		): GeneratedPostType[] =>
+			posts.map(
+				(post): GeneratedPostType => {
+					return {
+						...post,
+						__typename: 'Post',
+						postId: post.id,
+						cards: post.cards.map(card => ({ ...card, __typename: 'CardOut' })),
+						comments: post.comments.map(comment => ({
+							...comment,
+							__typename: 'Comment',
+						})),
+					};
+				}
+			);
 
 		if (Array.isArray(posts) && posts.length !== 0)
 			return {
@@ -52,21 +67,9 @@ export const GetPostResolver: QueryResolvers['getPost'] = async (
 				message: 'Post(s) found.',
 				success: true,
 				page: (page += 1),
-				posts: posts.map(post => {
-					post.postId = post.id;
-					return post;
-				}),
+				posts: transformPosts(posts),
 			};
-		else if (!Array.isArray(posts) && posts) {
-			posts.postId = posts._id;
-			return {
-				__typename: 'PostSuccess',
-				message: 'Post(s) found.',
-				success: true,
-				page: (page += 1),
-				posts: [posts],
-			};
-		} else
+		else
 			return {
 				__typename: 'PostFailure',
 				message: 'No Post found',
