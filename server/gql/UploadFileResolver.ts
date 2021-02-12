@@ -52,7 +52,11 @@ export const UploadFilesResolver: MutationResolvers['uploadFiles'] = async (_, a
 
 	for (const file of allFiles) {
 		if (file.status === 'fulfilled') fileBuffer.push(writeFileToDisk(file.value));
-		else result.push({ message: `Couldn\'t upload the file.` });
+		else
+			result.push({
+				message: `Couldn\'t upload the file.`,
+				__typename: 'UploadFileFailure',
+			});
 	}
 
 	const writtenFiles = await Promise.allSettled(fileBuffer);
