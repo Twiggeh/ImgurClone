@@ -44,6 +44,12 @@ const resolvers: Resolvers = {
 			return obj.__typename;
 		},
 	},
+	PostResult: {
+		__resolveType(obj) {
+			console.log('resolving a post', obj);
+			return obj.__typename;
+		},
+	},
 };
 
 export default resolvers;
