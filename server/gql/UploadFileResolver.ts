@@ -4,10 +4,10 @@ import { config } from 'dotenv';
 import { SERVER_ROOT, SERVER_URL } from '../src/app.js';
 import { MutationResolvers, UploadFileResult } from 'generated/gql';
 import { File } from '../@types/global.js';
-import { UnPromisify } from '../src/types';
+import { Await } from '../src/types';
 config();
 
-const writeFileToDisk = async (file: UnPromisify<File>) => {
+const writeFileToDisk = async (file: Await<File>) => {
 	const { createReadStream, filename } = file;
 
 	const stream = createReadStream();
