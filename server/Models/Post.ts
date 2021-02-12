@@ -25,7 +25,6 @@ export const PostSchema = new mongoose.Schema({
 });
 
 export interface IPost {
-	postId: string;
 	userId: string;
 	userName?: string;
 	profilePicture?: string;
