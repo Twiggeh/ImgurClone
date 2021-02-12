@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import { mkdirSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
-import getParams from './parseParams.js';
+import getParams from './parseParams.mjs';
 
 const __dirname = decodeURI(dirname(new URL(import.meta.url).pathname));
 
@@ -41,7 +41,7 @@ mkdirSync(join(__dirname, '..', 'public/uploads'), { recursive: true });
 mkdirSync(join(__dirname, '..', 'dist/public/uploads'), { recursive: true });
 
 // Write env file
-writeFileSync('../.env', envFileContent);
+writeFileSync(join(__dirname, '../.env'), envFileContent);
 
 const tsc = spawn('tsc -w', { cwd: join(__dirname, '..'), shell: true });
 
