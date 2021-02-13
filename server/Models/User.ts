@@ -102,7 +102,7 @@ UserSchema.pre<UserDocument>('save', async function (next) {
 export interface IUser {
 	userName: string;
 	profilePicture?: string;
-	local?: { email: string; password: string; verifyPassword: string };
+	local?: { email: string; password: string; verifyPassword?: string };
 	google?: {
 		accessToken: string;
 		refreshToken: string;
@@ -111,7 +111,7 @@ export interface IUser {
 	};
 }
 
-interface UserDocument extends IUser, mongoose.Document {}
+export interface UserDocument extends IUser, mongoose.Document {}
 
 export interface UserModel extends mongoose.Model<UserDocument> {}
 
