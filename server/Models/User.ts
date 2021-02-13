@@ -61,22 +61,24 @@ UserSchema.pre<UserDocument>('save', async function (next) {
 	switch (authMethod) {
 		case 'all': {
 			const document = await User.find({
-				$or: [{ 'local.email': this.local.email }, { 'google.id': this.google.id }],
+				$or: [{ 'local.email': this.local!.email }, { 'google.id': this.google!.id }],
 			});
 			if (document.length)
-				throw `User with email ${this.google.email} / ${this.local.email} already exists.`;
+				throw `User with email ${this.google!.email} / ${
+					this.local!.email
+				} already exists.`;
 			break;
 		}
 
 		case 'local': {
-			const document = await User.find({ 'local.email': this.local.email });
-			if (document.length) throw `User with email ${this.local.email} already exists.`;
+			const document = await User.find({ 'local.email': this.local!.email });
+			if (document.length) throw `User with email ${this.local!.email} already exists.`;
 			break;
 		}
 
 		case 'google': {
-			const document = await User.find({ 'google.id': this.google.id });
-			if (document.length) throw `User with email ${this.google.email} already exists.`;
+			const document = await User.find({ 'google.id': this.google!.id });
+			if (document.length) throw `User with email ${this.google!.email} already exists.`;
 			break;
 		}
 	}
@@ -85,9 +87,9 @@ UserSchema.pre<UserDocument>('save', async function (next) {
 		// Hash password
 		if (authMethod === 'all' || authMethod === 'local') {
 			const salts = await genSalt(SALT_WORK);
-			const hashedPass = await hash(this.local.password, salts);
-			this.local.password = hashedPass;
-			this.local.verifyPassword = undefined;
+			const hashedPass = await hash(this.local!.password, salts);
+			this.local!.password = hashedPass;
+			this.local!.verifyPassword = undefined;
 		}
 
 		return next();
