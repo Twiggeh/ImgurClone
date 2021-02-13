@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { Session, SessionData } from 'express-session';
+import { FileUpload } from 'graphql-upload';
 import { Readable, ReadableOptions } from 'stream';
 
 declare namespace Express {
@@ -47,9 +48,4 @@ interface MyContext {
 	req: AuthReq;
 }
 
-type File = Promise<{
-	filename: string;
-	mimetype: string;
-	encoding: string;
-	createReadStream: (options?: ReadableOptions) => Readable;
-}>;
+type File = Promise<FileUpload>;
