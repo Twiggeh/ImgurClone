@@ -72,19 +72,21 @@ const CreatePost: React.FC<ICreatePost> = ({
 }) => {
 	const handleSubmit = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
 		e.preventDefault();
-		const cards = uploadedFiles.map(upFile => {
-			if (upFile.__typename !== 'UploadFileSuccess') return null;
-			const location = '/' + upFile.url.split('/').splice(3).join('/'); // TODO : Fix this (need to make uploaded files locations as well)
-			return {
-				title: upFile.title,
-				description: upFile.description,
-				location: location,
-			};
-		});
+		const cards = uploadedFiles
+			.map(upFile => {
+				if (upFile.__typename !== 'UploadFileSuccess') return null;
+				const location = '/' + upFile.url.split('/').splice(3).join('/'); // TODO : Fix this (need to make uploaded files locations as well)
+				return {
+					title: upFile.title,
+					description: upFile.description,
+					location: location,
+				};
+			})
+			.filter(c => !!c);
 
 		uploadPost({
 			variables: {
-				cards,
+				cards: cards as _Card[],
 			},
 		});
 	};
