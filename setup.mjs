@@ -102,7 +102,6 @@ const asyncProcess = (command, opts, outputNeedsToEqual) => {
 	if (!existsSync(join(__dirname, 'server/keys/keys.ts'))) {
 		// Create the key directory
 		mkdirSync(join(__dirname, 'server/keys'), { recursive: true });
-		writeFileSync(join(__dirname, 'server/keys/keys.ts'));
 
 		const variables = {
 			mongooseKey: '',
