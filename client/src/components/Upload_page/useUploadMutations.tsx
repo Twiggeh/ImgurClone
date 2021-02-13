@@ -23,7 +23,7 @@ gql`
 `;
 
 gql`
-	mutation addPost($cards: [Card]!) {
+	mutation addPost($cards: [Card!]!) {
 		addPost(cards: $cards) {
 			... on AddPostSuccess {
 				message
