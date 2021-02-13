@@ -57,15 +57,19 @@ const asyncProcess = (command, opts, outputNeedsToEqual) => {
 		const nonErrors = [
 			'Debugger attached.\n',
 			'Waiting for the debugger to disconnect...\n',
+			'DeprecationWarning:',
+			'Cloning',
+			'warning',
 		];
 		/**
 		 *  @type { string }
 		 */
 		const strErr = e.toString();
 		console.error(strErr);
-		if (strErr.includes('DeprecationWarning:')) return;
-		if (nonErrors.includes(strErr)) return;
-		throw strErr;
+		for (const nonError of nonErrors) {
+			if (strErr.includes(nonError)) return;
+		}
+		procLock.rej(strErr);
 	});
 
 	return [procLock.p, subProc];
