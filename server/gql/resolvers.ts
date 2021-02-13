@@ -8,11 +8,16 @@ import { GetMeResolver } from './GetMeResolver.js';
 import { GraphQLUpload } from 'graphql-upload';
 import { Date } from './DateResolver.js';
 import { Resolvers } from '../generated/gql';
+import { IResolvers } from 'apollo-server-express';
 
 const resolvers: Resolvers = {
 	Upload: GraphQLUpload,
 	Date: Date,
-	Query: { getUser: GetUserResolver, getPost: GetPostResolver, getMe: GetMeResolver },
+	Query: {
+		getUser: GetUserResolver,
+		getPost: GetPostResolver,
+		getMe: GetMeResolver,
+	},
 	Mutation: {
 		addUser: AddUserResolver,
 		setUser: SetUserResolver,
@@ -52,4 +57,4 @@ const resolvers: Resolvers = {
 	},
 };
 
-export default resolvers;
+export default resolvers as IResolvers;
