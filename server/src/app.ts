@@ -139,6 +139,7 @@ const gqlServer = new ApolloServer({
 				`Unable to authenticate, userId ${req.session.userId} does not yield any users`
 			);
 		}
+		return { currentUser: {}, req };
 	},
 });
 
