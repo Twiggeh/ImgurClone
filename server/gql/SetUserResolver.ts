@@ -1,13 +1,15 @@
+import { UpdateQuery } from 'mongoose';
+import { deNull } from '../utils/utils.js';
 import {
 	MutationResolvers,
 	MutationSetUserArgs,
 	ResolversTypes,
 } from '../generated/gql.js';
-import User from '../Models/User.js';
+import User, { UserDocument } from '../Models/User.js';
 
 export const SetUserFn = async (
 	{ setUserInput: { userName, profilePicture, google, local } }: MutationSetUserArgs,
-	mongoId: string
+	mongoId?: string
 ): Promise<ResolversTypes['GetUserResult']> => {
 	if (!mongoId)
 		return {
@@ -15,11 +17,11 @@ export const SetUserFn = async (
 			message: 'Cannot set properties for non existent mongoId',
 		};
 
-	const update = {
-		google,
-		local,
+	const update: UpdateQuery<UserDocument> = {
+		google: deNull(google),
+		local: deNull(local),
 		userName,
-		profilePicture,
+		profilePicture: deNull(profilePicture),
 	};
 
 	// ES6 TS implementation is broken.
