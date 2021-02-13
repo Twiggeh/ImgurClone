@@ -26,7 +26,7 @@ const createLock = () => {
 const asyncReadLine = async question => {
 	const questionLock = createLock();
 	rl.question(question, questionLock.res);
-	return questionLock;
+	return questionLock.p;
 };
 
 /**
@@ -152,12 +152,12 @@ const asyncProcess = (command, opts, outputNeedsToEqual) => {
 		}
 		console.log('Writing keys ...');
 
-		const keyFileContent = `export const mongooseKey = '${mongooseKey}'
+		const keyFileContent = `export const mongooseKey = '${variables.mongooseKey}'
 
-export const googleSecret = '${googleSecret}';
-export const googleKey = '${googleKey}';
+export const googleSecret = '${variables.googleSecret}';
+export const googleKey = '${variables.googleKey}';
 
-export const sessionSecret = '${sessionSecret}';`;
+export const sessionSecret = '${variables.sessionSecret}';`;
 
 		writeFileSync(join(__dirname, 'server/keys/keys.ts'), keyFileContent);
 		console.log('Written key file.');
@@ -226,5 +226,4 @@ export const sessionSecret = '${sessionSecret}';`;
 	debugServerProc.kill();
 
 	console.log('Setup completed');
-	process.exit(0);
 })();
