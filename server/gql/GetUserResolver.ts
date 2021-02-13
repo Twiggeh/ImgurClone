@@ -1,14 +1,20 @@
+import { FilterQuery, LeanDocument } from 'mongoose';
+import { deNull } from '../utils/utils.js';
 import { QueryGetUserArgs, QueryResolvers, ResolversTypes } from '../generated/gql.js';
-import User from '../Models/User.js';
+import User, { UserDocument } from '../Models/User.js';
 
 export const GetUserFn = async ({
 	userName,
 	mongoId,
 }: QueryGetUserArgs): Promise<ResolversTypes['GetUserResult']> => {
 	try {
-		const UserQuey = { userName };
+		const UserQuey: FilterQuery<LeanDocument<UserDocument>> = {
+			userName: deNull(userName),
+		};
 
 		const user = mongoId ? await User.findById(mongoId) : await User.findOne(UserQuey);
+
+		if (!user) throw 'Could not find specified user.';
 
 		return {
 			__typename: 'GetUserSuccess',
