@@ -1,14 +1,19 @@
 import User, { IUser } from '../Models/User.js';
-import { MutationAddUserArgs, Resolvers, ResolversTypes } from '../generated/gql.js';
+import {
+	MutationAddUserArgs,
+	MutationResolvers,
+	ResolversTypes,
+} from '../generated/gql.js';
+import { deNull } from '../utils/utils.js';
 
 export const AddUserFn = async ({
 	AddUserInput: { userName, profilePicture, google, local },
 }: MutationAddUserArgs): Promise<ResolversTypes['AddUserResult']> => {
 	const user: IUser = {
 		userName,
-		profilePicture,
-		google,
-		local,
+		profilePicture: deNull(profilePicture),
+		google: deNull(google),
+		local: deNull(local),
 	};
 
 	const newUser = new User(user);
@@ -35,7 +40,7 @@ export const AddUserFn = async ({
 	}
 };
 
-export const AddUserResolver: Resolvers['Mutation']['addUser'] = async (
+export const AddUserResolver: MutationResolvers['addUser'] = async (
 	parent,
 	args,
 	context
