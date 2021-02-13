@@ -1,15 +1,15 @@
-import { Post as GeneratedPostType, QueryResolvers } from '../generated/gql.js';
+import { Comment, Post as GeneratedPostType, QueryResolvers } from '../generated/gql.js';
 import { FilterQuery, LeanDocument } from 'mongoose';
 import Post, { PostDocument, PostModel } from '../Models/Post.js';
 import { PAGINATION_DEFAULT } from '../src/globals.js';
-import type { Await } from '../src/types';
+import { deNull } from '../utils/utils.js';
 
 const paginatedSearch = async (
 	model: PostModel,
 	page: number,
 	postQuery: FilterQuery<LeanDocument<PostDocument>>,
 	lastObjId: string | undefined
-): Promise<LeanDocument<PostDocument>[]> => {
+) => {
 	if (!lastObjId) {
 		if (postQuery._id) {
 			const result = await model
@@ -17,7 +17,7 @@ const paginatedSearch = async (
 				.sort({ _id: -1 })
 				.limit(PAGINATION_DEFAULT)
 				.lean();
-			return [result];
+			return [deNull(result)];
 		}
 
 		return model.find(postQuery).sort({ _id: -1 }).limit(PAGINATION_DEFAULT).lean();
@@ -33,33 +33,37 @@ const paginatedSearch = async (
 
 export const GetPostResolver: QueryResolvers['getPost'] = async (
 	_,
-	{ postId, userId, userName, lastObjId, page = 0 }
+	{ postId, userId, userName, lastObjId, page }
 ) => {
+	page = deNull(page, 0);
 	try {
 		const postQuery: FilterQuery<LeanDocument<PostDocument>> = {};
 		if (userName) postQuery.userName = userName;
 		if (postId) postQuery._id = postId;
 		if (userId) postQuery.userId = userId;
 
-		const posts = await paginatedSearch(Post, page, postQuery, lastObjId);
+		const posts = await paginatedSearch(Post, page, postQuery, deNull(lastObjId));
 
-		const transformPosts = (
-			posts: Await<ReturnType<typeof paginatedSearch>>
-		): GeneratedPostType[] =>
-			posts.map(
-				(post): GeneratedPostType => {
+		const transformPosts = (posts: LeanDocument<PostDocument>[]): GeneratedPostType[] => {
+			return posts.map(
+				(post: LeanDocument<PostDocument>): GeneratedPostType => {
+					const mappedComments: undefined | Comment[] = Array.isArray(post.comments)
+						? post.comments.map(comment => ({
+								...comment,
+								__typename: 'Comment',
+						  }))
+						: undefined;
+
 					return {
 						...post,
 						__typename: 'Post',
-						postId: post.id,
+						postId: post._id.toString(),
 						cards: post.cards.map(card => ({ ...card, __typename: 'CardOut' })),
-						comments: post.comments.map(comment => ({
-							...comment,
-							__typename: 'Comment',
-						})),
+						comments: mappedComments,
 					};
 				}
 			);
+		};
 
 		if (Array.isArray(posts) && posts.length !== 0)
 			return {
@@ -67,7 +71,7 @@ export const GetPostResolver: QueryResolvers['getPost'] = async (
 				message: 'Post(s) found.',
 				success: true,
 				page: (page += 1),
-				posts: transformPosts(posts),
+				posts: transformPosts(posts.filter(c => !!c)),
 			};
 		else
 			return {
