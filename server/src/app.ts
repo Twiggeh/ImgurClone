@@ -96,7 +96,7 @@ app.use(
 );
 
 // Configure CORS
-const allowedOrigins = [`https://${hostname}`];
+const allowedOrigins: (string | undefined)[] = [`https://${hostname}`];
 
 if (!isProd)
 	allowedOrigins.push(
@@ -112,8 +112,7 @@ app.use(
 		origin: (origin, cb) => {
 			const allowedOriginIndex = allowedOrigins.indexOf(origin);
 			if (allowedOriginIndex === -1) {
-				const msg = `The CORS policy doesn't allow access from ${origin}.`;
-				return cb(msg as any, false);
+				return cb(`The CORS policy doesn't allow access from ${origin}.` as any, false);
 			}
 			// @ts-ignore
 			return cb(null, allowedOrigins[allowedOriginIndex]);
