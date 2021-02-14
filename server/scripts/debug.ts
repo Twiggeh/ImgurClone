@@ -1,7 +1,18 @@
-import { spawn } from 'child_process';
 import { mkdirSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
-import getParams from './parseParams.mjs';
+import { URL } from 'url';
+import { processParams } from './processParameters.js';
+import { asyncProcess } from '../../utils/scriptUtils.js';
+
+const defaultDebugCfg = {
+	domain: 'localhost',
+	domainExt: '',
+	subDomain: '',
+	securePort: '8080',
+	insecurePort: '8081',
+	devPort: '5050',
+	backendProtocol: 'http',
+};
 
 const __dirname = decodeURI(dirname(new URL(import.meta.url).pathname));
 
@@ -13,10 +24,10 @@ const {
 	devPort,
 	securePort,
 	backendProtocol,
-} = getParams();
+} = processParams(process.argv, defaultDebugCfg);
 
 let envFileContent = '';
-const addEnvContent = newContent => void (envFileContent += newContent + '\n');
+const addEnvContent = (newContent: string) => void (envFileContent += newContent + '\n');
 // Set all environment variables, then run nodemon
 
 addEnvContent('NODE_ENV=development');
@@ -43,6 +54,4 @@ mkdirSync(join(__dirname, '..', 'dist/public/uploads'), { recursive: true });
 // Write env file
 writeFileSync(join(__dirname, '../.env'), envFileContent);
 
-const tsc = spawn('tsc -w', { cwd: join(__dirname, '..'), shell: true });
-
-tsc.stdout.on('data', data => console.log(data.toString()));
+asyncProcess('tsc -w', { cwd: join(__dirname, '..'), shell: true });
