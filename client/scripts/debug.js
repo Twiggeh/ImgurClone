@@ -1,0 +1,23 @@
+import { writeFileSync } from 'fs';
+import { join } from 'path';
+import { asyncProcess } from '../../utils/scriptUtils.js';
+import { processParams } from './parseParams.js';
+const defaultDebugCfg = {
+    backendUrl: 'http://localhost:5050',
+    devPort: '5000',
+};
+const { backendUrl, devPort } = processParams(process.argv, defaultDebugCfg);
+let envFileContent = '';
+const addEnvContent = (newContent) => void (envFileContent += newContent + '\n');
+addEnvContent('NODE_ENV=development');
+addEnvContent(`BACKEND_URL="${backendUrl}"`);
+writeFileSync(join(__dirname, '../.env'), envFileContent);
+(async () => {
+    console.log('Compiling the server ...');
+    await asyncProcess(`webpack-dev-server --config ./config/webpack.dev.js --mode development --host 0.0.0.0 --port ${devPort}`, {
+        shell: true,
+        cwd: join(__dirname, '..'),
+    })[0];
+    console.log('Server has been compiled.');
+})();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGVidWcuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJkZWJ1Zy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsYUFBYSxFQUFFLE1BQU0sSUFBSSxDQUFDO0FBQ25DLE9BQU8sRUFBRSxJQUFJLEVBQUUsTUFBTSxNQUFNLENBQUM7QUFDNUIsT0FBTyxFQUFFLFlBQVksRUFBRSxNQUFNLDRCQUE0QixDQUFDO0FBQzFELE9BQU8sRUFBRSxhQUFhLEVBQUUsTUFBTSxrQkFBa0IsQ0FBQztBQUVqRCxNQUFNLGVBQWUsR0FBRztJQUN2QixVQUFVLEVBQUUsdUJBQXVCO0lBQ25DLE9BQU8sRUFBRSxNQUFNO0NBQ2YsQ0FBQztBQUVGLE1BQU0sRUFBRSxVQUFVLEVBQUUsT0FBTyxFQUFFLEdBQUcsYUFBYSxDQUFDLE9BQU8sQ0FBQyxJQUFJLEVBQUUsZUFBZSxDQUFDLENBQUM7QUFFN0UsSUFBSSxjQUFjLEdBQUcsRUFBRSxDQUFDO0FBQ3hCLE1BQU0sYUFBYSxHQUFHLENBQUMsVUFBa0IsRUFBRSxFQUFFLENBQUMsS0FBSyxDQUFDLGNBQWMsSUFBSSxVQUFVLEdBQUcsSUFBSSxDQUFDLENBQUM7QUFHekYsYUFBYSxDQUFDLHNCQUFzQixDQUFDLENBQUM7QUFHdEMsYUFBYSxDQUFDLGdCQUFnQixVQUFVLEdBQUcsQ0FBQyxDQUFDO0FBRzdDLGFBQWEsQ0FBQyxJQUFJLENBQUMsU0FBUyxFQUFFLFNBQVMsQ0FBQyxFQUFFLGNBQWMsQ0FBQyxDQUFDO0FBRTFELENBQUMsS0FBSyxJQUFJLEVBQUU7SUFDWCxPQUFPLENBQUMsR0FBRyxDQUFDLDBCQUEwQixDQUFDLENBQUM7SUFDeEMsTUFBTSxZQUFZLENBQ2pCLGdHQUFnRyxPQUFPLEVBQUUsRUFDekc7UUFDQyxLQUFLLEVBQUUsSUFBSTtRQUNYLEdBQUcsRUFBRSxJQUFJLENBQUMsU0FBUyxFQUFFLElBQUksQ0FBQztLQUMxQixDQUNELENBQUMsQ0FBQyxDQUFDLENBQUM7SUFDTCxPQUFPLENBQUMsR0FBRyxDQUFDLDJCQUEyQixDQUFDLENBQUM7QUFDMUMsQ0FBQyxDQUFDLEVBQUUsQ0FBQyJ9
