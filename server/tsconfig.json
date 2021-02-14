@@ -17,5 +17,6 @@
 		"alwaysStrict": true
 	},
 	"compileOnSave": false,
-	"include": ["src/**/*", "@types"]
+	"include": ["src/**/*", "@types"],
+	"exclude": ["./node_modules", "./dist", "./scripts"]
 }
