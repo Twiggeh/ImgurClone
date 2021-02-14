@@ -1,1 +1,3 @@
 posts should contain a userid instead of a username and userpicture
+
+rethink how scripts are being used/ built
