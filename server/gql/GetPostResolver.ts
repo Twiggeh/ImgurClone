@@ -65,13 +65,13 @@ export const GetPostResolver: QueryResolvers['getPost'] = async (
 			);
 		};
 
-		if (Array.isArray(posts) && posts.length !== 0)
+		if (posts.length !== 0)
 			return {
 				__typename: 'PostSuccess',
 				message: 'Post(s) found.',
 				success: true,
 				page: (page += 1),
-				posts: transformPosts(posts.filter(c => !!c)),
+				posts: transformPosts(posts.filter(c => !!c) as LeanDocument<PostDocument>[]),
 			};
 		else
 			return {
