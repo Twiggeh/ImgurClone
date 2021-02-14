@@ -1,17 +1,27 @@
 import Post, { IPost } from '../Models/Post.js';
-import type { MakeOptional, Resolvers } from '../generated/gql.js';
-import type { Optional } from 'src/types.js';
+import type { MutationResolvers } from '../generated/gql.js';
+import { ICard } from 'Models/Card.js';
+import { deNull } from '../utils/utils.js';
 
-export const AddPostResolver: Resolvers['Mutation']['addPost'] = async (
+export const AddPostResolver: MutationResolvers['addPost'] = async (
 	_,
 	{ cards },
 	{ req, currentUser }
 ) => {
-	const postData: Optional<IPost> = {
+	const processedCards: ICard[] = cards.map(c => {
+		return {
+			location: c.location,
+			description: deNull(c.description),
+			title: deNull(c.title),
+		};
+	});
+
+	const postData: IPost = {
 		userId: currentUser.mongoId ? currentUser.mongoId : req.sessionID,
 		userName: currentUser.userName,
 		profilePicture: currentUser.profilePicture,
-		cards,
+		cards: processedCards,
+		addedDate: Date.now(),
 	};
 
 	try {
