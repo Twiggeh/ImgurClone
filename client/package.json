@@ -6,9 +6,9 @@
 	"author": "Twiggeh",
 	"license": "MIT",
 	"scripts": {
-		"debug": "./scripts/debug.sh",
-		"build": "./scripts/build.sh",
-		"analyze": "./scripts/analyze.sh",
+		"debug": "node ./scripts/debug.js",
+		"build": "node ./scripts/build.js",
+		"analyze": "node ./scripts/analyze.js",
 		"gql:codegen": "graphql-codegen --config gql.yml"
 	},
 	"eslintConfig": {
@@ -98,6 +98,8 @@
 		"@graphql-codegen/typescript-operations": "1.17.13",
 		"@graphql-codegen/typescript-react-apollo": "2.2.1",
 		"@hot-loader/react-dom": "^17.0.1",
+		"@types/apollo-upload-client": "^14.1.0",
+		"@types/node": "^14.14.27",
 		"@types/react": "^17.0.0",
 		"@types/react-dom": "^17.0.0",
 		"@types/react-router-dom": "^5.1.6",
@@ -139,8 +141,7 @@
 		"webpack": "^4.41.3",
 		"webpack-bundle-analyzer": "^4.3.0",
 		"webpack-cli": "^3.3.10",
-		"webpack-dev-server": "^3.9.0",
-		"@types/apollo-upload-client": "^14.1.0"
+		"webpack-dev-server": "^3.9.0"
 	},
 	"dependencies": {
 		"apollo-upload-client": "^14.1.3"

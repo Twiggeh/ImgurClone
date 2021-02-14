@@ -14,7 +14,7 @@ export const debounce = (func: () => void, wait: number, immediate?: boolean) =>
 
 		const callNow = immediate && !timeout;
 
-		clearTimeout(Number(timeout));
+		clearTimeout(timeout);
 
 		timeout = setTimeout(later, wait);
 
