@@ -3,11 +3,10 @@ import { createWriteStream, unlinkSync } from 'fs';
 import { config } from 'dotenv';
 import { SERVER_ROOT, SERVER_URL } from '../src/app.js';
 import { MutationResolvers, UploadFileResult } from 'generated/gql';
-import { File } from '../@types/global.js';
-import { Await } from '../src/types';
+import { FileUpload } from 'graphql-upload';
 config();
 
-const writeFileToDisk = async (file: Await<File>) => {
+const writeFileToDisk = async (file: FileUpload) => {
 	const { createReadStream, filename } = file;
 
 	const stream = createReadStream();
@@ -50,8 +49,12 @@ export const UploadFilesResolver: MutationResolvers['uploadFiles'] = async (_, a
 	const fileBuffer = [];
 	const result: UploadFileResult[] = [];
 
-	for (const file of allFiles) {
-		if (file.status === 'fulfilled') fileBuffer.push(writeFileToDisk(file.value));
+	for (const file of allFiles as (
+		| { status: 'fulfilled'; value: FileUpload | undefined | null }
+		| { status: 'rejected' }
+	)[]) {
+		if (file.status === 'fulfilled' && file.value)
+			fileBuffer.push(writeFileToDisk(file.value));
 		else
 			result.push({
 				message: `Couldn\'t upload the file.`,
