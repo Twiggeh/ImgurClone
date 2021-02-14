@@ -1,7 +1,13 @@
-export const deNull = <R extends null | unknown, T>(
+export const deNull = <R extends null | undefined | unknown, T = undefined>(
 	value: R,
 	defaultValue: T | undefined = undefined
-) => {
-	value ?? defaultValue;
-	return value as Extract<T, null> | T;
+): T extends undefined
+	? R extends null
+		? undefined
+		: Exclude<R, null>
+	: R extends null | undefined
+	? T
+	: Exclude<R, null> => {
+	// @ts-ignore
+	return value ?? defaultValue;
 };
