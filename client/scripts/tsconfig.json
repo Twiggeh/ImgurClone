@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"lib": ["esnext"],
+		"types": ["node"],
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"inlineSourceMap": true,
+		"strictNullChecks": true,
+		"noEmit": false,
+		"typeRoots": ["src/@types", "../node_modules/@types"],
+		"baseUrl": ".",
+		"removeComments": true
+	},
+	"include": ["./**/*.ts", "./*.ts"]
+}
