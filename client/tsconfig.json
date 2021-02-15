@@ -19,5 +19,5 @@
 		"baseUrl": ".",
 		"removeComments": true
 	},
-	"exclude": ["./node_modules", "./dist", "./src/index.js", "./scripts", "./scripts"]
+	"exclude": ["./node_modules", "./dist", "./src/index.js", "./scripts", "./config"]
 }
