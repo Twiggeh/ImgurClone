@@ -42,11 +42,14 @@ export const useReadLine = (
  */
 export const asyncProcess = (
 	command: string,
-	opts: SpawnOptionsWithoutStdio,
-	outputNeedsToEqual?: string
+	opts: SpawnOptionsWithoutStdio & {
+		outputNeedsToEqual?: string;
+		ignoreErrors?: boolean;
+	}
 ) => {
 	const procLock = createLock<undefined, string>();
 	const subProc = spawn(command, opts);
+	const { outputNeedsToEqual, ignoreErrors } = opts;
 
 	if (outputNeedsToEqual) {
 		subProc.stdout.on('data', data => {
@@ -60,6 +63,11 @@ export const asyncProcess = (
 	}
 
 	subProc.stderr.on('data', (e: string) => {
+		const strErr = e.toString();
+		console.error(strErr);
+
+		if (ignoreErrors) return;
+
 		const nonErrors = [
 			'Debugger attached.\n',
 			'Waiting for the debugger to disconnect...\n',
@@ -68,8 +76,6 @@ export const asyncProcess = (
 			'warning',
 		];
 
-		const strErr = e.toString();
-		console.error(strErr);
 		for (const nonError of nonErrors) {
 			if (strErr.includes(nonError)) return;
 		}
