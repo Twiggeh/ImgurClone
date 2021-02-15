@@ -3,12 +3,12 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from './Button';
 
-const NewPostBtn = ({ css }: { css?: string }) => {
+const NewPostBtn = ({ scss }: CustomCss) => {
 	const theme = useTheme();
 	const history = useHistory();
 	return (
 		<Button
-			css={css}
+			scss={scss}
 			bgColor={theme.color.accent}
 			onClick={e => {
 				e.preventDefault();
