@@ -4,26 +4,18 @@ import { URL } from 'url';
 import { processParams } from './processParameters.js';
 import { asyncProcess } from '../../utils/scriptUtils.js';
 const defaultDebugCfg = {
-	domain: 'localhost',
-	domainExt: '',
-	subDomain: '',
-	securePort: '8080',
-	insecurePort: '8081',
-	devPort: '5050',
-	backendProtocol: 'http',
+    domain: 'localhost',
+    domainExt: '',
+    subDomain: '',
+    securePort: '8080',
+    insecurePort: '8081',
+    devPort: '5050',
+    backendProtocol: 'http',
 };
 const __dirname = decodeURI(dirname(new URL(import.meta.url).pathname));
-const {
-	domain,
-	subDomain,
-	domainExt,
-	insecurePort,
-	devPort,
-	securePort,
-	backendProtocol,
-} = processParams(process.argv, defaultDebugCfg);
+const { domain, subDomain, domainExt, insecurePort, devPort, securePort, backendProtocol, } = processParams(process.argv, defaultDebugCfg);
 let envFileContent = '';
-const addEnvContent = newContent => void (envFileContent += newContent + '\n');
+const addEnvContent = (newContent) => void (envFileContent += newContent + '\n');
 addEnvContent('NODE_ENV=development');
 addEnvContent(`SERVER_DIR=${join(__dirname, '..')}`);
 addEnvContent(`DOMAIN="${domain}"`);

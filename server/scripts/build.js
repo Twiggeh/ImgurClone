@@ -5,25 +5,17 @@ import { asyncProcess } from '../../utils/scriptUtils.js';
 import { processParams } from './processParameters.js';
 const __dirname = decodeURI(dirname(new URL(import.meta.url).pathname));
 const defaultBuildCfg = {
-	domain: 'localhost',
-	domainExt: '',
-	subDomain: '',
-	securePort: '8080',
-	insecurePort: '8081',
-	devPort: '5050',
-	backendProtocol: 'http',
+    domain: 'localhost',
+    domainExt: '',
+    subDomain: '',
+    securePort: '8080',
+    insecurePort: '8081',
+    devPort: '5050',
+    backendProtocol: 'http',
 };
-const {
-	domain,
-	subDomain,
-	domainExt,
-	insecurePort,
-	devPort,
-	securePort,
-	backendProtocol,
-} = processParams(process.argv, defaultBuildCfg);
+const { domain, subDomain, domainExt, insecurePort, devPort, securePort, backendProtocol, } = processParams(process.argv, defaultBuildCfg);
 let envFileContent = '';
-const addEnvContent = newContent => void (envFileContent += newContent + '\n');
+const addEnvContent = (newContent) => void (envFileContent += newContent + '\n');
 addEnvContent('NODE_ENV=development');
 addEnvContent(`SERVER_DIR=${join(__dirname, '..')}`);
 addEnvContent(`DOMAIN="${domain}"`);
@@ -37,8 +29,8 @@ mkdirSync(join(__dirname, '..', 'public/uploads'), { recursive: true });
 mkdirSync(join(__dirname, '..', 'dist/public/uploads'), { recursive: true });
 writeFileSync(join(__dirname, '../.env'), envFileContent);
 (async () => {
-	console.log('Compiling the server ...');
-	await asyncProcess('tsc', { shell: true, cwd: join(__dirname, '..') })[0];
-	console.log('Server has been compiled.');
+    console.log('Compiling the server ...');
+    await asyncProcess('tsc', { shell: true, cwd: join(__dirname, '..') })[0];
+    console.log('Server has been compiled.');
 })();
 //# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYnVpbGQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJidWlsZC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQUUsU0FBUyxFQUFFLGFBQWEsRUFBRSxNQUFNLElBQUksQ0FBQztBQUM5QyxPQUFPLEVBQUUsT0FBTyxFQUFFLElBQUksRUFBRSxNQUFNLE1BQU0sQ0FBQztBQUNyQyxPQUFPLEVBQUUsR0FBRyxFQUFFLE1BQU0sS0FBSyxDQUFDO0FBQzFCLE9BQU8sRUFBRSxZQUFZLEVBQUUsTUFBTSw0QkFBNEIsQ0FBQztBQUMxRCxPQUFPLEVBQUUsYUFBYSxFQUFFLE1BQU0sd0JBQXdCLENBQUM7QUFFdkQsTUFBTSxTQUFTLEdBQUcsU0FBUyxDQUFDLE9BQU8sQ0FBQyxJQUFJLEdBQUcsQ0FBQyxNQUFNLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDLFFBQVEsQ0FBQyxDQUFDLENBQUM7QUFFeEUsTUFBTSxlQUFlLEdBQUc7SUFDdkIsTUFBTSxFQUFFLFdBQVc7SUFDbkIsU0FBUyxFQUFFLEVBQUU7SUFDYixTQUFTLEVBQUUsRUFBRTtJQUNiLFVBQVUsRUFBRSxNQUFNO0lBQ2xCLFlBQVksRUFBRSxNQUFNO0lBQ3BCLE9BQU8sRUFBRSxNQUFNO0lBQ2YsZUFBZSxFQUFFLE1BQU07Q0FDdkIsQ0FBQztBQUVGLE1BQU0sRUFDTCxNQUFNLEVBQ04sU0FBUyxFQUNULFNBQVMsRUFDVCxZQUFZLEVBQ1osT0FBTyxFQUNQLFVBQVUsRUFDVixlQUFlLEdBQ2YsR0FBRyxhQUFhLENBQUMsT0FBTyxDQUFDLElBQUksRUFBRSxlQUFlLENBQUMsQ0FBQztBQUVqRCxJQUFJLGNBQWMsR0FBRyxFQUFFLENBQUM7QUFDeEIsTUFBTSxhQUFhLEdBQUcsQ0FBQyxVQUFrQixFQUFFLEVBQUUsQ0FBQyxLQUFLLENBQUMsY0FBYyxJQUFJLFVBQVUsR0FBRyxJQUFJLENBQUMsQ0FBQztBQUd6RixhQUFhLENBQUMsc0JBQXNCLENBQUMsQ0FBQztBQUN0QyxhQUFhLENBQUMsY0FBYyxJQUFJLENBQUMsU0FBUyxFQUFFLElBQUksQ0FBQyxFQUFFLENBQUMsQ0FBQztBQUdyRCxhQUFhLENBQUMsV0FBVyxNQUFNLEdBQUcsQ0FBQyxDQUFDO0FBQ3BDLGFBQWEsQ0FBQyxjQUFjLFNBQVMsR0FBRyxDQUFDLENBQUM7QUFDMUMsYUFBYSxDQUFDLG9CQUFvQixTQUFTLEdBQUcsQ0FBQyxDQUFDO0FBR2hELGFBQWEsQ0FBQyxnQkFBZ0IsVUFBVSxHQUFHLENBQUMsQ0FBQztBQUM3QyxhQUFhLENBQUMsYUFBYSxPQUFPLEdBQUcsQ0FBQyxDQUFDO0FBQ3ZDLGFBQWEsQ0FBQyxrQkFBa0IsWUFBWSxHQUFHLENBQUMsQ0FBQztBQUlqRCxhQUFhLENBQUMscUJBQXFCLGVBQWUsR0FBRyxDQUFDLENBQUM7QUFHdkQsU0FBUyxDQUFDLElBQUksQ0FBQyxTQUFTLEVBQUUsSUFBSSxFQUFFLGdCQUFnQixDQUFDLEVBQUUsRUFBRSxTQUFTLEVBQUUsSUFBSSxFQUFFLENBQUMsQ0FBQztBQUN4RSxTQUFTLENBQUMsSUFBSSxDQUFDLFNBQVMsRUFBRSxJQUFJLEVBQUUscUJBQXFCLENBQUMsRUFBRSxFQUFFLFNBQVMsRUFBRSxJQUFJLEVBQUUsQ0FBQyxDQUFDO0FBRzdFLGFBQWEsQ0FBQyxJQUFJLENBQUMsU0FBUyxFQUFFLFNBQVMsQ0FBQyxFQUFFLGNBQWMsQ0FBQyxDQUFDO0FBRTFELENBQUMsS0FBSyxJQUFJLEVBQUU7SUFDWCxPQUFPLENBQUMsR0FBRyxDQUFDLDBCQUEwQixDQUFDLENBQUM7SUFDeEMsTUFBTSxZQUFZLENBQUMsS0FBSyxFQUFFLEVBQUUsS0FBSyxFQUFFLElBQUksRUFBRSxHQUFHLEVBQUUsSUFBSSxDQUFDLFNBQVMsRUFBRSxJQUFJLENBQUMsRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUM7SUFDMUUsT0FBTyxDQUFDLEdBQUcsQ0FBQywyQkFBMkIsQ0FBQyxDQUFDO0FBQzFDLENBQUMsQ0FBQyxFQUFFLENBQUMifQ==
