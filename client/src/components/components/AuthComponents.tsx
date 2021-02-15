@@ -38,7 +38,7 @@ export const MiniTitle = styled.h4<CustomCss>`
 	font-size: ${({ theme }) => theme.fontSize.mini};
 	text-align: center;
 	font-weight: 500;
-	${props => props.css}
+	${props => props.scss}
 `;
 
 export const CenteredFormPage = styled.div`
@@ -52,7 +52,7 @@ export const CenteredFormPage = styled.div`
 export const AlignRight = styled.div<CustomCss>`
 	display: flex;
 	justify-content: flex-end;
-	${props => props.css}
+	${props => props.scss}
 `;
 
 export const LayoutLogins = styled.div`
@@ -72,7 +72,7 @@ export const Center = styled.div<CustomCss>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	${props => props.css}
+	${props => props.scss}
 `;
 
 export const StyledForm = styled.form`
@@ -114,7 +114,7 @@ export const StyledInput = styled.input<CustomCss>`
 	::placeholder {
 		color: #c0c0c0;
 	}
-	${({ css }) => css}
+	${({ scss }) => scss}
 `;
 
 import React from 'react';

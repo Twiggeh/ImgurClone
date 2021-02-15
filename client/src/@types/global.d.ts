@@ -15,7 +15,7 @@ type ImgurUpload<T> = {
 };
 
 interface CustomCss {
-	css?: string;
+	scss?: string;
 }
 
 declare const BACKEND_SERVER_URL: string;
