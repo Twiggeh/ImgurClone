@@ -1,7 +1,10 @@
 import { writeFileSync } from 'fs';
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { URL } from 'url';
 import { asyncProcess } from '../../utils/scriptUtils.js';
 import { processParams } from './parseParams.js';
+
+const __dirname = decodeURI(dirname(new URL(import.meta.url).pathname));
 
 const defaultDebugCfg = {
 	backendUrl: 'http://localhost:5050',
