@@ -29,6 +29,7 @@ writeFileSync(join(__dirname, '../.env'), envFileContent);
 	await asyncProcess('webpack --config ./config/webpack.prod.js --mode production', {
 		shell: true,
 		cwd: join(__dirname, '..'),
+		ignoreErrors: true,
 	})[0];
 	console.log('Server has been compiled.');
 })();

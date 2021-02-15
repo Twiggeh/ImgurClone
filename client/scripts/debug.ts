@@ -26,12 +26,13 @@ addEnvContent(`BACKEND_URL="${backendUrl}"`);
 writeFileSync(join(__dirname, '../.env'), envFileContent);
 
 (async () => {
-	console.log('Compiling the server ...');
+	console.log('Compiling the client ...');
 	await asyncProcess(
 		`webpack-dev-server --config ./config/webpack.dev.js --mode development --host 0.0.0.0 --port ${devPort}`,
 		{
 			shell: true,
 			cwd: join(__dirname, '..'),
+			ignoreErrors: true,
 		}
 	)[0];
 	console.log('Server has been compiled.');
