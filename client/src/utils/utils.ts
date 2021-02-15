@@ -4,7 +4,7 @@ export const getUrlFromLocation = (location: string) => {
 };
 
 export const debounce = (func: () => void, wait: number, immediate?: boolean) => {
-	let timeout: NodeJS.Timeout | undefined;
+	let timeout: number | undefined;
 
 	return () => {
 		const later = () => {
@@ -14,9 +14,9 @@ export const debounce = (func: () => void, wait: number, immediate?: boolean) =>
 
 		const callNow = immediate && !timeout;
 
-		clearTimeout(timeout);
+		window.clearTimeout(timeout);
 
-		timeout = setTimeout(later, wait);
+		timeout = window.setTimeout(later, wait);
 
 		if (callNow) func();
 	};

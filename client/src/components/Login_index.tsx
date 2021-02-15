@@ -59,7 +59,7 @@ const Login = () => {
 					</StyledForm>
 
 					<AlignRight scss={'* + * {margin-left: 0.2em;}'}>
-						<SignUpButton bgColor='transparent'>need an account?</SignUpButton>
+						<SignUpBtn bgColor='transparent'>need an account?</SignUpBtn>
 						<Button
 							disabled={allValid}
 							onClick={e => {
@@ -94,5 +94,5 @@ import {
 	StyledInput,
 	StyledLabel,
 } from './components/AuthComponents';
-import SignUpButton from './components/SignUpButton';
+import SignUpBtn from './components/SignUpBtn';
 import { ClosedEyeSVG, OpenEyeSVG } from '../utils/assetImport';

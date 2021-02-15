@@ -123,7 +123,7 @@ const Register = () => {
 					</StyledForm>
 
 					<AlignRight scss={'* + * {margin-left: 0.2em;}'}>
-						<SignInButton />
+						<SignInBtn />
 						<Button
 							disabled={allValid}
 							onClick={e => {
@@ -160,7 +160,7 @@ import {
 	StyledLabel,
 	PasswordError,
 } from '../components/AuthComponents';
-import SignInButton from '../components/SignIn';
+import SignInBtn from '../components/SignInBtn';
 import { OpenEyeSVG, ClosedEyeSVG } from '../../utils/assetImport';
 import { AddUserMutationVariables, useAddUserMutation } from '../../generated/graphql';
 import { useHistory } from 'react-router';
