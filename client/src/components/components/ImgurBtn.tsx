@@ -2,11 +2,11 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from './Button';
 
-const ImgurBtn = ({ css }: { css?: string }) => {
+const ImgurBtn = ({ scss }: CustomCss) => {
 	const history = useHistory();
 	return (
 		<Button
-			css={css}
+			scss={scss}
 			bgColor='transparent'
 			onClick={e => {
 				e.preventDefault();
