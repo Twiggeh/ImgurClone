@@ -12,7 +12,7 @@ const Posts_Index: React.FC = () => {
 
 	return (
 		<Page>
-			<TitleBar css='margin-bottom : 2em;' />
+			<TitleBar scss='margin-bottom : 2em;' />
 			<CenteredLayoutWrap>
 				<Left></Left>
 				<Center>

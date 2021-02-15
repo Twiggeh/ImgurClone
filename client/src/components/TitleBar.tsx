@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchBar from './components/SearchBar';
-import SignUpButton from './components/SignUpButton';
-import SignInButton from './components/SignIn';
+import SignUpBtn from './components/SignUpBtn';
+import SignInBtn from './components/SignInBtn';
 import styled from '@emotion/styled';
 import NewPostBtn from './components/NewPostBtn';
 import ImgurBtn from './components/ImgurBtn';
@@ -21,7 +21,7 @@ interface ITitleBar {
 	loginCol?: string;
 	signCol?: string;
 	imgurCol?: string;
-	css?: string;
+	scss?: string;
 }
 
 const smallScreen = (theme: Theme) => `${theme.mq.phone} {
@@ -42,7 +42,7 @@ const TitleBar: React.FC<ITitleBar> = ({
 	newPostCol = '',
 	signCol = '',
 	imgurCol = 'transparent',
-	css = '',
+	scss = '',
 }) => {
 	const theme = useTheme();
 	const { identity } = IdentityContext();
@@ -54,21 +54,21 @@ const TitleBar: React.FC<ITitleBar> = ({
 	const SignUpColor = `background-color: ${loginCol || theme.color.primary}`;
 
 	return (
-		<StyledBar css={css}>
+		<StyledBar scss={scss}>
 			<StyledGroup>
-				{logoVis ? <ImgurBtn css={ImgurColor} /> : null}
-				{newPostVis ? <NewPostBtn css={smallScreen(theme) + NewPostColor} /> : null}
+				{logoVis ? <ImgurBtn scss={ImgurColor} /> : null}
+				{newPostVis ? <NewPostBtn scss={smallScreen(theme) + NewPostColor} /> : null}
 			</StyledGroup>
 			{searchBar ? <SearchBar /> : null}
 			{identity ? (
 				<StyledGroup>
 					<ProfileBtn name={identity.userName} css={ProfileColor} />
-					<LogOutBtn css={mediumScreen(theme)} />
+					<LogOutBtn scss={mediumScreen(theme)} />
 				</StyledGroup>
 			) : (
 				<StyledGroup>
-					{signIn ? <SignInButton css={smallScreen(theme) + SignInColor} /> : null}
-					{signUp ? <SignUpButton css={SignUpColor} /> : null}
+					{signIn ? <SignInBtn scss={smallScreen(theme) + SignInColor} /> : null}
+					{signUp ? <SignUpBtn scss={SignUpColor} /> : null}
 				</StyledGroup>
 			)}
 		</StyledBar>
@@ -84,13 +84,13 @@ var StyledGroup = styled.div`
 	}
 `;
 
-var StyledBar = styled.div<{ css: string }>`
+var StyledBar = styled.div<CustomCss>`
 	display: flex;
 	align-content: center;
 	flex-direction: row;
 	justify-content: space-between;
 	padding: 0.4em 1em 0.4em 1em;
-	${props => props.css};
+	${({ scss }) => scss};
 `;
 
 export default TitleBar;
