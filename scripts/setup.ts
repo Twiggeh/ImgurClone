@@ -103,11 +103,11 @@ export const sessionSecret = '${variables.sessionSecret}';`;
 
 	console.log('Building the development server ...');
 	try {
-		await asyncProcess(
-			'yarn debug',
-			{ shell: true, cwd: join(__dirname, 'server') },
-			'Watching for file changes'
-		)[0];
+		await asyncProcess('yarn debug', {
+			shell: true,
+			cwd: join(__dirname, 'server'),
+			outputNeedsToEqual: 'Watching for file changes',
+		})[0];
 		console.log('Server has been built, starting the server.');
 	} catch (e) {
 		console.log("Couldn't build the server ...");
@@ -118,8 +118,11 @@ export const sessionSecret = '${variables.sessionSecret}';`;
 	try {
 		const [debugServerLock, _debugServerProc] = asyncProcess(
 			`node ${join(__dirname, 'server/dist/src/app.js')}`,
-			{ shell: true, cwd: join(__dirname, 'server') },
-			'Dev server is listening on port'
+			{
+				shell: true,
+				cwd: join(__dirname, 'server'),
+				outputNeedsToEqual: 'Dev server is listening on port',
+			}
 		);
 		debugServerProc = _debugServerProc;
 
