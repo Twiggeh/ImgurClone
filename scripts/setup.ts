@@ -1,8 +1,11 @@
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
-import { asyncProcess, asyncReadLine } from './utils/scriptUtils.js';
+import { URL } from 'url';
+import { asyncProcess, useReadLine } from '../utils/scriptUtils.js';
 
 const __dirname = decodeURI(dirname(new URL(import.meta.url).pathname));
+
+const asyncReadLine = useReadLine(process.stdin, process.stdout);
 
 (async () => {
 	try {
@@ -152,7 +155,7 @@ export const sessionSecret = '${variables.sessionSecret}';`;
 	}
 	console.log('Attempting to close the server now since all types have been built ...');
 
-	debugServerProc.kill();
+	debugServerProc && debugServerProc.kill();
 
 	console.log('Setup completed');
 })();

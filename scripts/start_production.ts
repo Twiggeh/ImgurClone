@@ -1,5 +1,6 @@
 import { dirname, join } from 'path';
-import { asyncProcess } from './utils/scriptUtils.js';
+import { URL } from 'url';
+import { asyncProcess } from '../utils/scriptUtils.js';
 
 const __dirname = decodeURI(dirname(new URL(import.meta.url).pathname));
 
