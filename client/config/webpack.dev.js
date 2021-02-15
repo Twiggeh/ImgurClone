@@ -7,18 +7,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const webpack = require('webpack');
 console.log(mode);
-const curProcess = process.cwd();
 
 module.exports = {
-	entry: ['react-hot-loader/patch', path.resolve(curProcess, 'src')],
+	entry: ['react-hot-loader/patch', path.resolve(__dirname, '../src')],
 	output: {
-		path: path.resolve(curProcess, './dist'),
+		path: path.resolve(__dirname, '../dist'),
 		publicPath: '/',
 		filename: 'public/js/bundle.js',
 	},
 	devtool: 'source-map',
 	devServer: {
-		contentBase: path.resolve(curProcess, 'src/assets'),
+		contentBase: path.resolve(__dirname, '../src/assets'),
 		contentBasePublicPath: '/',
 		historyApiFallback: true,
 		hot: true,
@@ -57,6 +56,7 @@ module.exports = {
 								module: 'esnext',
 								react: 'preserve',
 								lib: ['dom', 'dom.iterable', 'esnext'],
+								transpileOnly: true,
 							},
 						},
 					},
@@ -162,10 +162,10 @@ module.exports = {
 	resolve: {
 		alias: {
 			'react-dom': '@hot-loader/react-dom',
-			icons: path.resolve(curProcess, './src/assets/icons'),
-			assetFiles: path.resolve(curProcess, './src/assets'),
-			pictures: path.resolve(curProcess, './src/static/Pictures'),
-			assets: path.resolve(curProcess, './src/utils/assetImports'),
+			icons: path.resolve(__dirname, '../src/assets/icons'),
+			assetFiles: path.resolve(__dirname, '../src/assets'),
+			pictures: path.resolve(__dirname, '../src/static/Pictures'),
+			assets: path.resolve(__dirname, '../src/utils/assetImports'),
 		},
 		modules: ['src', 'node_modules'],
 		extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -174,7 +174,7 @@ module.exports = {
 	plugins: [
 		new ESLintPlugin,
 		new HtmlWebpackPlugin({
-			template: path.resolve(curProcess, 'src/index.html'),
+			template: path.resolve(__dirname, '../src/index.html'),
 
 			filename: 'index.html',
 		}),
