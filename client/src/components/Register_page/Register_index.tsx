@@ -122,7 +122,7 @@ const Register = () => {
 						</StyledLabel>
 					</StyledForm>
 
-					<AlignRight css={'* + * {margin-left: 0.2em;}'}>
+					<AlignRight scss={'* + * {margin-left: 0.2em;}'}>
 						<SignInButton />
 						<Button
 							disabled={allValid}

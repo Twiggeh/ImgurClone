@@ -235,7 +235,7 @@ const SearchBar = () => {
 						name='search'
 						placeholder='Search Uploads: #postid, @user'
 						value={searchBar}
-						css={`
+						scss={`
 							display: inline-block;
 							margin: 0;
 							padding: 0;

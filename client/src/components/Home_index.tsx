@@ -7,7 +7,7 @@ const Home = () => {
 			<TitleBar />
 			<CenteredLayoutWrap>
 				<Left></Left>
-				<Center css='flex-basis: 150%;'>
+				<Center scss='flex-basis: 150%;'>
 					<StyledBigTitle> Recent Posts</StyledBigTitle>
 					<PostList posts={posts} />
 				</Center>

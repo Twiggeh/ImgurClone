@@ -77,23 +77,23 @@ const Profile = () => {
 		<Page>
 			{JSON.stringify(error) /*TODO : Handle errors properly*/}
 			<TitleBar profCol={anyChange ? 'transparent' : undefined} />
-			<CenteredLayoutWrap css='margin-top: 4rem;'>
+			<CenteredLayoutWrap scss='margin-top: 4rem;'>
 				<Left></Left>
-				<Center css='flex-basis: 100%;'>
-					<StyledBigTitle css='margin-top: 0;'>Profile</StyledBigTitle>
-					<StyledSmallTitle css='text-align: left;'>Username</StyledSmallTitle>
+				<Center scss='flex-basis: 100%;'>
+					<StyledBigTitle scss='margin-top: 0;'>Profile</StyledBigTitle>
+					<StyledSmallTitle scss='text-align: left;'>Username</StyledSmallTitle>
 					<StyledInput
-						css='min-width: unset;'
+						scss='min-width: unset;'
 						value={formState.userName}
 						onChange={e => updateForm(e, 'userName')}
 					/>
 					<FlexContainer>
 						<TitleInputWrap>
-							<StyledSmallTitle css='display: inline-block; margin: 0;'>
+							<StyledSmallTitle scss='display: inline-block; margin: 0;'>
 								ProfilePicture
 							</StyledSmallTitle>
 							<StyledInput
-								css='min-width: unset;'
+								scss='min-width: unset;'
 								value={formState.profilePicture}
 								onChange={e => updateForm(e, 'profilePicture')}
 							/>
@@ -102,7 +102,7 @@ const Profile = () => {
 					</FlexContainer>
 					{UsersPosts ? (
 						<>
-							<StyledBigTitle css='margin-top: 1.5em;'>Your Posts</StyledBigTitle>
+							<StyledBigTitle scss='margin-top: 1.5em;'>Your Posts</StyledBigTitle>
 							<PostList posts={UsersPosts} />
 						</>
 					) : null}

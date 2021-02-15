@@ -50,12 +50,12 @@ export const Center = styled.div<CustomCss>`
 	${props => props.theme.mq.phone} {
 		flex: 0 1 100vw;
 	}
-	${props => props.css}
+	${props => props.scss}
 `;
 
 export const CenteredLayoutWrap = styled.div<CustomCss>`
 	display: flex;
-	${props => props.css}
+	${props => props.scss}
 `;
 
 export const CreatePostTitle = styled.h2`

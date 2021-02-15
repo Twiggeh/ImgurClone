@@ -58,7 +58,7 @@ const Login = () => {
 						</StyledLabel>
 					</StyledForm>
 
-					<AlignRight css={'* + * {margin-left: 0.2em;}'}>
+					<AlignRight scss={'* + * {margin-left: 0.2em;}'}>
 						<SignUpButton bgColor='transparent'>need an account?</SignUpButton>
 						<Button
 							disabled={allValid}
