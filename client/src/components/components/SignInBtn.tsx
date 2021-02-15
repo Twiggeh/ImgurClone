@@ -3,9 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { OptionalProps } from '../../globals';
 import Button, { ButtonProps } from './Button';
 
-export type ISignIn = OptionalProps<ButtonProps, 'fColor' | 'href' | 'bgColor'>;
+export type ISignInBtn = OptionalProps<ButtonProps, 'fColor' | 'href' | 'bgColor'> &
+	CustomCss;
 
-const SignUpButton: React.FC<ISignIn> = props => {
+const SignInBtn: React.FC<ISignInBtn> = props => {
 	const history = useHistory();
 	return (
 		<Button
@@ -20,4 +21,4 @@ const SignUpButton: React.FC<ISignIn> = props => {
 	);
 };
 
-export default SignUpButton;
+export default SignInBtn;
