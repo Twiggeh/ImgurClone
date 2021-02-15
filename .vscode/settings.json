@@ -1,11 +1,5 @@
 {
-	"eslint.workingDirectories": [
-		"server",
-		"client"
-	],
-	"cSpell.words": [
-		"Imgur",
-		"codegen",
-		"svgs"
-	]
+	"eslint.workingDirectories": ["server", "client", "${workspaceFolder}"],
+	"cSpell.words": ["Imgur", "codegen", "svgs"],
+	"typescript.tsdk": "./node_modules/typescript/lib"
 }

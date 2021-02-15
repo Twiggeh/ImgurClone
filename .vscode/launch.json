@@ -2,32 +2,6 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Launch FireFox",
-			"skipFiles": ["!**/node_modules/**"],
-			"request": "launch",
-			"type": "firefox",
-			"url": "http://localhost:5000",
-			"webRoot": "${workspaceFolder}/client",
-			"postDebugTask": "Linux kill webpack",
-			// Doesnt ingest source maps
-			"pathMappings": [
-				{ "url": "webpack:///~/", "path": "${webRoot}/node_modules/" },
-				{ "url": "webpack:///./~/", "path": "${webRoot}/node_modules/" },
-				{ "url": "webpack:///./", "path": "${webRoot}/" },
-				{ "url": "webpack:///src/", "path": "${webRoot}/src/" },
-				{ "url": "webpack:///node_modules/", "path": "${webRoot}/node_modules/" },
-				{ "url": "webpack:///webpack", "path": null },
-				{ "url": "webpack:///(webpack)", "path": null },
-				{ "url": "webpack:///pages/", "path": "${webRoot}/pages/" },
-				{
-					"url": "webpack://[name]_[chunkhash]/node_modules/",
-					"path": "${webRoot}/node_modules/"
-				},
-				{ "url": "webpack://[name]_[chunkhash]/", "path": null },
-				{ "url": "webpack:///", "path": "" }
-			]
-		},
-		{
 			"name": "Launch Chrome",
 			"outFiles": ["./client/public/js/*.js", "!**/node_modules/**"],
 			"request": "launch",
@@ -48,33 +22,35 @@
 			"runtimeArgs": ["--inspect-brk", "./dist/src/app.js"]
 		},
 		{
+			"name": "TSC Watcher Client",
 			"command": "tsc --noEmit -w",
 			"cwd": "${workspaceFolder}/client",
-			"name": "TSC Watcher Client",
 			"request": "launch",
 			"type": "node-terminal",
 			"internalConsoleOptions": "neverOpen"
 		},
 		{
+			"name": "TSC Compiler Server",
 			"command": "yarn debug",
 			"cwd": "${workspaceFolder}/server",
-			"name": "TSC Compiler Server",
 			"request": "launch",
 			"type": "node-terminal"
+		},
+		{
+			"name": "Run Setup",
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen",
+			"program": "${workspaceFolder}/setup.js",
+			"cwd": "${workspaceFolder}",
+			"request": "launch",
+			"restart": true,
+			"runtimeExecutable": "node",
+			"skipFiles": ["<node_internals>/**"],
+			"runtimeArgs": ["--inspect-brk"],
+			"type": "pwa-node"
 		}
 	],
 	"compounds": [
-		{
-			"name": "start firefox debug session",
-			"configurations": [
-				"Launch FireFox",
-				"TSC Watcher Client",
-				"TSC Compiler Server",
-				"Development Backend"
-			],
-			"preLaunchTask": "start Webpack",
-			"stopAll": true
-		},
 		{
 			"name": "start chrome debug session",
 			"configurations": [

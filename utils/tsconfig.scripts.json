@@ -1,7 +1,8 @@
 {
 	"compilerOptions": {
 		"target": "esnext",
-		"lib": ["esnext", "dom"],
+		"lib": ["esnext"],
+		"types": ["node"],
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
@@ -15,5 +16,6 @@
 		"baseUrl": ".",
 		"removeComments": true
 	},
-	"include": ["./**/*.ts", "./*.ts"]
+	"extends": "./tsconfig.json",
+	"exclude": ["./server", "./client"]
 }

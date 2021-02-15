@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"target": "esnext",
 		"lib": ["dom", "dom.iterable", "esnext"],
-		"types": ["node"],
+		"types": ["cypress", "cypress-react-selector", "node"],
 		"allowJs": true,
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,
@@ -12,16 +12,12 @@
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"sourceMap": true,
-		"jsx": "react",
+		"jsx": "preserve",
 		"strictNullChecks": true,
 		"noEmit": false,
-		"typeRoots": ["src/@types"],
-		"baseUrl": "/",
-		"paths": {
-			"*": ["src/@types/*.d.ts"]
-		},
+		"typeRoots": ["./src/@types"],
+		"baseUrl": ".",
 		"removeComments": true
 	},
-	"include": ["./**/*.ts"],
-	"exclude": ["node_modules", "dist", "src/index.js", "scripts"]
+	"exclude": ["./node_modules", "./dist", "./src/index.js", "./scripts", "./scripts"]
 }

@@ -1,3 +1,15 @@
 posts should contain a userid instead of a username and userpicture
 
 rethink how scripts are being used/ built
+
+Server doesn't start because of missing cert/priv_key && cert/fullchain
+
+Server doesn't get secure server port
+
+Server doesn't read .env file ?
+
+Inputting lines into readline doesnt work when its spawned from another process (need to 
+pass stdin)
+
+Server doesn't work at all after being built from a setup script - just loads .localhost 
+for whatever reason
