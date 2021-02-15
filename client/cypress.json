@@ -1,0 +1,12 @@
+{
+	"baseUrl": "http://localhost:5000",
+	"env": {
+		"CYPRESS_REMOTE_DEBUGGING_PORT": 9999,
+		"cypress-react-selector": {
+			"root": "#root"
+		},
+		"codeCoverage": {
+			"url": "http://localhost:5050/__coverage__"
+		}
+	}
+}

@@ -40,7 +40,11 @@ module.exports = {
 								'@emotion/babel-preset-css-prop',
 							],
 							// don't inject babel code into each file, create a global import for them
-							plugins: ['@babel/plugin-transform-runtime', 'react-hot-loader/babel'],
+							plugins: [
+								'@babel/plugin-transform-runtime',
+								'react-hot-loader/babel',
+								'istanbul',
+							],
 							compact: false,
 							cacheDirectory: true,
 							cacheCompression: false,
@@ -76,7 +80,11 @@ module.exports = {
 								'@emotion/babel-preset-css-prop',
 							],
 							// don't inject babel code into each file, create a global import for them
-							plugins: ['react-hot-loader/babel', '@babel/plugin-transform-runtime'],
+							plugins: [
+								'react-hot-loader/babel',
+								'@babel/plugin-transform-runtime',
+								'istanbul',
+							],
 							compact: false,
 							cacheDirectory: true,
 							cacheCompression: false,
