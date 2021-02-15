@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { IdentityContext } from '../Body_index';
 import Button from './Button';
 
-const LogOutBtn: React.FC<CustomCss> = ({ css }) => {
+const LogOutBtn: React.FC<CustomCss> = ({ scss }) => {
 	const history = useHistory();
 	const { refetch } = IdentityContext();
 
@@ -21,7 +21,7 @@ const LogOutBtn: React.FC<CustomCss> = ({ css }) => {
 
 	return (
 		<Button
-			css={css}
+			scss={scss}
 			bgColor='transparent'
 			onClick={async e => {
 				e.preventDefault();
