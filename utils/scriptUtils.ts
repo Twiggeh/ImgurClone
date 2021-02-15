@@ -1,8 +1,6 @@
 import { spawn, SpawnOptionsWithoutStdio } from 'child_process';
 import { createInterface } from 'readline';
 
-const rl = createInterface({ input: process.stdin, output: process.stdout });
-
 type OptionalFNParam<T, R> = T extends undefined ? (argO?: never) => R : (arg0: T) => R;
 
 interface Lock<Resolve, Reject> {
@@ -23,10 +21,20 @@ export const createLock = <Resolve = undefined, Reject = undefined>(): Lock<
 	return lock as Lock<Resolve, Reject>;
 };
 
-export const asyncReadLine = async (question: string): Promise<string> => {
-	const questionLock = createLock<string, string>();
-	rl.question(question, questionLock.res);
-	return questionLock.p;
+export const useReadLine = (
+	stdin: NodeJS.ReadStream & {
+		fd: 0;
+	},
+	stdout: NodeJS.WritableStream | undefined
+) => {
+	const rl = createInterface({ input: stdin, output: stdout });
+
+	const asyncReadLine = async (question: string): Promise<string> => {
+		const questionLock = createLock<string, string>();
+		rl.question(question, questionLock.res);
+		return questionLock.p;
+	};
+	return asyncReadLine;
 };
 
 /**
