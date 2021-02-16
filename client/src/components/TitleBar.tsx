@@ -62,7 +62,7 @@ const TitleBar: React.FC<ITitleBar> = ({
 			{searchBar ? <SearchBar /> : null}
 			{identity ? (
 				<StyledGroup>
-					<ProfileBtn name={identity.userName} css={ProfileColor} />
+					<ProfileBtn name={identity.userName} scss={ProfileColor} />
 					<LogOutBtn scss={mediumScreen(theme)} />
 				</StyledGroup>
 			) : (
