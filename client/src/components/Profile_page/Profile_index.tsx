@@ -111,7 +111,7 @@ const Profile = () => {
 					{anyChange ? (
 						<SideBar>
 							<Button
-								css='width: 70%; box-sizing: border-box;'
+								scss='width: 70%; box-sizing: border-box;'
 								onClick={e => {
 									e.preventDefault();
 									setUser({ variables: setUserVars });
