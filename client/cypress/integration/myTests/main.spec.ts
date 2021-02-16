@@ -68,5 +68,44 @@ describe('Routing', () => {
 	});
 });
 
+describe('Drag and Drop', () => {
+	before(() => {
+		cy.visit('/');
+		cy.waitForReact(1001);
+	});
+
+	it('Drag and Dropping PNG Images works', () => {
+		const foxFaceFileName = 'breh.png';
+		cy.waitForReact();
+
+		cy.visit('/upload')
+			// Upload a file
+			.upload_file('[class*="StyledDragArea"]', foxFaceFileName, 'image/')
+			//.react('Button', { props: { children: 'Create Post !' } })
+			//.should('exist')
+			// Are the Cards that appear correct
+			.get('[class*="StyledFileDisplay"]')
+			.should('exist')
+			.children()
+			.should('have.length', 1)
+			.each(Card => {
+				cy.wrap(Card)
+					.children()
+					.should('have.length', 3)
+					.get('[class*="StyledImg"]', { withinSubject: Card })
+					.should('exist')
+					.get('[class*="DataName"]', { withinSubject: Card })
+					.should('exist')
+					.and('have.text', foxFaceFileName)
+					.get('[class*="TopRightButton"]', { withinSubject: Card });
+			});
 	});
 });
+
+interface TopBarComponents {
+	signInBtn?: boolean;
+	signUpBtn?: boolean;
+	newPost?: boolean;
+	imgur?: boolean;
+	searchBar?: boolean;
+}
