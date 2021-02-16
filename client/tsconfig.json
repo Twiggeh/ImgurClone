@@ -15,7 +15,7 @@
 		"jsx": "preserve",
 		"strictNullChecks": true,
 		"noEmit": false,
-		"typeRoots": ["./src/@types"],
+		"typeRoots": ["@types"],
 		"baseUrl": ".",
 		"removeComments": true
 	},
