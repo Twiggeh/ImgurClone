@@ -51,14 +51,14 @@ const FileUploader: React.FC<IFileUploader> = ({
 			<ButtonContainer>
 				{passedFiles?.length ? (
 					<Button
-						css={createUploadButtonCss}
+						scss={createUploadButtonCss}
 						disabled={uploadedFiles && passedFiles?.length >= maximum}
 						onClick={handleUploadFiles}>
 						Upload !
 					</Button>
 				) : null}
 				{uploadedFiles?.length && allSucceeded(uploadedFiles) ? (
-					<Button css={createUploadButtonCss} onClick={handleCreatePost}>
+					<Button scss={createUploadButtonCss} onClick={handleCreatePost}>
 						Create Post !
 					</Button>
 				) : null}

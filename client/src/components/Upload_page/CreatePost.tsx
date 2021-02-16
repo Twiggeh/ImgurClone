@@ -110,7 +110,7 @@ const CreatePost: React.FC<ICreatePost> = ({
 				</Center>
 				<Right>
 					<SideBar>
-						<Button css='width: 70%; box-sizing: border-box;' onClick={handleSubmit}>
+						<Button scss='width: 70%; box-sizing: border-box;' onClick={handleSubmit}>
 							<div>Submit !</div>
 						</Button>
 					</SideBar>

@@ -52,7 +52,7 @@ const HasBeenUploadedCard = (file: UploadFileResult, theme: Theme) => {
 	return (
 		<Card key={file.url}>
 			<TopRightButton
-				css={`
+				scss={`
 					background-color: ${theme.color.success};
 					cursor: default;
 				`}>
@@ -60,7 +60,7 @@ const HasBeenUploadedCard = (file: UploadFileResult, theme: Theme) => {
 			</TopRightButton>
 			<StyledImg
 				src={file.url}
-				css={`
+				scss={`
 					border: 2px ${theme.color.success} solid;
 				`}
 			/>
@@ -112,7 +112,7 @@ const FileDisplay: React.FC<IFileDisplay> = ({ files, setFiles, uploadedFiles })
 	);
 };
 
-var TopRightButton = styled.div<{ css?: string }>`
+var TopRightButton = styled.div<CustomCss>`
 	position: absolute;
 	z-index: 10;
 	border-radius: 50%;
@@ -128,7 +128,7 @@ var TopRightButton = styled.div<{ css?: string }>`
 		stroke: ${props => props.theme.color.fontColor};
 		stroke-width: 0.05vw;
 	}
-	${props => props.css}
+	${props => props.scss}
 `;
 
 var DataName = styled.div`
@@ -152,10 +152,10 @@ var StyledFileDisplay = styled.div`
 	gap: 2em;
 `;
 
-var StyledImg = styled.img<{ css?: string }>`
+var StyledImg = styled.img<CustomCss>`
 	width: 100%;
 	box-sizing: border-box;
-	${props => props.css}
+	${props => props.scss}
 `;
 
 export default FileDisplay;
