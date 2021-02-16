@@ -3,22 +3,21 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import Button from './Button';
 
-interface IProfileBtn {
+interface IProfileBtn extends CustomCss {
 	name: string;
-	css?: string;
 }
 
-const ProfileBtn: React.FC<IProfileBtn> = ({ name, css }) => {
+const ProfileBtn: React.FC<IProfileBtn> = ({ name, scss }) => {
 	const history = useHistory();
 	const theme = useTheme();
 	return (
 		<>
 			<Button
-				css={`
+				scss={`
 					${theme.mq.phone} {
 						display: none;
 					}
-					${css}
+					${scss}
 				`}
 				onClick={e => {
 					e.preventDefault();
@@ -27,12 +26,12 @@ const ProfileBtn: React.FC<IProfileBtn> = ({ name, css }) => {
 				Profile of {name}
 			</Button>
 			<Button
-				css={`
+				scss={`
 					display: none;
 					${theme.mq.phone} {
 						display: block;
 					}
-					${css}
+					${scss}
 				`}
 				onClick={e => {
 					e.preventDefault();
