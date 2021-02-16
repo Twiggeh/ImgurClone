@@ -24,7 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('upload_file', (selector, fileUrl, type) => {
+Cypress.Commands.add('drag_in_file', (selector, fileUrl, type) => {
 	return cy
 		.fixture(fileUrl, 'base64')
 		.then(Cypress.Blob.base64StringToBlob)

@@ -49,10 +49,12 @@ describe('Routing', () => {
 				}
 			});
 	};
+
 	before(() => {
 		cy.visit('/');
 		cy.waitForReact(1001);
 	});
+
 	after(() => {
 		cy.visit('/');
 	});
@@ -70,19 +72,20 @@ describe('Routing', () => {
 
 describe('Drag and Drop', () => {
 	before(() => {
-		cy.visit('/');
+		cy.visit('/upload');
 		cy.waitForReact(1001);
+	});
+
+	after(() => {
+		cy.visit('/');
 	});
 
 	it('Drag and Dropping PNG Images works', () => {
 		const foxFaceFileName = 'breh.png';
-		cy.waitForReact();
-
-		cy.visit('/upload')
-			// Upload a file
-			.upload_file('[class*="StyledDragArea"]', foxFaceFileName, 'image/')
-			//.react('Button', { props: { children: 'Create Post !' } })
-			//.should('exist')
+		// Drag a file in
+		cy.drag_in_file('[class*="StyledDragArea"]', foxFaceFileName, 'image/');
+		cy.contains('[class*="StyledButton"]', 'Upload !')
+			.should('exist')
 			// Are the Cards that appear correct
 			.get('[class*="StyledFileDisplay"]')
 			.should('exist')
@@ -90,6 +93,7 @@ describe('Drag and Drop', () => {
 			.should('have.length', 1)
 			.each(Card => {
 				cy.wrap(Card)
+					// Do all card properties exist
 					.children()
 					.should('have.length', 3)
 					.get('[class*="StyledImg"]', { withinSubject: Card })
@@ -97,8 +101,18 @@ describe('Drag and Drop', () => {
 					.get('[class*="DataName"]', { withinSubject: Card })
 					.should('exist')
 					.and('have.text', foxFaceFileName)
-					.get('[class*="TopRightButton"]', { withinSubject: Card });
-			});
+					.get('[class*="TopRightButton"]', { withinSubject: Card })
+					// Remove Card
+					.click()
+					.should('not.exist', { withinSubject: Card })
+					.get('[class*="DataName"]', { withinSubject: Card })
+					.should('not.exist')
+					.get('[class*="StyledImg"]', { withinSubject: Card });
+			})
+			.get('[class*="StyledFileDisplay"]')
+			.should('exist')
+			.children()
+			.should('have.length', 0);
 	});
 });
 
