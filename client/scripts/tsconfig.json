@@ -1,0 +1,3 @@
+{
+	"compilerOptions": { "target": "ESNext", "module": "ESNext", "types": ["node"] }
+}
