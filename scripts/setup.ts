@@ -11,7 +11,7 @@ const asyncReadLine = useReadLine(process.stdin, process.stdout);
 	try {
 		console.log('Installing imgur client dependencies');
 		await asyncProcess('yarn install', {
-			cwd: join(__dirname, 'client'),
+			cwd: join(__dirname, '../client'),
 			shell: true,
 		})[0];
 	} catch (e) {
@@ -21,7 +21,7 @@ const asyncReadLine = useReadLine(process.stdin, process.stdout);
 	try {
 		console.log('installing imgur server dependencies');
 		await asyncProcess('yarn install', {
-			cwd: join(__dirname, 'server'),
+			cwd: join(__dirname, '../server'),
 			shell: true,
 		})[0];
 	} catch (e) {
@@ -31,9 +31,9 @@ const asyncReadLine = useReadLine(process.stdin, process.stdout);
 	// Creating User required files
 	console.log('Starting Imgur Clone Setup ...');
 
-	if (!existsSync(join(__dirname, 'server/keys/keys.ts'))) {
+	if (!existsSync(join(__dirname, '../server/keys/keys.ts'))) {
 		// Create the key directory
-		mkdirSync(join(__dirname, 'server/keys'), { recursive: true });
+		mkdirSync(join(__dirname, '../server/keys'), { recursive: true });
 
 		const variables = {
 			mongooseKey: '',
@@ -91,7 +91,7 @@ export const googleKey = '${variables.googleKey}';
 
 export const sessionSecret = '${variables.sessionSecret}';`;
 
-		writeFileSync(join(__dirname, 'server/keys/keys.ts'), keyFileContent);
+		writeFileSync(join(__dirname, '../server/keys/keys.ts'), keyFileContent);
 		console.log('Written key file.');
 	}
 
@@ -105,7 +105,7 @@ export const sessionSecret = '${variables.sessionSecret}';`;
 	try {
 		await asyncProcess('yarn debug', {
 			shell: true,
-			cwd: join(__dirname, 'server'),
+			cwd: join(__dirname, '../server'),
 			outputNeedsToEqual: 'Watching for file changes',
 		})[0];
 		console.log('Server has been built, starting the server.');
@@ -117,10 +117,10 @@ export const sessionSecret = '${variables.sessionSecret}';`;
 	let debugServerProc;
 	try {
 		const [debugServerLock, _debugServerProc] = asyncProcess(
-			`node ${join(__dirname, 'server/dist/src/app.js')}`,
+			`node ${join(__dirname, '../server/dist/src/app.js')}`,
 			{
 				shell: true,
-				cwd: join(__dirname, 'server'),
+				cwd: join(__dirname, '../server'),
 				outputNeedsToEqual: 'Dev server is listening on port',
 			}
 		);
@@ -136,7 +136,7 @@ export const sessionSecret = '${variables.sessionSecret}';`;
 	try {
 		await asyncProcess('yarn gql:codegen', {
 			shell: true,
-			cwd: join(__dirname, 'server'),
+			cwd: join(__dirname, '../server'),
 		})[0];
 
 		console.log('GQL Types for the server have been generated.');
@@ -148,7 +148,7 @@ export const sessionSecret = '${variables.sessionSecret}';`;
 	try {
 		await asyncProcess('yarn gql:codegen', {
 			shell: true,
-			cwd: join(__dirname, 'client'),
+			cwd: join(__dirname, '../client'),
 		})[0];
 
 		console.log('GQL Types for the client have been generated.');
