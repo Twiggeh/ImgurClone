@@ -48,8 +48,8 @@ addEnvContent(`INSECURE_PORT="${insecurePort}"`);
 addEnvContent(`BACKEND_PROTOCOL="${backendProtocol}"`);
 
 // DIRECTORIES
-mkdirSync(join(__dirname, '..', 'public/uploads'), { recursive: true });
-mkdirSync(join(__dirname, '..', 'dist/public/uploads'), { recursive: true });
+mkdirSync(join(__dirname, '../public/uploads'), { recursive: true });
+mkdirSync(join(__dirname, '../dist/public/uploads'), { recursive: true });
 
 // Write env file
 writeFileSync(join(__dirname, '../.env'), envFileContent);
